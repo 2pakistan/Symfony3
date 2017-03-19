@@ -1,0 +1,33 @@
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbarRegister">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarRegisterCollapse" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbarRegisterCollapse">
+            <div class="col-sm-offset-6 col-xs-12">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('homepage') }}"><span id="glyphicon-home-register" class="glyphicon glyphicon-plane"></span></a></li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li><a href="{{ path('fos_user_security_logout') }}"><span class="glyphicon glyphicon-log-out"></span>&nbsp;
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a></li>
+                {% else %}
+                    <a href="{{ path('fos_user_security_login') }}">Vous avez déja un compte ? Connexion</a>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+

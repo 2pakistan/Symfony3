@@ -1,0 +1,57 @@
+<?php
+
+namespace VoyageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Etapes
+ *
+ * @ORM\Table(name="etapes", indexes={@ORM\Index(name="FK_etapes_idVoyage", columns={"idVoyage"}), @ORM\Index(name="FK_etapes_idDestination", columns={"idDestination"})})
+ * @ORM\Entity
+ */
+class Etapes
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionEtape", type="string", length=5000, nullable=true)
+     */
+    private $descriptionetape;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idEtape", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $idetape;
+
+    /**
+     * @var \VoyageBundle\Entity\Destination
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Destination")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDestination", referencedColumnName="idDestination")
+     * })
+     */
+    private $iddestination;
+
+    /**
+     * @var \VoyageBundle\Entity\Voyages
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Voyages")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
+     * })
+     */
+    private $idvoyage;
+
+
+}
+

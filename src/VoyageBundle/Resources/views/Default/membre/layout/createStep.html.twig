@@ -1,0 +1,25 @@
+{% extends ":layout:layout.html.twig" %}
+
+
+{% block body %}
+
+    <div class="container">
+        <section class="see-trip-header header-homepage">
+            <h2 class="text-center">Rajouter une étape</h2>
+        </section>
+        <section class="see-trip">
+            {{ form_start(form) }}
+            {{ form_row(form.medias) }}
+            <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+            </ul>
+            {{ form_end(form) }}
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/addFileInput.js') }}"></script>
+{% endblock %}
+

@@ -1,0 +1,746 @@
+.body-custom{
+    background:url("/symfonyroadtrip2/web/img/banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height:auto;
+}
+body{
+    font-family: "Helvetica Neue" ;
+}
+
+.img-center{
+    margin:0 auto;
+}
+
+
+/* MASQUE LA BARRE DE DEBUG FOIREE */
+.sf-toolbar-clearer{
+    display:none !important;
+    height : 0px !important;
+}
+
+/* configuration sticky footer */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 210px !important;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height:210px;
+    background-color: #f5f5f5;
+}
+/*end sticky footer */
+
+
+/*HOMEPAGE AUTOCOMPLETE BOX */
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+#custom-search-form {
+    margin:0;
+    margin-top: 5px;
+    padding: 0;
+}
+
+#custom-search-form .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-transition: width  0.2s ease-in-out;
+    -moz-transition:width  0.2s ease-in-out;
+    -o-transition: width  0.2s ease-in-out;
+    transition: width  0.2s ease-in-out;
+}
+
+#custom-search-form button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.search-query:focus + button {
+    z-index: 3;
+}
+.search-query:focus{
+    width: 260px;
+}
+.list-group-item:hover{
+    cursor: pointer;
+}
+.media-left{
+    display: inline-block;
+}
+#center{
+    margin-top:10px;
+    display: inline;
+}
+#favorites{
+    margin-left: -5px
+}
+#fav{
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    content: "Favorites";
+}
+/* ./HOMEPAGE AUTOCOMPLETE BOX */
+.header-content-wrap{
+    padding-top:310px;
+    padding-bottom: 370px;
+    background: rgba(0, 0, 0, 0.5);
+}
+.sub-header-wrapper{
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.alert{
+    padding:6px !important;
+}
+
+
+#bannerHp{
+    max-height: 50em;
+    min-height: 15em;
+    width:100%;
+}
+
+.homepageFonts{
+    font-family: "helvetica";
+    color:white;
+    position:relative;
+    text-align: center;
+}
+.text-white{
+    color: #ffffff;
+}
+
+
+.header-homepage{
+    text-align: center;
+    padding-bottom: 90px;
+    color:#404040;
+}
+.header-homepage > h1{
+    font-size:55px;
+    font-weight: 700;
+}
+
+.header-homepage > h2{
+    font-size:45px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.header-homepage > h3{
+     font-size:30px;
+ }
+.header-homepage > h4{
+    font-size:15px;
+}
+
+.header-register{
+    padding-bottom: 30px;
+    color:#404040;
+}
+
+.header-register > h1{
+    font-size:45px;
+    font-weight: 700;
+}
+
+/* SECTIONS DE LA HOMEPAGE */
+.user-reviews {
+    padding-bottom: 130px;
+    padding-top: 90px;
+    background-color: white;
+}
+
+.last-trips{
+    padding-bottom: 200px;
+    padding-top: 100px;
+
+}
+.trip-details{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.last-users{
+    padding-top: 100px;
+    padding-bottom: 150px;
+    background-color:white;
+}
+
+.company-infos{
+    padding-top:30px;
+    padding-bottom: 15px;
+}
+
+/* ./SECTIONS DE LA HOMEPAGE */
+
+/* SECTIONS PAGE REGISTER, PAGELOGIN */
+.register{
+    padding-top:100px;
+    padding-bottom: 100px;
+}
+
+.register h1{
+    font-size:35px;
+    font-weight: 700;
+    padding-bottom: 40px;
+}
+.register input{
+    margin-bottom: 20px;
+}
+
+.login{
+    padding-top:100px;
+    padding-bottom: 100px;
+}
+/* ./SECTIONS REGISTER,LOGIN */
+
+
+/*  SECTIONS NEW VOYAGE */
+
+.new-trip-header{
+    padding-top:50px;
+}
+
+.new-trip{
+    padding-top:60px;
+    padding-bottom: 80px;
+}
+
+.title-new-trip{
+    color:darkgray;
+    font-size:45px !important;
+    min-height:60px !important;
+    border:none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.form-trip .row {
+    margin-bottom: 50px;
+}
+
+.title-new-trip:focus{
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+
+
+
+/* ./SECTIONS NEW VOYAGE */
+
+
+/* SECTIONS CONSULTATION VOYAGE */
+
+.see-trip{
+    padding-bottom: 100px;
+}
+.see-trip-header{
+    padding-top:50px;
+}
+
+/* ./SECTIONS CONSULTATION VOYAGE */
+
+
+#footer{
+    background-color:#272727;
+    color:#939393;
+}
+
+.red-icon{
+    color:#e96656
+}
+
+.green-icon{
+    color:#3BC8A2;
+}
+.blue-icon{
+    color:#00aced !important;
+}
+.white-icon{
+    color:#ffffff;
+}
+
+
+#avisUserParagraph{
+    font-style:italic;
+    font-size:12px;
+    margin-top:3em;
+}
+.nameAvisUser{
+    margin-left: 1em;
+    display: inline-block;
+    font-weight: bold;
+    font-size:18px;
+}
+.nameAvisUser a{
+    color:black;
+}
+
+.nameAvisUser a:hover{
+    text-decoration:none;
+    color:#1b95e0;
+    transition: 1s;
+}
+
+
+.lastTripHeader{
+    display: inline-block;
+    font-weight:bold;
+    font-size:20px;
+    margin-bottom:3.5rem;
+}
+
+/* NAVBAR */
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .active > a{
+    background:transparent !important;
+    box-shadow: none !important;
+}
+.navbar-default .navbar-nav > li > a:hover{
+    color:#00aced !important;
+    transition: 1s;
+}
+
+.navbar{
+    padding-left: 15px;
+    padding-right: 40px;
+}
+
+li.active>a:before
+{
+    position: absolute;
+    margin: auto;
+    z-index: 1;
+    content: "";
+    width: 75%;
+    height: 2px;
+    background: #1b95e0;
+    bottom: 0px;
+    left: 12.5%;
+}
+/* NAVBAR REGISTERING DROPDOWN */
+#login-dp{
+    min-width: 250px;
+    padding: 28px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+}
+#login-dp .help-block{
+    font-size:12px
+}
+#login-dp .bottom,
+#profile-dp .bottom{
+    background-color:rgba(255,255,255,.9);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
+/* NAVBAR PROFILE DROPDOWN */
+#profile-dp{
+    min-width: 250px;
+    padding: 28px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.9);
+}
+
+/* ./ NAVBAR */
+
+#btnSearchHp{
+    padding: 12px 24px;
+}
+.btn-custom{
+    color: white;
+    background-color: #00aced;
+    border-color: lightgrey;
+    transition:0.5s;
+}
+.btn-custom:hover{
+    color: #fff !important;
+    background-color:#0084b4;
+    border-color: lightgrey;
+    transition:0.5s;
+}
+.btn-custom a:hover,
+.btn-custom a:active,
+.btn-custom a:hover,
+.btn-custom a:focus{
+    text-decoration: none !important;
+    color:white;
+}
+
+.profilNavTitle{
+    font-size:12px;
+    display:block;
+}
+.profilNavNumbers{
+    font-size:16px;
+    font-weight: bold;
+    display:block;
+}
+
+#profilPictureMember{
+    position:relative;
+    top:-7.5em;
+    height:200px;
+    width:200px;
+}
+
+#coverPicMembre{
+    min-height: 20em;
+    max-height: 600px;
+
+    /* on force l'img a 100% sans respecter le ratio */
+    width:100%;
+
+    /*On respecte le ratio de l'image
+        width:auto;
+        align center
+    */
+
+}
+
+#blocPresentationMembre{
+    position:relative;
+    top:-6em;
+}
+.pseudoMembre{
+    font-size:25px;
+    font-weight:bold;
+}
+#descriptionMembre{
+    padding-right: 2rem;
+}
+.identifiantMembre {
+    color: #8899a6;
+    font-size: 12px;
+}
+.contactMemberBtn{
+    padding-top:1em !important;
+    padding-bottom:1em !important;
+}
+.memberPostStep{
+    padding-bottom: 2em;
+    border-bottom: 1px solid #d8e5e9;
+}
+
+.memberPostStep:hover{
+    background-color: #e9f0f0;
+    cursor:pointer;
+}
+
+.marginPictureMember{
+    margin-top: 0.5em;
+}
+
+.inline{
+    display:inline-block;
+}
+
+.no-margin{
+    margin:0;
+}
+
+/* Page membre / onglet voyages / vignettes */
+
+.titleVoyage{
+    background-color: lightgray;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-weight:bold;
+}
+
+.registerFormRow{
+    margin-top: 2.5em;
+}
+
+#navbarRegister {
+     background: #00aced; /* For browsers that do not support gradients */
+     background: -webkit-linear-gradient(left, #00aced , #3BC8A2); /* For Safari 5.1 to 6.0 */
+     background: -o-linear-gradient(right, #00aced,#3BC8A2); /* For Opera 11.1 to 12.0 */
+     background: -moz-linear-gradient(right, #00aced, #3BC8A2); /* For Firefox 3.6 to 15 */
+     background: linear-gradient(to right, #00aced , #3BC8A2); /* Standard syntax */
+ }
+
+#glyphicon-home-register{
+    font-size:25px;
+    color:white;
+}
+
+
+#navbarRegisterCollapse > a,
+#navbarRegisterCollapse > a:hover,
+#navbarRegisterCollapse > a:focus {
+    border-bottom: none !important;
+    background-image: inherit;
+}
+
+.img-container{
+    max-height: 100px;
+    max-width: 100px;
+    overflow:hidden;
+}
+
+.img-container img{
+    /*
+    min-width: 100px;
+    height:auto;
+    */
+    width: 100%;
+    min-height: 100px;
+    object-fit: cover;
+}
+
+.img-container-lg {
+    max-height: 150px;
+    overflow:hidden;
+}
+.img-container-lg img{
+
+    /*
+    min-width: 100px;
+    height:auto;
+    */
+    width: 100%;
+    min-height: 150px;
+    object-fit: cover;
+}
+
+
+.invisible div{
+    display:none !important;
+}
+
+.top-buffer {
+    margin-top:20px;
+}
+
+
+
+/* CUSTOM UPLOAD FILE */
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.image-preview-input-title {
+    margin-left: 2px;
+}
+
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    border-left-color: #1fa67b;
+}
+
+/* CUSTOM BUTTON FOLLOW */
+
+.toggle-button {
+    margin: 0 20px; }
+
+/*
+ * Toggle button styles
+ */
+.toggle-button {
+    position: relative;
+    display: inline-block;
+    color: #fff; }
+.toggle-button label {
+    display: inline-block;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left; }
+.toggle-button input {
+    display: none; }
+.toggle-button__icon {
+    cursor: pointer;
+    pointer-events: none; }
+.toggle-button__icon:before, .toggle-button__icon:after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 35%;
+    transition: 0.2s ease-out; }
+
+/*
+ * Toggle button variables
+ */
+/*
+ * Toggle button styles
+ */
+.toggle-button--aava label {
+    height: 50px;
+    line-height: 50px;
+    transition: all 0.2s;
+    border-radius: 2rem; }
+.toggle-button--aava label:before, .toggle-button--aava label:after {
+    position: absolute;
+    right: 1.5rem;
+    transition: all 0.2s .1s ease-out; }
+.toggle-button--aava label:before {
+    content: attr(data-on-text); }
+.toggle-button--aava label:after {
+    content: attr(data-off-text); }
+
+.toggle-button--aava input[type=checkbox] + label {
+    width: 150px;
+    background: #00aced; }
+.toggle-button--aava input[type=checkbox] + label:before {
+    opacity: 0;
+    transform: translate(0, 20px); }
+.toggle-button--aava input[type=checkbox] + label:after {
+    opacity: 1;
+    transform: translate(0, 0); }
+
+.toggle-button--aava input[type=checkbox]:checked ~ label {
+    width: 150px;
+    background: #61B136; }
+.toggle-button--aava input[type=checkbox]:checked ~ label:before {
+    opacity: 1;
+    transform: translate(0, 0); }
+.toggle-button--aava input[type=checkbox]:checked ~ label:after {
+    opacity: 0;
+    transform: translate(0, -20px); }
+
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:before {
+    transform: translate(-10%, 100%) rotate(45deg);
+    width: 16.66667px; }
+
+.toggle-button--aava input[type=checkbox]:checked ~ .toggle-button__icon:after {
+    transform: translate(30%) rotate(-45deg); }
+
+.toggle-button--aava .toggle-button__icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 50px;
+    width: 50px; }
+.toggle-button--aava .toggle-button__icon:before, .toggle-button--aava .toggle-button__icon:after {
+    height: 3px;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); }
+.toggle-button--aava .toggle-button__icon:before {
+    width: 25px;
+    transform: rotate(45deg); }
+.toggle-button--aava .toggle-button__icon:after {
+    width: 25px;
+    transform: rotate(-45deg); }
+
+/* /CUSTOM BUTTON FOLLOW */
+
+
+
+
+
+

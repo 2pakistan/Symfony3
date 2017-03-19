@@ -1,0 +1,21 @@
+{% extends ":layout:layout.html.twig" %}
+
+
+{% block body %}
+
+
+    <div class="container">
+        <section class="see-trip-header header-homepage">
+            <h1 class="text-center"> Voyages :  {{ place }}</h1>
+        </section>
+        <section class="see-trip">
+            <div>
+                {{ dump(voyages) }}
+                <img src="" class="img-responsive img-center" />
+            </div>
+        </section>
+    </div>
+
+
+{% endblock %}
+

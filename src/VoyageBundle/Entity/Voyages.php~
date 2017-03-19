@@ -1,0 +1,61 @@
+<?php
+
+namespace VoyageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Voyages
+ *
+ * @ORM\Table(name="voyages")
+ * @ORM\Entity
+ */
+class Voyages
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionVoyage", type="string", length=500, nullable=true)
+     */
+    private $descriptionvoyage;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateDebutVoyage", type="date", nullable=true)
+     */
+    private $datedebutvoyage;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateFinVoyage", type="date", nullable=true)
+     */
+    private $datefinvoyage;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idVoyage", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idvoyage;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", mappedBy="idvoyage")
+     */
+    private $id;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->id = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

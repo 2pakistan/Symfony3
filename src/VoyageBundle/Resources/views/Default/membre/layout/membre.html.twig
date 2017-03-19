@@ -1,0 +1,65 @@
+{%  extends ":layout:membre.html.twig" %}
+
+
+{%  block body %}
+
+    <!-- post sans photos -->
+    <div class="memberPostStep row">
+        <div class="col-lg-2 col-md-2 col-xs-3">
+            <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}" class="img-responsive img-rounded marginPictureMember" alt="userpic" />
+        </div>
+
+        <div class="col-lg-10 col-md-10 col-xs-9">
+            <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
+            <p class="identifiantMembre inline no-margin"> . 19 déc.</p>
+            <p class="stepLocation identifiantMembre" ><span class="glyphicon glyphicon-globe"> USA</span></p>
+            <p> RENTRE A LA MAISON Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam! Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
+        </div>
+    </div>
+
+    <!-- post multi photos -->
+        <div class="memberPostStep row">
+
+            <div class="col-lg-2 col-md-2 col-xs-3">
+                <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}" class="img-responsive img-rounded marginPictureMember" alt="userpic" />
+            </div>
+
+            <div class="col-lg-10 col-md-10 col-xs-9">
+                <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
+                <p class="identifiantMembre inline no-margin"> . 16 déc.</p>
+                <p class="stepLocation identifiantMembre " ><span class="glyphicon glyphicon-globe"> Brasil</span></p>
+                <p>POST MULTI-PHOTOS // Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam! Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
+
+                <div class="blocImgPost">
+                    <div class="col-lg-8 col-md-8 col-xs-8">
+                        <img src="{{ asset('img/nature.jpg') }}"  class="img-responsive" alt="userpic" />
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-xs-4">
+                        <img class="img-responsive marginPictureMember" src="{{ asset('img/nature2.jpg') }}"   alt="userpic" />
+                        <img class="img-responsive marginPictureMember" src="{{ asset('img/nature3.jpg') }}"   alt="userpic" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    <!-- post une photo -->
+    <div class="memberPostStep row">
+        <div class="col-lg-2 col-md-2 col-xs-3">
+            <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}" class="img-responsive img-rounded marginPictureMember" alt="userpic" />
+        </div>
+
+        <div class="col-lg-10 col-md-10 col-xs-9">
+            <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
+            <p class="identifiantMembre inline no-margin"> . 16 déc.</p>
+            <p class="stepLocation identifiantMembre " ><span class="glyphicon glyphicon-globe"> Brasil</span></p>
+            <p>POST UNE PHOTO  // Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam! Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
+
+
+            <div class="blocImgPost">
+                <img src="{{ asset('img/nature.jpg') }}"  class="img-responsive  img-rounded" alt="userpic" />
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

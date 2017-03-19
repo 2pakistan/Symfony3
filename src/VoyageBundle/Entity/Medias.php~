@@ -1,0 +1,63 @@
+<?php
+
+namespace VoyageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Medias
+ *
+ * @ORM\Table(name="medias", indexes={@ORM\Index(name="FK_medias_idEtape", columns={"idEtape"}), @ORM\Index(name="FK_medias_idVoyage", columns={"idVoyage"}), @ORM\Index(name="FK_medias_idDestination", columns={"idDestination"})})
+ * @ORM\Entity
+ */
+class Medias
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionMedia", type="string", length=255, nullable=true)
+     */
+    private $descriptionmedia;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idMedia", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idmedia;
+
+    /**
+     * @var \VoyageBundle\Entity\Destination
+     *
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Destination")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idDestination", referencedColumnName="idDestination")
+     * })
+     */
+    private $iddestination;
+
+    /**
+     * @var \VoyageBundle\Entity\Etapes
+     *
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Etapes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEtape", referencedColumnName="idEtape")
+     * })
+     */
+    private $idetape;
+
+    /**
+     * @var \VoyageBundle\Entity\Voyages
+     *
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Voyages")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
+     * })
+     */
+    private $idvoyage;
+
+
+}
+

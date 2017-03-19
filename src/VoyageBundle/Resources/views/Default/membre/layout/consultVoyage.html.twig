@@ -1,0 +1,25 @@
+{% extends ":layout:layout.html.twig" %}
+
+
+{% block body %}
+
+    {{ dump(travellers) }}
+    {{ dump(steps) }}
+    {{ dump(trip) }}
+    <div class="container">
+        <section class="see-trip-header header-homepage">
+            <h1 class="text-center">{{ trip.titrevoyage}}</h1>
+        </section>
+        <section class="see-trip">
+            <div>
+                <img src="{{ vich_uploader_asset(trip, 'imagefile') }}" alt="{{trip.photovoyage }}" class="img-responsive img-center" />
+            </div>
+        </section>
+        <section class="header-homepage">
+            <h2 class="text-center">Rajouter une étape</h2>
+        </section>
+    </div>
+
+
+{% endblock %}
+

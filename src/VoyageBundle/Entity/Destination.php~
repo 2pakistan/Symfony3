@@ -1,0 +1,40 @@
+<?php
+
+namespace VoyageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Destination
+ *
+ * @ORM\Table(name="destination")
+ * @ORM\Entity
+ */
+class Destination
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pays", type="string", length=50, nullable=true)
+     */
+    private $pays;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomDestination", type="string", length=255, nullable=true)
+     */
+    private $nomdestination;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idDestination", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $iddestination;
+
+
+}
+

@@ -1,0 +1,1 @@
+fos.Router.setData({"base_url":"","routes":{"searchPlace":{"tokens":[["variable","\/","[^\/]++","destination"],["text","\/search"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"localhost","scheme":"http"});

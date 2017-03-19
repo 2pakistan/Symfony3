@@ -1,0 +1,47 @@
+{%  extends "::layout/membre.html.twig" %}
+
+{%  block body %}
+
+    <!-- MESSAGE SUCCES FORMULAIRE -->
+    <div>
+        {%  for flashMessage in app.session.flashBag.get('valid_voyage') %}
+            <div class="alert alert-success">{{ flashMessage }}</div>
+        {% endfor %}
+    </div>
+
+    {% if app.user.id is defined and membre.id == app.user.id  %}
+        <div class="col-sm-4 col-sm-offset-8">
+                <a href="{{ path('createTrip') }}">
+                    <button class="btn btn-lg btn-custom btn-block">Ajouter un voyage</button>
+                </a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <h3>Voyages</h3>
+    {% if nbTrips > 0  %}
+        {% for i in 0..membre.voyages|length-1  %}
+                <div class="col-sm-4 col-xs-6">
+                    <a href="{{ path('voyagePage' , { 'idVoyage': membre.voyages[i].idvoyage } ) }}">
+                        <div class="img-container-lg">
+                            <img src="{{ vich_uploader_asset(membre.voyages[i], 'imagefile' ) }}" alt="{{ membre.voyages[i].photoVoyage }}" class="img-responsive" />
+                        </div>
+                        <p class="text-center titleVoyage">{{ membre.voyages[i].titrevoyage }}</p>
+                    </a>
+                </div>
+        {% endfor %}
+    {% else %}
+        {% if app.user.id is defined and membre.id == app.user.id  %}
+            <div class="col-xs-12">
+                <p>Vous n'avez aucun voyages à votre actif . </p>
+            </div>
+        {% else %}
+            <div class="col-xs-12">
+                <p>Ce membre n'a encore effectué aucun voyages . </p>
+            </div>
+        {% endif %}
+
+    {% endif %}
+    </div>
+
+{% endblock %}

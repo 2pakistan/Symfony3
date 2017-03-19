@@ -1,0 +1,175 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="container register">
+<div class="col-sm-offset-2">
+    <div class=" header-register">
+        <h1 class="">Rejoignez Travellink aujourd'hui.</h1>
+    </div>
+
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    <!-- Username -->
+    <div class="form-group row registerFormRow ">
+        {{ form_label(form.username, null, {'label_attr': {'class': 'col-form-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.username.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.username) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Nom -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.nom, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.nom.vars.errors|length > 0 %}
+            <div class="col-sm-3 alert alert-danger">
+                {{ form_errors(form.nom) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Prenom -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.prenom, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.prenom.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.prenom) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Country -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.nationalite, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.nationalite, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.nationalite.vars.errors|length > 0 %}
+            <div class="col-sm-3 alert alert-danger">
+                {{ form_errors(form.nationalite) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Email -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.email, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.email.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.email) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Password -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.plainPassword.first, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.plainPassword.first.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Confirm password -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.plainPassword.second.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.plainPassword.second) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Telephone -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.telephone, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.telephone.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.telephone) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Description profil -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.descriptionprofil, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.descriptionprofil, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        {% if form.descriptionprofil.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.descriptionprofil) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- input upload profile picture -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.imagefile, null, {'label_attr': {'class': 'control-label col-sm-2'},'label': 'Photo de profil'}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.imagefile, {'attr': {'class': ''}}) }}
+        </div>
+        {% if form.imagefile.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.imagefile) }}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <!-- input upload cover picture -->
+    <div class="row registerFormRow form-group">
+        {{ form_label(form.imagefilecover, null, {'label_attr': {'class': 'control-label col-sm-2'},'label': 'Photo de couverture'}) }}
+        <div class="col-sm-7">
+            {{ form_widget(form.imagefilecover, {'attr': {'class': ''}}) }}
+        </div>
+        {% if form.imagefilecover.vars.errors|length > 0 %}
+            <div class="alert alert-danger col-sm-3">
+                {{ form_errors(form.imagefilecover) }}
+            </div>
+        {% endif %}
+    </div>
+
+
+    <!-- Fields marked with (*) are required-->
+    <p><i>Tous les champs marqués d'une astérisque (<span class="glyphicon glyphicon-asterisk"></span>) sont obligatoires pour valider l'inscription.</i></p>
+
+    <!-- Button submit Create account -->
+    <div class="row registerFormRow form-group">
+        <div class="col-sm-9">
+            <input class="btn btn-lg btn-custom btn-block " type="submit" value="{{ 'registration.submit'|trans }}" />
+        </div>
+    </div>
+    <!--  CSRF -->
+ {{ form_widget(form._token) }}
+    {% if form._token.vars.errors|length > 0 %}
+        <div class="col-sm-3 alert alert-danger">
+            {{ form_errors(form._token) }}
+        </div>
+    {% endif %}
+
+    {{ form_end(form) }}
+
+</div>
+</div>

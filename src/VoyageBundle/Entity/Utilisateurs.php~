@@ -1,0 +1,120 @@
+<?php
+
+namespace VoyageBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Utilisateurs
+ *
+ * @ORM\Table(name="utilisateurs")
+ * @ORM\Entity
+ */
+class Utilisateurs
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=50, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=50, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nationalite", type="string", length=50, nullable=true)
+     */
+    private $nationalite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=25, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=255, nullable=true)
+     */
+    private $mail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photoProfil", type="string", length=255, nullable=true)
+     */
+    private $photoprofil;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photoCouverture", type="string", length=255, nullable=true)
+     */
+    private $photocouverture;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionProfil", type="string", length=500, nullable=true)
+     */
+    private $descriptionprofil;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", inversedBy="id")
+     * @ORM\JoinTable(name="etreami",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_utilisateurs", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $idUtilisateurs;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Voyages", inversedBy="id")
+     * @ORM\JoinTable(name="participer",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
+     *   }
+     * )
+     */
+    private $idvoyage;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idUtilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->idvoyage = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

@@ -55,7 +55,7 @@ atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
 .idea/replstate.xml
-
+.idea/workspace.xml
 =======
 .idea/
 >>>>>>> c45145136904cc5a66d3d4df85e23a45900ac17a

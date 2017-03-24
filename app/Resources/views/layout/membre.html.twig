@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>{% block title %}Roadtrip{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.css') }}">
     {% block stylesheets %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
 
 {% block nav %}
-    {%include ':modulesUsed:navbarTest.html.twig' %}
+    {% include ':modulesUsed:navbarTest.html.twig' %}
 {% endblock %}
 
 
 {% set route   = app.request.attributes.get('_route') %}
 {% set nbTrips = membre.voyages|length %}
-{% set nbFollowed  =  membre.followed|length%}
-{% set nbFollowers  =  membre.follower|length%}
+{% set nbFollowed  =  membre.followed|length %}
+{% set nbFollowers  =  membre.follower|length %}
 
 <div>
-    <img src="{{ vich_uploader_asset(membre, 'imagefilecover' ) }}" class="img-responsive"  id="coverPicMembre" alt="{{  membre.photocouverture }}" />
+    <img src="{{ vich_uploader_asset(membre, 'imagefilecover' ) }}" class="img-responsive" id="coverPicMembre"
+         alt="{{ membre.photocouverture }}"/>
 </div>
 
 <div class="container">
     <div class="row">
         <div class="col-sm-3 col-xs-12 ">
-            <img id="profilPictureMember" class="img-responsive img-thumbnail" alt="{{  membre.photoprofil }}" src="{{ vich_uploader_asset(membre, 'imagefile' ) }}" />
+            <img id="profilPictureMember" class="img-responsive img-thumbnail" alt="{{ membre.photoprofil }}"
+                 src="{{ vich_uploader_asset(membre, 'imagefile' ) }}"/>
             <div id="blocPresentationMembre">
                 <p class="pseudoMembre no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
                 <P class="identifiantMembre">@{{ membre.prenom }}_{{ membre.nom }}</P>
                 <p id="descriptionMembre">{{ membre.descriptionprofil }}</p>
                 <br/>
-                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit en decembre 2016</p>
+                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit en decembre 2016
+                </p>
                 <p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>
             </div>
             <div class="contactBtnWrapper col-md-8 col-xs-12">
-                <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip" data-placement="top left" title="Envoyer un message privé à ce voyageur"><span class="glyphicon glyphicon-comment"></span></button>
+                <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip"
+                        data-placement="top left" title="Envoyer un message privé à ce voyageur"><span
+                            class="glyphicon glyphicon-comment"></span></button>
             </div>
         </div>
 
@@ -46,36 +51,62 @@
             <!-- Seconde nav -->
             <div class="navbar navbar-default navbar-static-top" role="navigation">
                 <ul class="nav navbar-nav">
-                    <li {{ route ==  'memberHp' ? 'class="active"' }}><a href="{{ path('memberHp' , { 'id': membre.id } ) }}"><span class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span></a></li>
-                    <li {{ route ==  'memberMap' ? 'class="active"' }}><a href="{{ path('memberMap', { 'id': membre.id } ) }}"><span class="profilNavTitle">PAYS VISITÉS</span><span class="profilNavNumbers text-center">97</span></a> </li>
-                    <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
-                    <li {{ route ==  'usersFollowed' ? 'class="active"' }}><a href="{{ path('usersFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span class="profilNavNumbers text-center">{{ nbFollowed }}</span></a></li>
-                    <li {{ route ==  'usersFollowers' ? 'class="active"' }}><a href="{{ path('usersFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span class="profilNavNumbers text-center">{{ nbFollowers }}</span></a></li>
+                    <li {{ route ==  'memberHp' ? 'class="active"' }}><a
+                                href="{{ path('memberHp' , { 'id': membre.id } ) }}"><span
+                                    class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span></a>
+                    </li>
+                    <li {{ route ==  'memberMap' ? 'class="active"' }}><a
+                                href="{{ path('memberMap', { 'id': membre.id } ) }}"><span class="profilNavTitle">PAYS VISITÉS</span><span
+                                    class="profilNavNumbers text-center">97</span></a></li>
+                    <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
+                                href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
+                                    class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
+                    <li {{ route ==  'usersFollowed' ? 'class="active"' }}><a
+                                href="{{ path('usersFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
+                                    class="profilNavNumbers text-center">{{ nbFollowed }}</span></a></li>
+                    <li {{ route ==  'usersFollowers' ? 'class="active"' }}><a
+                                href="{{ path('usersFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
+                                    class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span></a>
+                    </li>
                 </ul>
             </div>
-            {% block body %}{% endblock %}
+            {% block body %}
+            {% endblock %}
         </div>
 
-        {%  if is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id !=  membre.id %}
+        {# checks if user connected is on his own page#}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id !=  membre.id %}
+            {# checks if user connected follows the member consulted#}
+            {% if app.user not in membre.follower %}
             <div class="col-sm-1 top-buffer">
                 <div class="toggle-button toggle-button--aava">
                     <input id="toggleButton" type="checkbox">
                     <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
                     <div class="toggle-button__icon"></div>
                 </div>
-               <!-- <button class="btn btn-custom">
-                    <a href="#" class="text-white">S'abonner </a>
-                </button> -->
             </div>
+            {% else %}
+            <div class="col-sm-1 top-buffer">
+                <div class="toggle-button toggle-button--aava">
+                    <input id="toggleButton" type="checkbox" checked="checked">
+                    <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
+                    <div class="toggle-button__icon"></div>
+                </div>
+            </div>
+            {% endif %}
         {% endif %}
-
     </div>
 </div>
-
-{%include ':modulesUsed:footer.html.twig' %}
+<div id="js-vars"
+     data-vars="{{ js_vars|json_encode|e('html_attr') }}"
+/>
+{% include ':modulesUsed:footer.html.twig' %}
 
 <script src="{{ asset('js/jquery-1.10.0.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ asset('js/fos_js_routes_dev.js') }}"></script>
+<script src="{{ asset('js/ajaxFollow.js') }}"></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

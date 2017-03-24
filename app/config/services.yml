@@ -8,3 +8,6 @@ services:
         class: VoyageBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
+
+    app.js_vars:
+        class: stdClass

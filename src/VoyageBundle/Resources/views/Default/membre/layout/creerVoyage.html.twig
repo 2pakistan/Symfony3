@@ -1,16 +1,12 @@
 {% extends ":layout:layout.html.twig" %}
 
-
 {% block body %}
 
     <div class="container">
-
         <section class="new-trip-header">
             <h1>Création d'un nouveau voyage</h1>
         </section>
-
         <section class="new-trip">
-
             {{ form_start(form, {'method': 'post', 'action': path('createTrip'), 'attr': {'class': 'form-trip'}}) }}
             <div class="col-sm-10 col-sm-offset-1 ">
 

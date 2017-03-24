@@ -1,0 +1,53 @@
+{% extends ":layout:layout.html.twig" %}
+
+
+{% block body %}
+
+    <div class="container">
+        <section class="see-trip-header header-homepage">
+            <h1 class="text-center"> Autocompletion adresse : test</h1>
+        </section>
+        <section class="see-trip">
+                <div class="col-xs-12">
+                    <form class="form-horizontal">
+                        <input id="autocomplete" type="text" class="form-control input-lg"/>
+
+                        <label for="country" class="control-label col-sm-2">country</label>
+                        <div class="col-xs-10">
+                            <input id="country" type="text" class="form-control col-sm-10"/>
+                        </div>
+
+                        <label for="city" class="control-label col-sm-2">place</label>
+                        <div class="col-xs-10">
+                            <input id="city" type="text" class="form-control"/>
+                        </div>
+
+                        <label for="adress" class="control-label col-sm-2">adresse</label>
+                        <div class="col-xs-10">
+                            <input id="adress" type="text" class="form-control"/>
+                        </div>
+
+                        <label for="streetnumber" class="control-label col-sm-2">Numéro de voie</label>
+                            <div class="col-xs-10">
+                                <input id="streetnumber" type="text" class="form-control"/>
+                            </div>
+                        <label for="area" class="control-label col-sm-2">Region</label>
+                        <div class="col-xs-10">
+                            <input id="area" type="text" class="form-control"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/autocompleteAdress.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8MUOfjQsy5bd9U4L8vYqpGkNjM9qOfYw&signed_in=true&libraries=places&callback=initAutocomplete"
+            async defer></script>
+{% endblock %}
+
+
+

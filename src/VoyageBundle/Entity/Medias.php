@@ -40,6 +40,9 @@ class Medias
      * @var \VoyageBundle\Entity\Etapes
      *
      * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Etapes", inversedBy="medias" ,cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEtape", referencedColumnName="idEtape")
+     * })
      */
     private $idetape;
 
@@ -89,7 +92,7 @@ class Medias
     /**
      * @return File
      */
-    public function getImagefile(): File
+    public function getImagefile()
     {
         return $this->imagefile;
     }
@@ -105,7 +108,7 @@ class Medias
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
@@ -121,7 +124,7 @@ class Medias
     /**
      * @return string
      */
-    public function getPathMedia(): string
+    public function getPathMedia()
     {
         return $this->pathMedia;
     }
@@ -129,7 +132,7 @@ class Medias
     /**
      * @param string $pathMedia
      */
-    public function setPathMedia(string $pathMedia)
+    public function setPathMedia( $pathMedia)
     {
         $this->pathMedia = $pathMedia;
     }

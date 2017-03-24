@@ -6,8 +6,11 @@
 
 {% block fos_user_content %}
 
+    <section class="see-trip-header top-buffer">
     <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
     {% if targetUrl %}
-    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+        <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+    </section>
+
     {% endif %}
 {% endblock fos_user_content %}

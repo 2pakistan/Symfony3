@@ -21,6 +21,9 @@ class MembreController extends Controller
         //on recupere les données du membre dont l'id est $id
         $membre = $em->getRepository('VoyageBundle:Utilisateurs')
                      ->find($id);
+        if($membre === null){
+            return $this->redirectToRoute('homePage');//TODO-404
+        }
 
         return $this->render('VoyageBundle:Default:membre/layout/membre.html.twig',array('membre' => $membre));
     }
@@ -35,8 +38,11 @@ class MembreController extends Controller
         //on recupere les données du membre dont l'id est $id
         $membre = $em->getRepository('VoyageBundle:Utilisateurs')
             ->find($id);
+        if($membre === null){
+            return $this->redirectToRoute('homePage');//TODO-404
+        }
 
-        return $this->render('VoyageBundle:Default:membre/layout/membreVoyages.html.twig' ,array('membre' => $membre));
+            return $this->render('VoyageBundle:Default:membre/layout/membreVoyages.html.twig' ,array('membre' => $membre));
     }
 
     /**

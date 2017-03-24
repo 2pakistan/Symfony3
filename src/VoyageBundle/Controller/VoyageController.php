@@ -40,23 +40,28 @@ class VoyageController extends Controller
     }
 
     /**
-     * @Route("/voyage/{idVoyage}", name="voyagePage", requirements={"id": "\d+"})"
-     */
+ * @Route("/voyage/{idVoyage}", name="voyagePage", requirements={"id": "\d+"})"
+ */
     public function consultVoyageAction($idVoyage)
     {
         $em = $this->getDoctrine()->getManager();
 
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
-        $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->findTravellersByVoyage($idVoyage);
-        $steps = $em->getRepository('VoyageBundle:Etapes')
-            ->findBy(array('idvoyage' => $idVoyage));
+
+        if($trip === null){
+            return $this->redirectToRoute('homePage');//TODO-404
+        }else{
+            $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
+                ->findTravellersByVoyage($idVoyage);
+            $steps = $em->getRepository('VoyageBundle:Etapes')
+                ->findBy(array('idvoyage' => $idVoyage));
+        }
 
         return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig',array(
-                                                                                'trip' => $trip,
-                                                                                'travellers' => $travellers,
-                                                                                'steps' => $steps));
+            'trip' => $trip,
+            'travellers' => $travellers,
+            'steps' => $steps));
     }
 
     /**
@@ -76,5 +81,16 @@ class VoyageController extends Controller
             */
         }
     return $this->render('VoyageBundle:Default/membre/layout:createStep.html.twig',array('form' => $form->createView()));
+    }
+
+    /**
+     * @Route("/test", name="test", requirements={"id": "\d+"})"
+     */
+    public function testAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+        return $this->render('VoyageBundle:Default/membre/layout:vueTest.html.twig',array());
     }
 }

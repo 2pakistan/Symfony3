@@ -169,6 +169,12 @@ class Utilisateurs extends BaseUser
      */
     private $voyages;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Countries", inversedBy="visitors",  cascade={"persist"})
+     */
+    private $countriesVisited;
+
     public function __construct()
     {
         parent::__construct();
@@ -179,6 +185,7 @@ class Utilisateurs extends BaseUser
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->countriesVisited = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

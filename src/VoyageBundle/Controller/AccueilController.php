@@ -86,13 +86,13 @@ class AccueilController extends Controller
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
             if($placeName !== ''){
-                $place = $em->getRepository('VoyageBundle:Destination')
+                $destination = $em->getRepository('VoyageBundle:Destination')
                     ->findOneBy(array('nomdestination' => $placeName));
-                if($place == null){
-                    $place = $em->getRepository('VoyageBundle:Destination')
+                if($destination == null){
+                    $destination = $em->getRepository('VoyageBundle:Destination')
                         ->findOneBy(array('pays' => $placeName));
                 }
-                $idPlace = $place->getIddestination();
+                $idPlace = $destination->getIddestination();
                 $voyages = $em->getRepository('VoyageBundle:Etapes')
                     ->findBy(array('iddestination' => $idPlace));
             }

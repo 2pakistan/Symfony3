@@ -33,12 +33,11 @@
                  src="{{ vich_uploader_asset(membre, 'imagefile' ) }}"/>
             <div id="blocPresentationMembre">
                 <p class="pseudoMembre no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
-                <P class="identifiantMembre">@{{ membre.prenom }}_{{ membre.nom }}</P>
+                <p class="identifiantMembre">@{{ membre.username }}</p>
                 <p id="descriptionMembre">{{ membre.descriptionprofil }}</p>
                 <br/>
-                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit en decembre 2016
+                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit le {{ membre.createdAt|date("d/m/Y") }}
                 </p>
-                <p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>
             </div>
             <div class="contactBtnWrapper col-md-8 col-xs-12">
                 <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip"

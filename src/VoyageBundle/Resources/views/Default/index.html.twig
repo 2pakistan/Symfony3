@@ -1,35 +1,36 @@
-{%  extends "::layout/layoutHome.html.twig" %}
+{% extends "::layout/layoutHome.html.twig" %}
 
 {% block nav %}
-    {%include ':modulesUsed:navbarTest.html.twig' %}
+    {% include ':modulesUsed:navbarTest.html.twig' %}
 {% endblock %}
 
-{%  block body %}
+{% block body %}
 
     <div class="container-fluid">
-    <!-- row banner and title -->
+        <!-- row banner and title -->
         <div class="row header-content-wrap">
             <div class="container">
-            <div class=" header-homepage">
-                <h1 class="text-white">
-                    Trip, Meet, Share
-                </h1>
-                <h3 class="text-white">
-                    Discover Trips Shared by World Travellers
-                </h3>
-            </div>
+                <div class=" header-homepage">
+                    <h1 class="text-white">
+                        Trip, Meet, Share
+                    </h1>
+                    <h3 class="text-white">
+                        Discover Trips Shared by World Travellers
+                    </h3>
+                </div>
 
                 <div class="col-sm-8 col-sm-offset-2">
                     <h3 class="text-white text-center">Une destination ? </h3>
-                    {{ form_start(form, { 'attr': {'class': 'form-group-lg' , 'id':'form-search'} })  }}
-                        <div class="input-group">
-                            {{ form_widget(form.nomDestination) }}
-                            <div class="input-group-btn">
-                                 <button type="submit" id="btnSearchHp" class="btn btn-custom"><span class="glyphicon glyphicon-search"></span></button>
-                             </div>
+                    {{ form_start(form, { 'attr': {'class': 'form-group-lg' , 'id':'form-search'} }) }}
+                    <div class="input-group">
+                        {{ form_widget(form.nomDestination) }}
+                        <div class="input-group-btn">
+                            <button type="submit" id="btnSearchHp" class="btn btn-custom"><span
+                                        class="glyphicon glyphicon-search"></span></button>
+                        </div>
 
-                         </div>
-                     <!-- </form>-->
+                    </div>
+                    <!-- </form>-->
                     {{ form_end(form) }}
                     <!-- List group -->
                     <ul id="autolist" class="list-group">
@@ -40,41 +41,47 @@
 
             </div>
         </div>
-    <!-- ./row banner and title -->
+        <!-- ./row banner and title -->
     </div>
     <section class="last-users ">
-    <div class="container-fluid">
-    <!-- row last users registered -->
-        <div class="row">
-            <div class="container">
-                <div class="header-homepage">
-                    <h2>Les derniers inscrits </h2>
-                    <h4>Les derniers voyageurs ayant rejoint la communauté Travellink </h4>
-                </div>
-                    <div class="panel-body" >
+        <div class="container-fluid">
+            <!-- row last users registered -->
+            <div class="row">
+                <div class="container">
+                    <div class="header-homepage">
+                        <h2>Les derniers inscrits </h2>
+                        <h4>Les derniers voyageurs ayant rejoint la communauté Travellink </h4>
+                    </div>
+                    <div class="panel-body">
                         {% for membre in membres %}
-                        <div class="col-sm-4">
-                            <div class="img-container">
-                                <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }} " alt="profile picture" class="img img-responsive img-thumbnail" />
+                            <div class="col-sm-4">
+                                <div class="col-sm-4">
+                                    <div class="img-container">
+                                        <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }} "
+                                             alt="profile picture" class="img img-responsive img-thumbnail"/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 user-details">
+                                    <p class="name-user">
+                                        <a href="{{ path('memberHp' , { 'id': membre.id } ) }} ">{{ membre.prenom }} {{ membre.nom }} </a>
+                                    </p>
+                                    <p class="info-user"> {{ membre.voyages|length }} voyages</p>
+                                    <p class="info-user"> {{ membre.follower|length }} followers</p>
+                                    <p class="info-user"> {{ membre.followed|length }} voyageurs followed</p>
+                                    </p>
+                                </div>
                             </div>
-                            <p class="nameAvisUser">
-                                <a href="{{ path('memberHp' , { 'id': membre.id } ) }} ">{{ membre.prenom}} {{ membre.nom}} </a></p>
-                            <ul>
-                                <li>158 followers supplémentaires</li>
-                                <li>28 photos partagées</li>
-                            </ul>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-                <!-- ./Panel last users registered -->
+            <!-- ./Panel last users registered -->
         </div>
         <!-- ./row last users registered -->
-    </div>
+        </div>
     </section>
 
-<!-- section last trips created -->
+    <!-- section last trips created -->
     <section class="last-trips sub-header-wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -83,54 +90,63 @@
                         <h2 class="text-white">Les voyages récents</h2>
                     </div>
                     {% for voyage in voyages %}
-                    <div class="col-sm-4 trip-details">
-                        <p class="red-icon"><span class="glyphicon glyphicon-globe red-icon"></span> {{ voyage.titrevoyage }}</p>
-                        <p>
-                            <span class="glyphicon glyphicon-user "></span>
-                            {% for i in 1..voyage.voyageur|length/2 %}
-                                {{ voyage.voyageur[i].__toString }}
-                            {% endfor %}
-                        </p>
-                        <p><span class="glyphicon glyphicon-calendar"></span> {{ voyage.datedebutvoyage|date("d/m/Y", "Europe/Paris") }}</p>
-                        <a href="{{ path('voyagePage' , { 'idVoyage': voyage.idvoyage } ) }}">
-                            <button class="btn btn-primary">
-                                <span class="glyphicon glyphicon-eye-open"></span> Consulter le voyage
-                            </button>
-                        </a>
-                    </div>
+                        <div class="col-sm-4 trip-details">
+                            <p class="red-icon"><span
+                                        class="glyphicon glyphicon-globe red-icon"></span> {{ voyage.titrevoyage }}</p>
+                            <p>
+                                <span class="glyphicon glyphicon-user "></span>
+                                {% for i in 1..voyage.voyageur|length/2 %}
+                                    {{ voyage.voyageur[i].__toString }}
+                                {% endfor %}
+                            </p>
+                            <p>
+                                <span class="glyphicon glyphicon-calendar"></span> {{ voyage.datedebutvoyage|date("d/m/Y", "Europe/Paris") }}
+                            </p>
+                            <a href="{{ path('voyagePage' , { 'idVoyage': voyage.idvoyage } ) }}">
+                                <button class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-eye-open"></span> Consulter le voyage
+                                </button>
+                            </a>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </section>
-        <!-- END section last trips created -->
+    <!-- END section last trips created -->
 
     <section class="user-reviews">
         <div class="container-fluid">
             <div class="row top-buffer">
-                    <div class="container">
-                        <div class="header-homepage">
-                            <h2>Les avis d'utilisateurs</h2>
-                            <h4>Vos retours nous aident à améliorer la qualité de nos services</h4>
+                <div class="container">
+                    <div class="header-homepage">
+                        <h2>Les avis d'utilisateurs</h2>
+                        <h4>Vos retours nous aident à améliorer la qualité de nos services</h4>
+                    </div>
+                    <div id="panelAvisUser">
+                        <div class="col-lg-4">
+                            <img src="{{ asset('img/me.jpg') }}" alt="" height="64" width="64" class="picRadius"/>
+                            <p class="nameAvisUser">Arnaud Ayrem</p>
+                            <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa
+                                simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont
+                                fait que je suis un utilisateur régulier aujourd'hui"</p>
                         </div>
-                        <div id="panelAvisUser">
-                            <div class="col-lg-4">
-                                <img src="{{ asset('img/me.jpg') }}" alt="" height="64" width="64" class="picRadius" />
-                                <p class="nameAvisUser">Arnaud Ayrem</p>
-                                <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont fait que je suis un utilisateur régulier aujourd'hui"</p>
-                            </div>
-                            <div class="col-lg-4">
-                                <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
-                                <p class="nameAvisUser">Michel Pompas</p>
-                                <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont fait que je suis un utilisateur régulier aujourd'hui"</p>
-                            </div>
-                            <div class="col-lg-4">
-                                <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
-                                <p class="nameAvisUser">Xavier Salaberria</p>
-                                <p id="avisUserParagraph">" Je souhaitais évoquer ma passion du pays-basque ainsi que les différents voyages que j'ai pu y effectuer. Ce site m'a permis de partager avec le monde entier la beauté des paysages et la richesse du patrimoine culturel basque. Merci !"</p>
-                            </div>
+                        <div class="col-lg-4">
+                            <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
+                            <p class="nameAvisUser">Michel Pompas</p>
+                            <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa
+                                simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont
+                                fait que je suis un utilisateur régulier aujourd'hui"</p>
+                        </div>
+                        <div class="col-lg-4">
+                            <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
+                            <p class="nameAvisUser">Xavier Salaberria</p>
+                            <p id="avisUserParagraph">" Je souhaitais évoquer ma passion du pays-basque ainsi que les
+                                différents voyages que j'ai pu y effectuer. Ce site m'a permis de partager avec le monde
+                                entier la beauté des paysages et la richesse du patrimoine culturel basque. Merci !"</p>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </section>

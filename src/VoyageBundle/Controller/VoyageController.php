@@ -55,7 +55,7 @@ class VoyageController extends Controller
             $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
                 ->findTravellersByVoyage($idVoyage);
             $steps = $em->getRepository('VoyageBundle:Etapes')
-                ->findBy(array('idvoyage' => $idVoyage));
+                ->findBy(array('trip' => $idVoyage));
         }
 
         return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig',array(

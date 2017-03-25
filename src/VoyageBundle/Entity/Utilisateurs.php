@@ -287,7 +287,7 @@ class Utilisateurs extends BaseUser
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }

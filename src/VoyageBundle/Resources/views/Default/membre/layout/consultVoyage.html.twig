@@ -3,23 +3,32 @@
 
 {% block body %}
 
-    {{ dump(travellers) }}
-    {{ dump(steps) }}
-    {{ dump(trip) }}
     <div class="container">
         <section class="see-trip-header header-homepage">
-            <h1 class="text-center">{{ trip.titrevoyage}}</h1>
+            {% if trip in app.user.voyages %}
+                <div class="text-right ">
+                    <button class="btn btn-custom">
+                        <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}" class="text-white"><span class="glyphicon glyphicon-edit"></span>&nbsp;Ajouter une étape</a>
+                    </button>
+                </div>
+            {% endif %}
+            <h1 class="text-center">{{ trip.titrevoyage }}</h1>
         </section>
         <section class="see-trip">
             <div>
-                <img src="{{ vich_uploader_asset(trip, 'imagefile') }}" alt="{{trip.photovoyage }}" class="img-responsive img-center" />
+                <img src="{{ vich_uploader_asset(trip, 'imagefile') }}" alt="{{ trip.photovoyage }}"
+                     class="img-responsive img-center"/>
             </div>
         </section>
-        <section class="header-homepage">
-            <h2 class="text-center">Rajouter une étape</h2>
+        <section class="see-trip">
+            <div>
+                <h3 class="text-center"><em>" {{ trip.descriptionvoyage }} "</em></h3>
+            </div>
         </section>
-    </div>
 
+
+
+    </div>
 
 {% endblock %}
 

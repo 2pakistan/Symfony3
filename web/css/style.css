@@ -40,6 +40,28 @@ body {
 }
 /*end sticky footer */
 
+/*HOMEPAGE LAST USERS DETAILS */
+.user-details> p.info-user{
+    color:#506066;
+    font-size:12px;
+    margin-bottom: 5px;
+}
+
+.user-details> p.name-user{
+    font-size:18px;
+    font-weight:bold;
+}
+p.name-user>a {
+    color:#272727;
+}
+p.name-user>a:hover{
+    text-decoration:none;
+    color:#1b95e0;
+    transition: 1s;
+}
+
+/* /HOMEPAGE  */
+
 
 /*HOMEPAGE AUTOCOMPLETE BOX */
 .material-switch > input[type="checkbox"] {

@@ -64,7 +64,7 @@ class MembreController extends Controller
     }
 
     /**
-     * @Route("/membre/{id}/followed", name="usersFollowed", requirements={"id": "\d+"})
+     * @Route("/membre/{id}/followed", name="memberFollowed", requirements={"id": "\d+"})
      */
     public function followedAction($id)
     {
@@ -79,7 +79,7 @@ class MembreController extends Controller
     }
 
     /**
-     * @Route("/membre/{id}/followers", name="usersFollowers", requirements={"id": "\d+"})
+     * @Route("/membre/{id}/followers", name="memberFollowers", requirements={"id": "\d+"})
      */
     public function followersAction($id)
     {

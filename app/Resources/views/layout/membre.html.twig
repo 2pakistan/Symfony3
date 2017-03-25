@@ -38,6 +38,8 @@
                 <br/>
                 <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit le {{ membre.createdAt|date("d/m/Y") }}
                 </p>
+                <!--<p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>-->
+                <!-- TODO -->
             </div>
             <div class="contactBtnWrapper col-md-8 col-xs-12">
                 <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip"
@@ -60,11 +62,11 @@
                     <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
                                 href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
                                     class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
-                    <li {{ route ==  'usersFollowed' ? 'class="active"' }}><a
-                                href="{{ path('usersFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
+                    <li {{ route ==  'memberFollowed' ? 'class="active"' }}><a
+                                href="{{ path('memberFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
                                     class="profilNavNumbers text-center">{{ nbFollowed }}</span></a></li>
-                    <li {{ route ==  'usersFollowers' ? 'class="active"' }}><a
-                                href="{{ path('usersFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
+                    <li {{ route ==  'memberFollowers' ? 'class="active"' }}><a
+                                href="{{ path('memberFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
                                     class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span></a>
                     </li>
                 </ul>

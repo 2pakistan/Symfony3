@@ -10,30 +10,31 @@
         <section class="see-trip">
                 <div class="col-xs-12">
                     <form class="form-horizontal">
-                        <input id="autocomplete" type="text" class="form-control input-lg"/>
+                        <input id="autocomplete" placeholder="Enter your address"
+                               onFocus="geolocate()" type="text" class="form-control input-lg"/>
 
                         <label for="country" class="control-label col-sm-2">country</label>
                         <div class="col-xs-10">
                             <input id="country" type="text" class="form-control col-sm-10"/>
                         </div>
 
-                        <label for="city" class="control-label col-sm-2">place</label>
+                        <label for="locality" class="control-label col-sm-2">place</label>
                         <div class="col-xs-10">
-                            <input id="city" type="text" class="form-control"/>
+                            <input id="locality" type="text" class="form-control"/>
                         </div>
 
-                        <label for="adress" class="control-label col-sm-2">adresse</label>
+                        <label for="route" class="control-label col-sm-2">adresse</label>
                         <div class="col-xs-10">
-                            <input id="adress" type="text" class="form-control"/>
+                            <input id="route" type="text" class="form-control"/>
                         </div>
 
-                        <label for="streetnumber" class="control-label col-sm-2">Numéro de voie</label>
+                        <label for="street_number" class="control-label col-sm-2">Numéro de voie</label>
                             <div class="col-xs-10">
-                                <input id="streetnumber" type="text" class="form-control"/>
+                                <input id="street_number" type="text" class="form-control"/>
                             </div>
-                        <label for="area" class="control-label col-sm-2">Region</label>
+                        <label for="administrative_area_level_1" class="control-label col-sm-2">Region</label>
                         <div class="col-xs-10">
-                            <input id="area" type="text" class="form-control"/>
+                            <input id="administrative_area_level_1" type="text" class="form-control"/>
                         </div>
                         <label for="latitude" class="control-label col-sm-2">latitude</label>
                         <div class="col-xs-10">
@@ -43,6 +44,10 @@
                         <label for="longitude" class="control-label col-sm-2">longitude</label>
                         <div class="col-xs-10">
                             <input id="longitude" type="text" class="form-control"/>
+                        </div>
+                        <label for="postal_code" class="control-label col-sm-2">postal code</label>
+                        <div class="col-xs-10">
+                            <input id="postal_code" type="text" class="form-control"/>
                         </div>
                     </form>
                 </div>

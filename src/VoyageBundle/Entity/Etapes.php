@@ -7,18 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Etapes
  *
- * @ORM\Table(name="etapes", indexes={@ORM\Index(name="FK_etapes_idVoyage", columns={"idVoyage"}), @ORM\Index(name="FK_etapes_idDestination", columns={"idDestination"})})
+ * @ORM\Table(name="etapes", indexes={@ORM\Index(name="FK_etapes_idVoyage", columns={"voyage_id"})} )
  * @ORM\Entity (repositoryClass="VoyageBundle\Repository\EtapesRepository")
  */
 class Etapes
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descriptionEtape", type="string", length=5000, nullable=true)
-     */
-    private $descriptionetape;
-
     /**
      * @var integer
      *
@@ -29,34 +22,57 @@ class Etapes
     private $idetape;
 
     /**
-     * @var \VoyageBundle\Entity\Destination
+     * @var \VoyageBundle\Entity\Countries
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Destination")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Countries")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idDestination", referencedColumnName="idDestination")
+     *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
-    private $iddestination;
+    private $country;
 
     /**
      * @var \VoyageBundle\Entity\Voyages
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Voyages")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
+     *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="idVoyage" )
      * })
      */
-    private $idvoyage;
+    private $trip;
+
+    /**
+     * @var \VoyageBundle\Entity\Cities
+     *
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Cities")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    private $cities;
+
+    /**
+     * @var \VoyageBundle\Entity\States
+     *
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\States")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="state_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    private $state;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Medias", mappedBy="idetape", cascade={"persist"})
      */
     private $medias;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descriptionEtape", type="string", length=5000, nullable=true)
+     */
+    private $descriptionetape;
 
     /**
      * Etapes constructor.
@@ -67,55 +83,22 @@ class Etapes
     }
 
     /**
-     * Get medias
-     *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return int
      */
-    public function getMedias()
+    public function getIdetape()
     {
-        return $this->medias;
+        return $this->idetape;
     }
 
     /**
-     * Add medias
-     *
-     * @param \VoyageBundle\Entity\Medias $medias
-     * @return Medias
+     * @param int $idetape
      */
-    public function addMedias(\VoyageBundle\Entity\Medias $medias)
+    public function setIdetape($idetape)
     {
-        $this->medias[] = $medias;
-
-        return $this;
+        $this->idetape = $idetape;
     }
 
     /**
-     * Remove medias
-     *
-     * @param \VoyageBundle\Entity\Medias $media
-     */
-    public function removeMedias(\VoyageBundle\Entity\Medias $media)
-    {
-        $this->medias->removeElement($media);
-    }
-
-    /**
-     * Set descriptionetape
-     *
-     * @param string $descriptionetape
-     *
-     * @return Etapes
-     */
-    public function setDescriptionetape($descriptionetape)
-    {
-        $this->descriptionetape = $descriptionetape;
-
-        return $this;
-    }
-
-    /**
-     * Get descriptionetape
-     *
      * @return string
      */
     public function getDescriptionetape()
@@ -124,74 +107,101 @@ class Etapes
     }
 
     /**
-     * Set idetape
-     *
-     * @param integer $idetape
-     *
-     * @return Etapes
+     * @param string $descriptionetape
      */
-    public function setIdetape($idetape)
+    public function setDescriptionetape($descriptionetape)
     {
-        $this->idetape = $idetape;
-
-        return $this;
+        $this->descriptionetape = $descriptionetape;
     }
 
     /**
-     * Get idetape
-     *
-     * @return integer
+     * @return Countries
      */
-    public function getIdetape()
+    public function getCountry()
     {
-        return $this->idetape;
+        return $this->country;
     }
 
     /**
-     * Set iddestination
-     *
-     * @param \VoyageBundle\Entity\Destination $iddestination
-     *
-     * @return Etapes
+     * @param Countries $country
      */
-    public function setIddestination(\VoyageBundle\Entity\Destination $iddestination)
+    public function setCountry($country)
     {
-        $this->iddestination = $iddestination;
-
-        return $this;
+        $this->country = $country;
     }
 
     /**
-     * Get iddestination
-     *
-     * @return \VoyageBundle\Entity\Destination
+     * @return Voyages
      */
-    public function getIddestination()
+    public function getTrip()
     {
-        return $this->iddestination;
+        return $this->trip;
     }
 
     /**
-     * Set idvoyage
-     *
-     * @param \VoyageBundle\Entity\Voyages $idvoyage
-     *
-     * @return Etapes
+     * @param Voyages $trip
      */
-    public function setIdvoyage(\VoyageBundle\Entity\Voyages $idvoyage)
+    public function setTrip($trip)
     {
-        $this->idvoyage = $idvoyage;
-
-        return $this;
+        $this->trip = $trip;
     }
 
     /**
-     * Get idvoyage
-     *
-     * @return \VoyageBundle\Entity\Voyages
+     * @return Cities
      */
-    public function getIdvoyage()
+    public function getCities()
     {
-        return $this->idvoyage;
+        return $this->cities;
     }
+
+    /**
+     * @param Cities $cities
+     */
+    public function setCities($cities)
+    {
+        $this->cities = $cities;
+    }
+
+    /**
+     * @return States
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param States $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMedias()
+    {
+        return $this->medias;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $medias
+     */
+    public function addMedias($medias)
+    {
+        $this->medias[] = $medias;
+    }
+
+    /**
+     * @param mixed $medias
+     */
+    public function removeMedias($medias)
+    {
+        $this->medias->removeElement($medias);
+    }
+
+
+
 }

@@ -1,108 +1,70 @@
+var placeSearch, autocomplete;
+var componentForm = {
+    street_number: 'short_name',
+    route: 'long_name',
+    locality: 'long_name',
+    administrative_area_level_1: 'short_name',
+    country: 'long_name',
+    postal_code: 'short_name',
+    latitude : 'long_name',
+    longitude : 'long_name'
+};
+
 function initAutocomplete() {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        {types: ['geocode']});
 
-    var input = /** @type {!HTMLInputElement} */(document.getElementById('autocomplete'));
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    autocomplete.addListener('place_changed', fillInAddress);
+}
 
-    var autocomplete = new google.maps.places.Autocomplete(input);
+// [START region_fillform]
+function fillInAddress() {
+    // Get the place details from the autocomplete object.
+    var place = autocomplete.getPlace();
+    var lat = place.geometry.location.lat();
+    var lon = place.geometry.location.lng();
 
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
+    for (var component in componentForm) {
+        document.getElementById(component).value = '';
+        document.getElementById(component).disabled = false;
+    }
 
-        var address = '';
-        if (place.address_components) {
-            address = [
-                (place.address_components[0] && place.address_components[0].short_name || ''),
-                (place.address_components[1] && place.address_components[1].short_name || ''),
-                (place.address_components[2] && place.address_components[2].short_name || '')
-            ].join(' ');
-
-            var addressParts = orderData(place.address_components);
-            fillAddressFields(addressParts);
-            //console.log(place);
-            //console.log(address);
-        } else {
-            clearFields();
+    // Get each component of the address from the place details
+    // and fill the corresponding field on the form.
+    for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types[0];
+        if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+        }else{
         }
-
-    });
-
-    function orderData(placeInfos) {
-        var orderedData = [];
-        orderedData['locality'] = "" ;
-        orderedData['country'] = "" ;
-        orderedData['country_short'] = "" ;
-        orderedData['administrative_area_level_1'] = "" ;
-        orderedData['administrative_area_level_2'] = "" ;
-        orderedData['street_number'] = "" ;
-        orderedData['route'] = "" ;
-        orderedData['postal_code'] = "" ;
-
-        for (var i = 0; i < placeInfos.length; i++) {
-            var component = placeInfos[i]
-            var typeComponent = component.types[0];
-console.log(component);
-            switch (typeComponent) {
-                case 'locality':
-                    orderedData['locality'] = component.long_name;
-                    break;
-                case 'country':
-                    orderedData['country'] = component.long_name;
-                    orderedData['country_short'] = component.short_name;
-                    break;
-                case 'administrative_area_level_1':
-                    orderedData['administrative_area_level_1'] = component.long_name;
-                    break;
-                case 'administrative_area_level_2':
-                    orderedData['administrative_area_level_2'] = component.long_name;
-                    break;
-                case 'street_number':
-                    orderedData['street_number'] = component.long_name;
-                    break;
-                case 'route':
-                    orderedData['route'] = component.long_name;
-                    break;
-                case 'postal_code':
-                    orderedData['postal_code'] = component.long_name;
-                    break;
-                default:
-                    break;
-            }
-        }
-        return orderedData;
     }
+    //custom filling latitud and longitude
+    document.getElementById('latitude').value = lat;
+    document.getElementById('longitude').value = lon;
+}
+// [END region_fillform]
 
-    // @param array
-    // return void
-    function fillAddressFields(placeInfos) {
-        var country = placeInfos['country'];
-        var city = placeInfos['locality'];
-        var streetNb = placeInfos['street_number'];
-        var adress = placeInfos['route'];
-        var area = placeInfos['administrative_area_level_1'];
-
-        //Fill fields with different parts of the address
-        var streetNbInput = (document.getElementById('streetnumber'));
-        streetNbInput.value = streetNb;
-
-        var adressInput = (document.getElementById('adress'));
-        adressInput.value = adress;
-
-        var cityInput = (document.getElementById('city'));
-        cityInput.value = city;
-
-        var countryInput = (document.getElementById('country'));
-        countryInput.value = country;
-
-        var areaInput = (document.getElementById('area'));
-        areaInput.value = area;
-
+// [START region_geolocation]
+// Bias the autocomplete object to the user's geographical location,
+// as supplied by the browser's 'navigator.geolocation' object.
+function geolocate() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+        });
     }
-
-    function clearFields() {
-        //clear fields
-        document.getElementById('streetnumber').value = "";
-        document.getElementById('adress').value = "";
-        document.getElementById('city').value = "";
-        document.getElementById('country').value = "";
-    }
-
 }

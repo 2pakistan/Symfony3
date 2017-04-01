@@ -16,7 +16,6 @@ jQuery(document).ready(function() {
 
     inputSearch.keypress(function () {
         //generate absolute(true) sf route
-        if( inputSearch.val().length >= 2) {
             $.ajax({
                 type: "post",
                 url: route,
@@ -24,7 +23,6 @@ jQuery(document).ready(function() {
                 delay: 250,
                 success: function (data) {
                     var countries = data['countries'];
-                    var places = data['places'];
 
                     console.log(countries);
                     //AUTOCOMPLETE COUNTRIES
@@ -38,8 +36,8 @@ jQuery(document).ready(function() {
                                     $('#autocompleteTest').empty();
                                 }
                             },
-                            minLength: 1,
-                            source: countries,
+                            minLength: 2,
+                            source: data
                         }).data('ui-autocomplete')._renderItem = function (ul, item) {
                             return $('<div/>')
                                 .data('ui-autocomplete-item', item)
@@ -49,7 +47,6 @@ jQuery(document).ready(function() {
                     });
                 },
             });
-        }
     });
 
 

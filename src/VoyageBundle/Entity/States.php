@@ -46,9 +46,8 @@ class States
 
     /**
      * States constructor.
-     * @param \Doctrine\Common\Collections\Collection $cities
      */
-    public function __construct(\Doctrine\Common\Collections\Collection $cities)
+    public function __construct()
     {
         $this->cities = new \Doctrine\Common\Collections\ArrayCollection();
     }

@@ -96,6 +96,7 @@ vich_uploader:
             user_image:
                 uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/profilePicture
                 upload_destination: '%kernel.root_dir%/../web/img/users/profilePicture'
+                namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
                 delete_on_update:   true
@@ -104,6 +105,7 @@ vich_uploader:
             user_cover:
                 uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/coverPicture
                 upload_destination: '%kernel.root_dir%/../web/img/users/coverPicture'
+                namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
                 delete_on_update:   true
@@ -112,6 +114,7 @@ vich_uploader:
             trip_image:
                 uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/voyages
                 upload_destination: '%kernel.root_dir%/../web/img/users/voyages'
+                namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
                 delete_on_update:   true
@@ -120,6 +123,7 @@ vich_uploader:
             step_image:
                 uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/etapes
                 upload_destination: '%kernel.root_dir%/../web/img/users/etapes'
+                namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
                 delete_on_update:   true

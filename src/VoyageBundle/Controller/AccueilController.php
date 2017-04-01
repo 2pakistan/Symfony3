@@ -58,6 +58,7 @@ class AccueilController extends Controller
         if($request->isXmlHttpRequest()) {
 
             $string = $request->request->get('string');
+            $places = array();
 
             $countries = $em->getRepository('VoyageBundle:Countries')
                 ->getCountriesByString($string);
@@ -66,35 +67,29 @@ class AccueilController extends Controller
             $states = $em->getRepository('VoyageBundle:States')
                 ->getStatesByString($string);
 
+
             if (!empty($countries)) {
-                $countriesFound = array();
-                foreach ($countries as $country) {
-                    $countriesFound[] = $country->getName();
+                foreach($countries as $country => $vals){
+                    $places[]['name'] = $countries[$country]->getName();
+                    $places[$country]['type'] = 'country';
                 }
-            } else {
-                $countriesFound = null;
-            }
-            if (!empty($cities)) {
-                $placesFound = array();
-                foreach ($cities as $place) {
-                    $placesFound[] = $place->getName();
-                }
-            } else {
-                $placesFound = null;
-            }
-            if (!empty($states)) {
-                $statesFound = array();
-                foreach ($states as $state) {
-                    $statesFound[] = $state->getName();
-                }
-            } else {
-                $statesFound = null;
             }
 
+            if (!empty($cities)) {
+                foreach($cities as $city => $vals){
+                    $places[]['name'] = $cities[$city]->getName();
+                    $places[$city]['type'] = 'city';
+                }
+            }
+
+            if (!empty($states)) {
+                foreach($states as $state => $vals){
+                    $places[]['name'] = $states[$state]->getName();
+                    $places[$state]['type'] = 'state';
+                }
+            }
             $response = new JsonResponse();
-            return $response->setData(array('countries' => $countriesFound ,
-                                            'places' => $placesFound,
-                                            'states' => $statesFound));
+            return $response->setData($places);
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
             //TODO : SEARCH CLASSIC

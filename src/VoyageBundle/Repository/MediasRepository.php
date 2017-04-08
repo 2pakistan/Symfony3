@@ -13,4 +13,16 @@ use Doctrine\ORM\EntityRepository;
 class MediasRepository extends EntityRepository
 {
 
+    function findByStep($step){
+        $qb = $this->createQueryBuilder('m')
+            ->select('m.pathMedia')
+            ->join('m.idetape' ,'e')
+            ->where('e.trip = :trip')
+            ->setParameter('trip', $step->getTrip())
+            ->andWhere('e.idetape = :step')
+            ->setParameter('step', $step);
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

@@ -75,22 +75,20 @@ class VoyageController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+
         $step = new Etapes();
         $form = $this->createForm(CreateStepType::class, $step);
         $form->handleRequest($request);
 
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
-        $nbSteps = $em->getRepository('VoyageBundle:Etapes')
-            ->getNbStepsTrip($idVoyage);
 
         $step->setTrip($trip);
-        $step->setIdetape($nbSteps + 1);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $medias = $step->getMedias();
-            foreach ($medias as $media){
+            foreach ($medias as $media) {
                 $media->setIdetape($step);
                 $media->setIdvoyage($trip);
             }
@@ -105,49 +103,49 @@ class VoyageController extends Controller
             $state = $em->getRepository('VoyageBundle:States')
                 ->findOneBy(array('name' => $stateName));
 
-            //if city already exists in DB and user choosed a city
-            if ($city instanceof Cities ) {
+            //if city already exists in DB and user choosed a city //TODO : OPTIMISER TOUT CE BLOC DE MERDE , CREER PROTECTED FONCTION POUR LA CREATION DE VILLES / ETATS
+            if ($city instanceof Cities) {
                 $step->setCities($city);
 
                 //if state already exists
-                if($state instanceof States){
+                if ($state instanceof States) {
                     $step->setState($state);
-                }else{
+                } else {
                     $newState = new States();
                     $newState->setName($stateName);
                     $newState->setCountry($country);
                     $step->setState($newState);
                 }
-            }else{
+            } else {
                 //user choosed a city but it's not in DB
-                if($cityName !== 'undefined'){
+                if ($cityName !== 'undefined') {
                     $newCity = new Cities();
                     $newCity->setName($cityName);
                     $step->setCities($newCity);
-                    if($state instanceof States){
+                    if ($state instanceof States) {
                         $step->setState($state);
                         $newCity->setState($state);
-                    }else{
+                    } else {
                         $newState = new States();
                         $newState->setName($stateName);
                         $newState->setCountry($country);
                         $step->setState($newState);
                         $newCity->setState($newState);
                     }
-                }else{
+                } else {
                     $step->setCities(null);
 
                     //if state alerady exists
-                    if($state instanceof States){
+                    if ($state instanceof States) {
                         $step->setState($state);
-                    }else{
+                    } else {
                         //if user choosed a state
-                        if($stateName !== 'undefined'){
+                        if ($stateName !== 'undefined') {
                             $newState = new States();
                             $newState->setName($stateName);
                             $newState->setCountry($country);
                             $step->setState($newState);
-                        }else{
+                        } else {
                             $step->setState(null);
                         }
                     }
@@ -155,6 +153,13 @@ class VoyageController extends Controller
             }
             $step->setCountry($country);
 
+            $user = $this->getUser();
+            $countriesVisited = $user->getCountriesVisited()->toArray();
+
+            //if the user have never been in this country yet
+            if (!in_array($country, $countriesVisited)){
+                $user->addCountryVisited($country);
+            }
             $em->persist($step);
             $em->flush();
         }

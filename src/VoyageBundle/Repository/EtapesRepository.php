@@ -21,4 +21,16 @@ class EtapesRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    function getNbStepsByCountry($country){
+        $qb = $this->createQueryBuilder('e')
+            ->select('count(e)')
+            ->join('e.country' ,'c')
+            ->where('c.id =  e.country')
+            ->andWhere('e.country = :country')
+            ->setParameter('country', $country);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+
 }

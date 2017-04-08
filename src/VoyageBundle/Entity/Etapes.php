@@ -17,7 +17,7 @@ class Etapes
      *
      * @ORM\Column(name="idEtape", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idetape;
 
@@ -34,9 +34,7 @@ class Etapes
     /**
      * @var \VoyageBundle\Entity\Voyages
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Voyages")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Voyages")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="idVoyage" )
      * })
@@ -223,7 +221,7 @@ class Etapes
     }
 
     /**
-     * @return float
+     * @return floats
      */
     public function getLatitude()
     {

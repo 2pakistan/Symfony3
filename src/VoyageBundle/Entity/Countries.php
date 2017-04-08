@@ -156,4 +156,38 @@ class Countries
         $this->states->removeElement($state);
     }
 
+    /**
+     * Add visitor
+     *
+     * @param \VoyageBundle\Entity\Utilisateurs $visitor
+     *
+     * @return Countries
+     */
+    public function addVisitor(\VoyageBundle\Entity\Utilisateurs $visitor)
+    {
+        $this->visitors[] = $visitor;
+
+        return $this;
+    }
+
+    /**
+     * Remove visitor
+     *
+     * @param \VoyageBundle\Entity\Utilisateurs $visitor
+     */
+    public function removeVoyages(\VoyageBundle\Entity\Utilisateurs $visitor)
+    {
+        $this->visitors->removeElement($visitor);
+    }
+
+    /**
+     * Get visitors
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisitors()
+    {
+        return $this->visitors;
+    }
+
 }

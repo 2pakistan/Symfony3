@@ -16,7 +16,6 @@ jQuery(document).ready(function () {
                 url: routeFollow,
                 data: {'idFollowed': usr},//TODO :this value is based on a dom element. see method with twig
                 success: function (data) {
-                    //essayer de gerer le button ?
                     var nbFollowersPlus = nbFollowers + 1;
                     $('#nbFolllowers').text(nbFollowersPlus);
                 }
@@ -26,9 +25,8 @@ jQuery(document).ready(function () {
             $.ajax({
                 type: "post",
                 url: routeUnfollow,
-                data: {'idFollowed': usr},// TODO : https://openclassrooms.com/courses/passez-des-variables-a-javascript-depuis-symfony2
+                data: {'idFollowed': usr},
                 success: function (data) {
-                    //essayer de gerer le button ?
                     var nbFollowersMinus = nbFollowers - 1;
                     $('#nbFolllowers').text(nbFollowersMinus);
                 }

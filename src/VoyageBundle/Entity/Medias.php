@@ -32,7 +32,7 @@ class Medias
      * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Etapes", inversedBy="medias" ,cascade={"persist"})
      * @ORM\JoinColumns=({
      *   @ORM\JoinColumn(name="idEtape", referencedColumnName="idEtape")
-     *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="idVoyage")
+     *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="voyage_id")
      * })
      */
     private $idetape;

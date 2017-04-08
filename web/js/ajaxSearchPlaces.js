@@ -26,17 +26,14 @@ jQuery(document).ready(function() {
         },
 
         preparePostData: function(data) {
-            data.string = $('#form_nomDestination').val();
+            data.string = inputSearch.val();
             return data;
         }
 
     };
-
         inputSearch.easyAutocomplete(options);
 
-
     $('.easy-autocomplete-container ul li').click(function(event){
-        console.log('toto');
         $('#form-search')[0].submit();
     });
 

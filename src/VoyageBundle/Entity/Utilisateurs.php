@@ -531,6 +531,39 @@ class Utilisateurs extends BaseUser
         return $this->voyages;
     }
 
+    /**
+     * Add countryVisited
+     *
+     * @param \VoyageBundle\Entity\Countries $countryVisited
+     *
+     * @return Countries
+     */
+    public function addCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
+    {
+        $this->countriesVisited[] = $countryVisited;
+
+        return $this;
+    }
+
+    /**
+     * Remove countryVisited
+     *
+     * @param \VoyageBundle\Entity\Countries $countryVisited
+     */
+    public function removeCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
+    {
+        $this->countriesVisited->removeElement($countryVisited);
+    }
+
+    /**
+     * Get countriesVisited
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCountriesVisited()
+    {
+        return $this->countriesVisited;
+    }
 
     /**
      * Get toString

@@ -24,11 +24,13 @@
                         </h4>
                         <p>@{{ user.username }}</p>
                     </td>
-                    <td>
-                        <button class="btn btn-custom unfollowBtn" type="button">
-                            <span class="glyphicon glyphicon-remove"></span>&nbsp;Unfollow
-                        </button>
-                    </td>
+                    {% if app.user.id is defined and membre.id == app.user.id %}
+                        <td>
+                            <button class="btn btn-custom unfollowBtn" type="button">
+                                <span class="glyphicon glyphicon-remove"></span>&nbsp;Unfollow
+                            </button>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

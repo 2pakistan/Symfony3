@@ -40,6 +40,24 @@ body {
 }
 /*end sticky footer */
 
+
+.btn-alert{
+    background-color: #e50000;
+    color:white;
+}
+.btn-alert:hover{
+    color: #fff !important;
+    background-color:#b20000;
+    border-color: lightgrey;
+    transition:0.5s;
+}
+.btn-alert a:hover,
+.btn-alert a:active,
+.btn-alert a:hover,
+.btn-alert a:focus{
+    text-decoration: none !important;
+    color:white;
+}
 /*HOMEPAGE LAST USERS DETAILS */
 .user-details> p.info-user{
     color:#506066;

@@ -4,10 +4,10 @@ var componentForm = {
     route: 'long_name',
     locality: 'long_name',
     administrative_area_level_1: 'short_name',
-    country: 'long_name',
+    country: 'short_name',
     postal_code: 'short_name',
-    latitude : 'long_name',
-    longitude : 'long_name'
+    latitude: 'long_name',
+    longitude: 'long_name'
 };
 
 function initAutocomplete() {
@@ -29,24 +29,29 @@ function fillInAddress() {
     var lat = place.geometry.location.lat();
     var lon = place.geometry.location.lng();
 
-    for (var component in componentForm) {
-        document.getElementById(component).value = '';
-        document.getElementById(component).disabled = false;
-    }
+    /*for (var component in componentForm) {
+     document.getElementById(component).value = '';
+     document.getElementById(component).disabled = false;
+     }*/
 
     // Get each component of the address from the place details
-    // and fill the corresponding field on the form.
+    // and fill an array
+    var placeParts = [];
     for (var i = 0; i < place.address_components.length; i++) {
         var addressType = place.address_components[i].types[0];
         if (componentForm[addressType]) {
             var val = place.address_components[i][componentForm[addressType]];
-            document.getElementById(addressType).value = val;
-        }else{
+            placeParts[addressType] = val;
+        } else {
         }
     }
-    //custom filling latitud and longitude
-    document.getElementById('latitude').value = lat;
-    document.getElementById('longitude').value = lon;
+
+    //CUSTOM HAND FILLING FIELDS
+    document.getElementById('create_step_latitude').value = lat;
+    document.getElementById('create_step_longitude').value = lon;
+    document.getElementById('create_step_country').value = placeParts['country'];
+    document.getElementById('create_step_cities').value = placeParts['locality'];
+    document.getElementById('create_step_state').value = placeParts['administrative_area_level_1'];
 }
 // [END region_fillform]
 
@@ -55,7 +60,7 @@ function fillInAddress() {
 // as supplied by the browser's 'navigator.geolocation' object.
 function geolocate() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             var geolocation = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude

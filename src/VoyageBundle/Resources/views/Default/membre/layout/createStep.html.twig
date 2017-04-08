@@ -9,9 +9,26 @@
         </section>
         <section class="see-trip">
             {{ form_start(form) }}
-            {{ form_row(form.medias) }}
-            <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
-            </ul>
+
+            <input id="autocomplete" placeholder="Enter the step's location"
+                   onFocus="geolocate()" type="text" class="form-control input-lg"/>
+            <hr>
+            {{ form_errors(form) }}
+            {{ form_row(form.descriptionetape) }}
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    {{ form_label(form.medias) }}
+                    <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <button class="col-sm-offset-3 col-sm-6 btn btn-custom btn-lg" type="submit">
+                    Valider
+                </button>
+            </div>
             {{ form_end(form) }}
         </section>
     </div>
@@ -19,7 +36,12 @@
 {% endblock %}
 
 {% block javascripts %}
+
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/addFileInput.js') }}"></script>
+    <script src="{{ asset('js/autocompleteAdress.js') }}"></script>
+    <script src="{{ asset('js/addFileInput.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8MUOfjQsy5bd9U4L8vYqpGkNjM9qOfYw&signed_in=true&libraries=places&language=en&callback=initAutocomplete"
+            async defer></script>
 {% endblock %}
+
 

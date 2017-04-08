@@ -5,10 +5,14 @@ namespace VoyageBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use VoyageBundle\Entity\Etapes;
 use VoyageBundle\Form\CreateStepType;
 use VoyageBundle\Form\CreateTripType;
 use VoyageBundle\Entity\Voyages;
+use VoyageBundle\Entity\Etapes;
+use VoyageBundle\Entity\Medias;
+use VoyageBundle\Entity\Cities;
+use VoyageBundle\Entity\States;
+use VoyageBundle\Form\MediasType;
 
 
 class VoyageController extends Controller
@@ -32,16 +36,16 @@ class VoyageController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('valid_voyage','Votre voyage a bien été enregistré !');
-            return $this->redirect($this->generateUrl('memberVoyages' , array('id' => $user->getId())));
+            $this->addFlash('valid_voyage', 'Votre voyage a bien été enregistré !');
+            return $this->redirect($this->generateUrl('memberVoyages', array('id' => $user->getId())));
         }
 
-        return $this->render('VoyageBundle:Default/membre/layout:creerVoyage.html.twig',array('form' => $form->createView()));
+        return $this->render('VoyageBundle:Default/membre/layout:creerVoyage.html.twig', array('form' => $form->createView()));
     }
 
     /**
- * @Route("/voyage/{idVoyage}", name="voyagePage", requirements={"id": "\d+"})"
- */
+     * @Route("/voyage/{idVoyage}", name="voyagePage", requirements={"id": "\d+"})"
+     */
     public function consultVoyageAction($idVoyage)
     {
         $em = $this->getDoctrine()->getManager();
@@ -49,16 +53,16 @@ class VoyageController extends Controller
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
 
-        if($trip === null){
+        if ($trip === null) {
             return $this->redirectToRoute('homePage');//TODO-404
-        }else{
+        } else {
             $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
                 ->findTravellersByVoyage($idVoyage);
             $steps = $em->getRepository('VoyageBundle:Etapes')
                 ->findBy(array('trip' => $idVoyage));
         }
 
-        return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig',array(
+        return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig', array(
             'trip' => $trip,
             'travellers' => $travellers,
             'steps' => $steps));
@@ -67,20 +71,99 @@ class VoyageController extends Controller
     /**
      * @Route("/voyage/{idVoyage}/edit", name="createStep")
      */
-    public function createStepAction(Request $request){
+    public function createStepAction($idVoyage, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
         $step = new Etapes();
         $form = $this->createForm(CreateStepType::class, $step);
         $form->handleRequest($request);
 
+        $trip = $em->getRepository('VoyageBundle:Voyages')
+            ->find($idVoyage);
+
+        $step->setTrip($trip);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            //On recupere les donnees du form
-            /*
-            $em = $this->getDoctrine()->getManager();
+
+            $medias = $step->getMedias();
+            foreach ($medias as $media) {
+                $media->setIdetape($step);
+                $media->setIdvoyage($trip);
+            }
+            $codeCountry = $step->getCountry();
+            $cityName = $step->getCities();
+            $stateName = $step->getState();
+
+            $country = $em->getRepository('VoyageBundle:Countries')
+                ->findOneBy(array('shortname' => $codeCountry));
+            $city = $em->getRepository('VoyageBundle:Cities')
+                ->findOneBy(array('name' => $cityName));
+            $state = $em->getRepository('VoyageBundle:States')
+                ->findOneBy(array('name' => $stateName));
+
+            //if city already exists in DB and user choosed a city //TODO : OPTIMISER TOUT CE BLOC DE MERDE , CREER PROTECTED FONCTION POUR LA CREATION DE VILLES / ETATS
+            if ($city instanceof Cities) {
+                $step->setCities($city);
+
+                //if state already exists
+                if ($state instanceof States) {
+                    $step->setState($state);
+                } else {
+                    $newState = new States();
+                    $newState->setName($stateName);
+                    $newState->setCountry($country);
+                    $step->setState($newState);
+                }
+            } else {
+                //user choosed a city but it's not in DB
+                if ($cityName !== 'undefined') {
+                    $newCity = new Cities();
+                    $newCity->setName($cityName);
+                    $step->setCities($newCity);
+                    if ($state instanceof States) {
+                        $step->setState($state);
+                        $newCity->setState($state);
+                    } else {
+                        $newState = new States();
+                        $newState->setName($stateName);
+                        $newState->setCountry($country);
+                        $step->setState($newState);
+                        $newCity->setState($newState);
+                    }
+                } else {
+                    $step->setCities(null);
+
+                    //if state alerady exists
+                    if ($state instanceof States) {
+                        $step->setState($state);
+                    } else {
+                        //if user choosed a state
+                        if ($stateName !== 'undefined') {
+                            $newState = new States();
+                            $newState->setName($stateName);
+                            $newState->setCountry($country);
+                            $step->setState($newState);
+                        } else {
+                            $step->setState(null);
+                        }
+                    }
+                }
+            }
+            $step->setCountry($country);
+
+            $user = $this->getUser();
+            $countriesVisited = $user->getCountriesVisited()->toArray();
+
+            //if the user have never been in this country yet
+            if (!in_array($country, $countriesVisited)){
+                $user->addCountryVisited($country);
+            }
             $em->persist($step);
             $em->flush();
-            */
         }
-    return $this->render('VoyageBundle:Default/membre/layout:createStep.html.twig',array('form' => $form->createView()));
+        return $this->render('VoyageBundle:Default/membre/layout:createStep.html.twig', array('form' => $form->createView()));
     }
 
     /**
@@ -91,6 +174,6 @@ class VoyageController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-        return $this->render('VoyageBundle:Default/membre/layout:vueTest.html.twig',array());
+        return $this->render('VoyageBundle:Default/membre/layout:vueTest.html.twig', array());
     }
 }

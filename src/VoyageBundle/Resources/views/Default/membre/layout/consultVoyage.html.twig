@@ -5,12 +5,16 @@
 
     <div class="container">
         <section class="see-trip-header header-homepage">
-            {% if trip in app.user.voyages %}
-                <div class="text-right ">
-                    <button class="btn btn-custom">
-                        <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}" class="text-white"><span class="glyphicon glyphicon-edit"></span>&nbsp;Ajouter une étape</a>
-                    </button>
-                </div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED")  %}
+
+                {% if trip in app.user.voyages %}
+                    <div class="text-right ">
+                        <button class="btn btn-custom">
+                            <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}" class="text-white"><span
+                                        class="glyphicon glyphicon-edit"></span>&nbsp;Ajouter une étape</a>
+                        </button>
+                    </div>
+                {% endif %}
             {% endif %}
             <h1 class="text-center">{{ trip.titrevoyage }}</h1>
         </section>
@@ -25,7 +29,6 @@
                 <h3 class="text-center"><em>" {{ trip.descriptionvoyage }} "</em></h3>
             </div>
         </section>
-
 
 
     </div>

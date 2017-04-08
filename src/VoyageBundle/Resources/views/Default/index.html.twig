@@ -4,6 +4,11 @@
     {% include ':modulesUsed:navbarTest.html.twig' %}
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/easy-autocomplete.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/easy-autocomplete.themes.min.css') }}">
+{% endblock %}
+
 {% block body %}
 
     <div class="container-fluid">
@@ -154,7 +159,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/ajaxSearch.js') }}"></script>
+    <script src="{{ asset('js/ajaxSearchPlaces.js') }}"></script>
+    <script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
 {% endblock %}
 
 

@@ -54,11 +54,46 @@ class MembreController extends Controller
     public function cartePaysAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $this->get('app.js_vars')->userId = $id;
-
-        //on recupere les données du membre dont l'id est $id
         $membre = $em->getRepository('VoyageBundle:Utilisateurs')
             ->find($id);
+        $this->get('app.js_vars')->userId = $id;
+
+        $dataCountries = array(['countries', 'nombre d\'etapes']);
+        $countries = $membre->getCountriesVisited();
+        foreach ($countries as $country => $val) {
+            $id = $val->getId();
+            $countSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->getNbStepsByCountry($id);
+
+            $dataCountries[$country+1][0] = $val->getName() ;
+            $dataCountries[$country+1][1] = intval($countSteps[0]) ;
+        }
+
+        $this->get('app.js_vars')->dataCountries = $dataCountries;
+
+        //map with all steps markers
+        $trips = $membre->getVoyages();
+        $stepMarkers = array();
+        $stepData = array();
+        $stepMedias = array();
+
+        foreach ($trips as $trip) {
+            $tripSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->findBy(array('trip' => $trip));
+
+            foreach ($tripSteps as $step) {
+
+                $paths = $em->getRepository('VoyageBundle:Medias')
+                    ->findByStep($step);
+                $stepMedias[] = $paths;
+                $stepData[] = array($step->getDescriptionEtape());
+                $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
+            }
+        }
+
+        $this->get('app.js_vars')->stepMarkers = $stepMarkers;
+        $this->get('app.js_vars')->stepData = $stepData;
+        $this->get('app.js_vars')->stepMedias = $stepMedias;
 
         return $this->render('VoyageBundle:Default:membre/layout/membreCartePays.html.twig', array('membre' => $membre));
     }

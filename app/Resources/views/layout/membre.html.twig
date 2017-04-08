@@ -58,13 +58,13 @@
                     </li>
                     <li {{ route ==  'memberMap' ? 'class="active"' }}><a
                                 href="{{ path('memberMap', { 'id': membre.id } ) }}"><span class="profilNavTitle">PAYS VISITÉS</span><span
-                                    class="profilNavNumbers text-center">97</span></a></li>
+                                    class="profilNavNumbers text-center">{{ membre.countriesvisited|length }}</span></a></li>
                     <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
                                 href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
                                     class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
                     <li {{ route ==  'memberFollowed' ? 'class="active"' }}><a
                                 href="{{ path('memberFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
-                                    class="profilNavNumbers text-center">{{ nbFollowed }}</span></a></li>
+                                    class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span></a></li>
                     <li {{ route ==  'memberFollowers' ? 'class="active"' }}><a
                                 href="{{ path('memberFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
                                     class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span></a>
@@ -74,6 +74,7 @@
             {% block body %}
             {% endblock %}
         </div>
+
 
         {# checks if user connected is on his own page#}
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id !=  membre.id %}
@@ -98,9 +99,12 @@
         {% endif %}
     </div>
 </div>
+
+{% block subbody%}
+{% endblock %}
 <div id="js-vars"
-     data-vars="{{ js_vars|json_encode|e('html_attr') }}"
-/>
+     data-vars="{{ js_vars|json_encode|e('html_attr') }}">
+</div>
 {% include ':modulesUsed:footer.html.twig' %}
 
 <script src="{{ asset('js/jquery-1.10.0.min.js') }}"></script>

@@ -55,49 +55,45 @@ class AccueilController extends Controller
     public function searchDestinationAction(Request $request){
         $em = $this->getDoctrine()->getManager();
 
-        if($request->isXmlHttpRequest()) { // pour vérifier la présence d'une requete Ajax
-            $string = $request->request->get('string');
+        if($request->isXmlHttpRequest()) {
 
-            $countries = $em->getRepository('VoyageBundle:Destination')
+            $string = $request->request->get('string');
+            $places = array();
+
+            $countries = $em->getRepository('VoyageBundle:Countries')
                 ->getCountriesByString($string);
-            $places = $em->getRepository('VoyageBundle:Destination')
-                ->getPlacesByString($string);
+            $cities = $em->getRepository('VoyageBundle:Cities')
+                ->getCitiesByString($string);
+            $states = $em->getRepository('VoyageBundle:States')
+                ->getStatesByString($string);
+
 
             if (!empty($countries)) {
-                $countriesFound = array();
-                foreach ($countries as $country) {
-                    $countriesFound[] = $country->getPays();
+                foreach($countries as $country => $vals){
+                    $places[]['name'] = $countries[$country]->getName();
+                    $places[$country]['type'] = 'country';
                 }
-            } else {
-                $countriesFound = null;
-            }
-            if (!empty($places)) {
-                $placesFound = array();
-                foreach ($places as $place) {
-                    $placesFound[] = $place->getNomDestination();
-                }
-            } else {
-                $placesFound = null;
             }
 
+            if (!empty($cities)) {
+                foreach($cities as $city => $vals){
+                    $places[]['name'] = $cities[$city]->getName();
+                    $places[$city]['type'] = 'city';
+                }
+            }
+
+            if (!empty($states)) {
+                foreach($states as $state => $vals){
+                    $places[]['name'] = $states[$state]->getName();
+                    $places[$state]['type'] = 'state';
+                }
+            }
             $response = new JsonResponse();
-            return $response->setData(array('countries' => $countriesFound ,
-                                            'places' => $placesFound));
+            return $response->setData($places);
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
-            if($placeName !== ''){
-                $destination = $em->getRepository('VoyageBundle:Destination')
-                    ->findOneBy(array('nomdestination' => $placeName));
-                if($destination == null){
-                    $destination = $em->getRepository('VoyageBundle:Destination')
-                        ->findOneBy(array('pays' => $placeName));
-                }
-                $idPlace = $destination->getIddestination();
-                $voyages = $em->getRepository('VoyageBundle:Etapes')
-                    ->findBy(array('iddestination' => $idPlace));
-            }
-            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array('place' => $placeName ,
-                'voyages' => $voyages));
+            //TODO : SEARCH CLASSIC
+            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array('place' => $placeName));
         }
     }
 

@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Form\Type\FileType;
 
 class CreateTripType extends AbstractType
 {
@@ -28,7 +29,10 @@ class CreateTripType extends AbstractType
             ))
             ->add('descriptionvoyage',TextareaType::class, array('label'=>'Description du voyage',
                                                                 'label_attr' => array('class' => 'control-label col-sm-2')))
-            ->add('imagefile',VichImageType::class, array('label'=>' ','required' => false ));
+            ->add('imagefile',VichImageType::class, array(
+                'label'=>' ',
+                'required' => false,
+                ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

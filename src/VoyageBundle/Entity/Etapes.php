@@ -17,14 +17,14 @@ class Etapes
      *
      * @ORM\Column(name="idEtape", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idetape;
 
     /**
      * @var \VoyageBundle\Entity\Countries
      *
-     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Countries")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Countries" ,cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
@@ -34,7 +34,7 @@ class Etapes
     /**
      * @var \VoyageBundle\Entity\Voyages
      *
-     * @ORM\OneToOne(targetEntity="VoyageBundle\Entity\Voyages")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Voyages")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="idVoyage" )
      * })
@@ -44,7 +44,7 @@ class Etapes
     /**
      * @var \VoyageBundle\Entity\Cities
      *
-     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Cities")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Cities" ,cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
      * })
@@ -54,7 +54,7 @@ class Etapes
     /**
      * @var \VoyageBundle\Entity\States
      *
-     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\States")
+     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\States" ,cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="state_id", referencedColumnName="id", nullable=true)
      * })
@@ -73,6 +73,20 @@ class Etapes
      * @ORM\Column(name="descriptionEtape", type="string", length=5000, nullable=true)
      */
     private $descriptionetape;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="latitude", type="float", length=5000, nullable=false)
+     */
+    private $latitude;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="longitude", type="float", length=5000, nullable=false)
+     */
+    private $longitude;
 
     /**
      * Etapes constructor.
@@ -187,21 +201,55 @@ class Etapes
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $medias
-     */
-    public function addMedias($medias)
+     *
+     * @param \VoyageBundle\Entity\Medias $medias
+     *
+     * @return Etapes
+     **/
+    public function addMedia($medias)
     {
-        $this->medias[] = $medias;
+        $this->medias[] = $medias ;
+        return $this;
     }
 
     /**
      * @param mixed $medias
      */
-    public function removeMedias($medias)
+    public function removeMedia($medias)
     {
         $this->medias->removeElement($medias);
     }
 
+    /**
+     * @return floats
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
 
+    /**
+     * @param float $latitude
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param float $longitude
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
 
 }

@@ -10,7 +10,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * Medias
  *
- * @ORM\Table(name="medias", indexes={@ORM\Index(name="FK_medias_idEtape", columns={"idEtape"}), @ORM\Index(name="FK_medias_idVoyage", columns={"idVoyage"}), @ORM\Index(name="FK_medias_idDestination", columns={"idDestination"})})
+ * @ORM\Table(name="medias", indexes={@ORM\Index(name="FK_medias_idEtape", columns={"idEtape"}), @ORM\Index(name="FK_medias_idVoyage", columns={"idVoyage"})})
  * @ORM\Entity (repositoryClass="VoyageBundle\Repository\MediasRepository")
  * @Vich\Uploadable
  */
@@ -27,21 +27,12 @@ class Medias
     private $idmedia;
 
     /**
-     * @var \VoyageBundle\Entity\Destination
-     *
-     * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Destination")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idDestination", referencedColumnName="idDestination")
-     * })
-     */
-    private $iddestination;
-
-    /**
      * @var \VoyageBundle\Entity\Etapes
      *
      * @ORM\ManyToOne(targetEntity="VoyageBundle\Entity\Etapes", inversedBy="medias" ,cascade={"persist"})
-     * @ORM\JoinColumns({
+     * @ORM\JoinColumns=({
      *   @ORM\JoinColumn(name="idEtape", referencedColumnName="idEtape")
+     *   @ORM\JoinColumn(name="voyage_id", referencedColumnName="voyage_id")
      * })
      */
     private $idetape;
@@ -58,7 +49,7 @@ class Medias
 
     /**
      *
-     * @Vich\UploadableField(mapping="step_image", fileNameProperty="photoetape")
+     * @Vich\UploadableField(mapping="step_image", fileNameProperty="pathMedia")
      * @Assert\Image(
      *     maxSize = "2048k",
      *     mimeTypesMessage = "Veuillez uploader un fichier valide (extensions acceptées : .png .jpg .jpeg .bmp)"
@@ -98,11 +89,21 @@ class Medias
     }
 
     /**
-     * @param File $imagefile
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imagefile
+     *
+     * @return Medias
      */
-    public function setImagefile(File $imagefile)
+    public function setImagefile(File $imagefile = null)
     {
         $this->imagefile = $imagefile;
+
+        if ($imagefile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
     }
 
     /**
@@ -148,41 +149,17 @@ class Medias
     }
 
     /**
-     * Set iddestination
-     *
-     * @param \VoyageBundle\Entity\Destination $iddestination
-     *
-     * @return Medias
-     */
-    public function setIddestination(\VoyageBundle\Entity\Destination $iddestination = null)
-    {
-        $this->iddestination = $iddestination;
-
-        return $this;
-    }
-
-    /**
-     * Get iddestination
-     *
-     * @return \VoyageBundle\Entity\Destination
-     */
-    public function getIddestination()
-    {
-        return $this->iddestination;
-    }
-
-    /**
      * Set idetape
      *
      * @param \VoyageBundle\Entity\Etapes $idetape
      *
      * @return Medias
      */
-    public function setIdetape(\VoyageBundle\Entity\Etapes $idetape = null)
+    public function addEtapes(\VoyageBundle\Entity\Etapes $idetape = null)
     {
-        $this->idetape = $idetape;
-
-        return $this;
+        if (!$this->idetape->contains($idetape)) {
+            $this->setIdEtape($idetape);
+        }
     }
 
     /**
@@ -194,7 +171,19 @@ class Medias
     {
         return $this->idetape;
     }
+    /**
+     * Set idEtape
+     *
+     * @param \VoyageBundle\Entity\Etapes $etape
+     *
+     * @return Medias
+     */
+    public function setIdEtape(\VoyageBundle\Entity\Etapes $etape = null)
+    {
+        $this->idetape = $etape;
 
+        return $this;
+    }
     /**
      * Set idvoyage
      *

@@ -95,23 +95,31 @@
                         <h2 class="text-white">Les voyages récents</h2>
                     </div>
                     {% for voyage in voyages %}
-                        <div class="col-sm-4 trip-details">
-                            <p class="red-icon"><span
-                                        class="glyphicon glyphicon-globe red-icon"></span> {{ voyage.titrevoyage }}</p>
-                            <p>
-                                <span class="glyphicon glyphicon-user "></span>
-                                {% for i in 1..voyage.voyageur|length/2 %}
-                                    {{ voyage.voyageur[i].__toString }}
-                                {% endfor %}
-                            </p>
-                            <p>
-                                <span class="glyphicon glyphicon-calendar"></span> {{ voyage.datedebutvoyage|date("d/m/Y", "Europe/Paris") }}
-                            </p>
-                            <a href="{{ path('voyagePage' , { 'idVoyage': voyage.idvoyage } ) }}">
-                                <button class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-eye-open"></span> Consulter le voyage
-                                </button>
-                            </a>
+                        {% set traveller = voyage.voyageur[0] %}
+                        <div class="col-sm-4">
+                            <aside>
+                                <img src="{{ vich_uploader_asset(voyage, 'imagefile') }}"
+                                     class="img-center img-responsive">
+                                <div class="content-title">
+                                    <div class="text-center">
+                                        <h3>
+                                            <a href="{{ path('voyagePage' , {'idVoyage' : voyage.idvoyage }) }}">{{ voyage.titrevoyage }}</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="content-footer">
+                                    <img class="user-small-img" src="{{ vich_uploader_asset(traveller, 'imagefile') }}">
+                                    <span class="text-white">
+                                        <a href="{{ path('memberHp' , {'id' : traveller.id}) }}">
+                                            {{ traveller.prenom }}&nbsp;{{ traveller.nom }}
+                                        </a>
+                                    </span>
+                                    <span class="pull-right">
+				<a href="#" data-toggle="tooltip" data-placement="right" title="Loved"><i
+                            class="glyphicon glyphicon-heart"></i> 20</a>
+				</span>
+                                </div>
+                            </aside>
                         </div>
                     {% endfor %}
                 </div>
@@ -120,46 +128,64 @@
     </section>
     <!-- END section last trips created -->
 
+    <!-- BEGIN section users review -->
     <section class="user-reviews">
         <div class="container-fluid">
-            <div class="row top-buffer">
-                <div class="container">
-                    <div class="header-homepage">
-                        <h2>Les avis d'utilisateurs</h2>
-                        <h4>Vos retours nous aident à améliorer la qualité de nos services</h4>
-                    </div>
-                    <div id="panelAvisUser">
-                        <div class="col-lg-4">
-                            <img src="{{ asset('img/me.jpg') }}" alt="" height="64" width="64" class="picRadius"/>
-                            <p class="nameAvisUser">Arnaud Ayrem</p>
-                            <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa
-                                simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont
-                                fait que je suis un utilisateur régulier aujourd'hui"</p>
+            <div class="row">
+                <div class="header-homepage col-md-offset-2 col-md-8 text-center">
+                    <h2>Les avis d'utilisateurs</h2>
+                    <h4>Vos retours nous aident à améliorer la qualité de nos services</h4>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-offset-2 col-md-8'>
+                    <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+                        <!-- Bottom Carousel Indicators -->
+                        <ol class="carousel-indicators">
+                            {% for membre in membres %}
+                                <li data-target="#quote-carousel" {{ loop.index ==  1 ? 'class="active"' }} data-slide-to="{{ loop.index }}"></li>
+                            {% endfor %}
+                        </ol>
+
+                        <!-- Carousel Slides / Quotes -->
+                        <div class="carousel-inner">
+                            {% for membre in membres %}
+                                <!-- Quote 1 -->
+
+                                <div class="item {{ loop.index ==  1 ? 'active'  }}">
+                                    <blockquote>
+                                        <div class="row">
+                                            <div class="col-sm-3 text-center">
+                                                <img class="img-circle" src="{{ vich_uploader_asset(membre, 'imagefile') }}"
+                                                     style="width: 100px;height:100px;">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p>{{ membre.review }}</p>
+                                                <small>{{ membre.username }}</small>
+                                            </div>
+                                        </div>
+                                    </blockquote>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="col-lg-4">
-                            <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
-                            <p class="nameAvisUser">Michel Pompas</p>
-                            <p id="avisUserParagraph">" J'ai été agréablement surpris en m'inscrivant sur ce site. Sa
-                                simplicité d'utilisation et son orientation user friendly m'ont de suite attiré et ont
-                                fait que je suis un utilisateur régulier aujourd'hui"</p>
-                        </div>
-                        <div class="col-lg-4">
-                            <img src="{{ asset('img/user.png') }}" alt="" height="64" width="64" class="picRadius"/>
-                            <p class="nameAvisUser">Xavier Salaberria</p>
-                            <p id="avisUserParagraph">" Je souhaitais évoquer ma passion du pays-basque ainsi que les
-                                différents voyages que j'ai pu y effectuer. Ce site m'a permis de partager avec le monde
-                                entier la beauté des paysages et la richesse du patrimoine culturel basque. Merci !"</p>
-                        </div>
+
+                        <!-- Carousel Buttons Next/Prev -->
+                        <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i
+                                    class="glyphicon glyphicon-chevron-left"></i></a>
+                        <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i
+                                    class="glyphicon glyphicon-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
+    </section>
+    <!-- END section users review -->
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/ajaxSearchPlaces.js') }}"></script>
+    <script src="{{ asset('js/reviewCarousel.js') }}"></script>
     <script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
 {% endblock %}
 

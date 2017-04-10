@@ -3,10 +3,6 @@ jQuery(document).ready(function() {
     var inputSearch = $('#form_nomDestination');
     var route = Routing.generate('searchPlace' );
 
-    $('#form-search').on('submit',function(e){
-        e.preventDefault();
-    });
-
         var options = {
 
         url: function(string) {
@@ -33,7 +29,8 @@ jQuery(document).ready(function() {
     };
         inputSearch.easyAutocomplete(options);
 
-    $('.easy-autocomplete-container ul li').click(function(event){
+
+    $('.easy-autocomplete-container li').click(function(){
         $('#form-search')[0].submit();
     });
 

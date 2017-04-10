@@ -36,7 +36,8 @@
                 <p class="identifiantMembre">@{{ membre.username }}</p>
                 <p id="descriptionMembre">{{ membre.descriptionprofil }}</p>
                 <br/>
-                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit le {{ membre.createdAt|date("d/m/Y") }}
+                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit
+                    le {{ membre.createdAt|date("d/m/Y") }}
                 </p>
                 <!--<p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>-->
                 <!-- TODO -->
@@ -58,13 +59,15 @@
                     </li>
                     <li {{ route ==  'memberMap' ? 'class="active"' }}><a
                                 href="{{ path('memberMap', { 'id': membre.id } ) }}"><span class="profilNavTitle">PAYS VISITÉS</span><span
-                                    class="profilNavNumbers text-center">{{ membre.countriesvisited|length }}</span></a></li>
+                                    class="profilNavNumbers text-center">{{ membre.countriesvisited|length }}</span></a>
+                    </li>
                     <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
                                 href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
                                     class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
                     <li {{ route ==  'memberFollowed' ? 'class="active"' }}><a
                                 href="{{ path('memberFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
-                                    class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span></a></li>
+                                    class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span></a>
+                    </li>
                     <li {{ route ==  'memberFollowers' ? 'class="active"' }}><a
                                 href="{{ path('memberFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
                                     class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span></a>
@@ -80,27 +83,27 @@
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id !=  membre.id %}
             {# checks if user connected follows the member consulted#}
             {% if app.user not in membre.follower %}
-            <div class="col-sm-1 top-buffer">
-                <div class="toggle-button toggle-button--aava">
-                    <input id="toggleButton" type="checkbox">
-                    <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
-                    <div class="toggle-button__icon"></div>
+                <div class="col-sm-1 top-buffer">
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="toggleButton" type="checkbox">
+                        <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
                 </div>
-            </div>
             {% else %}
-            <div class="col-sm-1 top-buffer">
-                <div class="toggle-button toggle-button--aava">
-                    <input id="toggleButton" type="checkbox" checked="checked">
-                    <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
-                    <div class="toggle-button__icon"></div>
+                <div class="col-sm-1 top-buffer">
+                    <div class="toggle-button toggle-button--aava">
+                        <input id="toggleButton" type="checkbox" checked="checked">
+                        <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
+                        <div class="toggle-button__icon"></div>
+                    </div>
                 </div>
-            </div>
             {% endif %}
         {% endif %}
     </div>
 </div>
 
-{% block subbody%}
+{% block subbody %}
 {% endblock %}
 <div id="js-vars"
      data-vars="{{ js_vars|json_encode|e('html_attr') }}">

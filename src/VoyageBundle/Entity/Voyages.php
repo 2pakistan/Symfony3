@@ -107,7 +107,7 @@ class Voyages
     /**
      * @param string $titrevoyage
      */
-    public function setTitrevoyage(string $titrevoyage)
+    public function setTitrevoyage( $titrevoyage)
     {
         $this->titrevoyage = $titrevoyage;
     }
@@ -143,7 +143,7 @@ class Voyages
     /**
      * @return string
      */
-    public function getPhotovoyage(): string
+    public function getPhotovoyage()
     {
         return $this->photovoyage;
     }
@@ -151,7 +151,7 @@ class Voyages
     /**
      * @param string $photovoyage
      */
-    public function setPhotovoyage(string $photovoyage)
+    public function setPhotovoyage($photovoyage)
     {
         $this->photovoyage = $photovoyage;
     }

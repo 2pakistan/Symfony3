@@ -3,16 +3,29 @@
 
 {% block body %}
 
-
     <div class="container">
         <section class="see-trip-header header-homepage">
-            <h1 class="text-center"> Voyages :  {{ place }}</h1>
+            <h1 class="text-center"> Voyages : {{ placename }} </h1>
         </section>
         <section class="see-trip">
-            <div>
-                {{ dump(voyages) }}
-                <img src="" class="img-responsive img-center" />
-            </div>
+            {% if steps|length > 0 %}
+                <div>
+                    {{ dump(steps) }}
+                    <img src="" class="img-responsive img-center"/>
+                </div>
+            {% else %}
+                <div class="col-sm-12">
+                    <img src="{{ asset('img/unhappy-marker.png') }}"
+                         class="img-responsive img-center img"
+                         width="150" alt="no trips"/>
+                    <h4 class="text-center"><b>Aucun résultats pour la destination suivante : {{ placename }}</b></h4>
+                    <p class="text-center">
+                        <small>
+                            Lorsque qu'un voyageur visitera cette destination , le voyage apparaitra ici !
+                        </small>
+                    </p>
+                </div>
+            {% endif %}
         </section>
     </div>
 

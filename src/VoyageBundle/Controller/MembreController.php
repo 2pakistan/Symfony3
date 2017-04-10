@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use VoyageBundle\Entity\Membres;
+use VoyageBundle\Entity\Utilisateurs;
+use VoyageBundle\Entity\Countries;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 
@@ -58,6 +59,7 @@ class MembreController extends Controller
             ->find($id);
         $this->get('app.js_vars')->userId = $id;
 
+        //Renders an array of countries visited with number of steps in each countries
         $dataCountries = array(['countries', 'nombre d\'etapes']);
         $countries = $membre->getCountriesVisited();
         foreach ($countries as $country => $val) {
@@ -65,8 +67,8 @@ class MembreController extends Controller
             $countSteps = $em->getRepository('VoyageBundle:Etapes')
                 ->getNbStepsByCountry($id);
 
-            $dataCountries[$country+1][0] = $val->getName() ;
-            $dataCountries[$country+1][1] = intval($countSteps[0]) ;
+            $dataCountries[$country + 1][0] = $val->getName();
+            $dataCountries[$country + 1][1] = intval($countSteps[0]);
         }
 
         $this->get('app.js_vars')->dataCountries = $dataCountries;
@@ -87,7 +89,11 @@ class MembreController extends Controller
                     ->findByStep($step);
                 $stepMedias[] = $paths;
                 $stepData[] = array($step->getDescriptionEtape());
-                $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
+                if ($step->getCountry() instanceof Countries) {
+                    $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
+                } else {
+                    $stepMarkers[] = array('Pays non précisé par l\'utilisateur', $step->getLatitude(), $step->getLongitude());
+                }
             }
         }
 
@@ -174,8 +180,39 @@ class MembreController extends Controller
             $response = new JsonResponse();
             return $response->setData(array('status' => 1));
         } else {
-            $this->redirectToRoute('homePage'); //TODO : 404 ?
+            return $this->redirectToRoute('homePage'); //TODO : 404 ?
         }
+    }
+
+    /**
+     * @Route("/trip-list", name="tripList")
+     */
+    public function tripListAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->getUser();
+        $usersFollowed = $user->getFollowed();
+        $tripsFollowed = array();
+        foreach ($usersFollowed as $followed) {
+            $userTrips = $followed->getVoyages();
+            foreach ($userTrips as $trip) {
+                $tripsFollowed[] = $trip;
+            }
+        }
+
+        $recentSteps = $em->getRepository('VoyageBundle:Etapes')
+            ->getRecentByTrips($tripsFollowed);
+
+        if ($user === null) {
+            return $this->redirectToRoute('homePage');
+        }
+
+        return $this->render('VoyageBundle:Default:membre/layout/tripList.html.twig',
+            array(
+                'tripsFollowed' => $tripsFollowed,
+                'recentSteps' => $recentSteps
+            ));
     }
 
 }

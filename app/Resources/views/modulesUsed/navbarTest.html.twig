@@ -19,7 +19,7 @@
             <ul class="nav navbar-nav">
                 <li {{ route ==  'homePage' ? 'class="active"' }}><a href="{{ path('homepage') }}"><span class="glyphicon glyphicon-home"></span>&nbsp;Accueil </a></li>
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <li><a href="#"><span class="glyphicon glyphicon-plane"></span>&nbsp;My trip-list</a></li>
+                    <li {{ route ==  'tripList' ? 'class="active"' }}><a href="{{ path('tripList') }}"><span class="glyphicon glyphicon-plane"></span>&nbsp;My trip-list</a></li>
                     {% if route starts with 'member' %}
                     <li {{ app.user.id == paramsRoute.id ? 'class="active"'}}>
                     {% else %}

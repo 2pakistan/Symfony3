@@ -133,6 +133,13 @@ class Utilisateurs extends BaseUser
     private $descriptionprofil;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="review", type="string", length=500, nullable=true )
+     */
+    private $review;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", inversedBy="follower", cascade={"persist"})
@@ -564,6 +571,23 @@ class Utilisateurs extends BaseUser
     {
         return $this->countriesVisited;
     }
+
+    /**
+     * @return string
+     */
+    public function getReview()
+    {
+        return $this->review;
+    }
+
+    /**
+     * @param string $review
+     */
+    public function setReview($review)
+    {
+        $this->review = $review;
+    }
+
 
     /**
      * Get toString

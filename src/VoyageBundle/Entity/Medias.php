@@ -51,7 +51,7 @@ class Medias
      *
      * @Vich\UploadableField(mapping="step_image", fileNameProperty="pathMedia")
      * @Assert\Image(
-     *     maxSize = "2048k",
+     *     maxSize = "4096k",
      *     mimeTypesMessage = "Veuillez uploader un fichier valide (extensions acceptées : .png .jpg .jpeg .bmp)"
      * )
      * @var File

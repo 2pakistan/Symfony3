@@ -2,22 +2,22 @@
 
 {% block body %}
 
-    <!-- MESSAGE SUCCES FORMULAIRE -->
-    <div>
-        {% for flashMessage in app.session.flashBag.get('valid_voyage') %}
-            <div class="alert alert-success">{{ flashMessage }}</div>
-        {% endfor %}
-    </div>
-
-    {% if app.user.id is defined and membre.id == app.user.id %}
-        <div class="col-sm-4 col-sm-offset-8">
-            <a href="{{ path('createTrip') }}">
-                <button class="btn btn-lg btn-custom btn-block">Ajouter un voyage</button>
-            </a>
+    <div class="col-xs-12">
+        <!-- MESSAGE SUCCES FORMULAIRE -->
+        <div>
+            {% for flashMessage in app.session.flashBag.get('valid_voyage') %}
+                <div class="alert alert-success">{{ flashMessage }}</div>
+            {% endfor %}
         </div>
-    {% endif %}
 
-    <div class="row">
+        {% if app.user.id is defined and membre.id == app.user.id %}
+            <div class="col-sm-4 col-sm-offset-8">
+                <a href="{{ path('createTrip') }}">
+                    <button class="btn btn-lg btn-custom btn-block">Ajouter un voyage</button>
+                </a>
+            </div>
+        {% endif %}
+
         <h3>Voyages</h3>
         {% if nbTrips > 0 %}
             {% for i in 0..membre.voyages|length-1 %}
@@ -31,17 +31,49 @@
                             <p class="text-center titleVoyage">{{ membre.voyages[i].titrevoyage }}</p>
                         </a>
                     </div>
-                {% if app.user.id is defined and membre.id == app.user.id %}
-                    <div class="col-sm-12">
-                        <div class="btn btn-custom col-sm-6">
-                            <span class="glyphicon glyphicon-pencil"></span>
+                    {% if app.user.id is defined and membre.id == app.user.id %}
+                        <div class="col-sm-12">
+                            <a href="{{ path('createStep' , {'idVoyage' : membre.voyages[i].idvoyage }) }}">
+                                <div class="btn btn-custom col-sm-6" title="Ajouter une étape à ce voyage">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </div>
+                            </a>
+                            <div class="btn btn-alert col-sm-6 delete-btn" title="Supprimer ce voyage"
+                                 data-toggle="modal"
+                                 data-target="#modal-delete-{{ membre.voyages[i].idvoyage }}">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </div>
                         </div>
-                        <div class="btn btn-alert col-sm-6 delete-btn" data-toggle="modal" data-target="#modal-delete">
-                            <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-delete-{{ membre.voyages[i].idvoyage }}"
+                         data-key="{{ membre.voyages[i].idvoyage }}" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="exampleModalLabel">Suppresion d'un voyage</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p><b>Attention !</b></p>
+                                    <p>Vous êtes sur le point de supprimer ce voyage.
+                                        <b>Vous perdrez toutes les étapes et les images liées à ce voyage.</b></p>
+                                    <p><b>Cette action est <span style="color:#e50000">irréversible</span>. </b></p>
+                                    <p>Etes-vous sur de vouloir continuer ? </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
+                                    </button>
+                                    <button type="button" class="btn btn-alert delete-trip"><span
+                                                class="glyphicon glyphicon-remove"></span>&nbsp;Supprimer
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                {% endif %}
                 </div>
+
             {% endfor %}
         {% else %}
             {% if app.user.id is defined and membre.id == app.user.id %}
@@ -55,30 +87,11 @@
             {% endif %}
 
         {% endif %}
-        <!-- Modal -->
-        <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Suppresion d'un voyage</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p><b>Attention !</b></p>
-                        <p>Vous êtes sur le point de supprimer ce voyage. Cette action est irréversible. </p>
-                        <p>Etes-vous sur de vouloir supprimer ce voyage ? </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="button" class="btn btn-alert"><span class="glyphicon glyphicon-remove"></span>&nbsp;Supprimer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 
+{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/ajaxDeleteTrip.js') }}"></script>
 {% endblock %}

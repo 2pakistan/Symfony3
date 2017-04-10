@@ -63,7 +63,7 @@ class Etapes
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Medias", mappedBy="idetape", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Medias", mappedBy="idetape", cascade={"persist", "remove"})
      */
     private $medias;
 
@@ -73,6 +73,13 @@ class Etapes
      * @ORM\Column(name="descriptionEtape", type="string", length=5000, nullable=true)
      */
     private $descriptionetape;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createDate", type="datetime")
+     */
+    private $createDate;
 
     /**
      * @var float
@@ -94,6 +101,7 @@ class Etapes
     public function __construct()
     {
         $this->medias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->createDate = new \DateTimeImmutable();
     }
 
     /**
@@ -251,5 +259,22 @@ class Etapes
     {
         $this->longitude = $longitude;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->createDate;
+    }
+
+    /**
+     * @param \DateTime $createDate
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->createDate = $createDate;
+    }
+
 
 }

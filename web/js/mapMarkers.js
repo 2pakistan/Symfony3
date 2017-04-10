@@ -22,8 +22,6 @@ function initialize() {
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
     map.setTilt(45);
 
-
-    console.log(stepData[1][1]);
     // Info Window Content
     var infoWindowContent = [];
     for (i = 0; i < markers.length; i++) {

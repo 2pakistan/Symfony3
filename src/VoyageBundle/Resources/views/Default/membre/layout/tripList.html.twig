@@ -1,0 +1,124 @@
+{% extends ":layout:layout.html.twig" %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            {% if tripsFollowed|length > 0 %}
+
+                <div class="col-sm-8">
+                    <section class="see-trip see-trip-header top-buffer">
+                        {% for trip in tripsFollowed %}
+                            {% set traveller = trip.voyageur[0] %}
+                            <div class="col-sm-6">
+                                <aside>
+                                    <img src="{{ vich_uploader_asset(trip, 'imagefile') }}"
+                                         class="img-center img-responsive">
+                                    <div class="content-title">
+                                        <div class="text-center">
+                                            <h3>
+                                                <a href="{{ path('voyagePage' , {'idVoyage' : trip.idvoyage }) }}">{{ trip.titrevoyage }}</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="content-footer">
+                                        <img class="user-small-img"
+                                             src="{{ vich_uploader_asset(traveller, 'imagefile') }}">
+                                        <span class="text-white">
+                                        <a href="{{ path('memberHp' , {'id' : traveller.id}) }}">
+                                            {{ traveller.prenom }}&nbsp;{{ traveller.nom }}
+                                        </a>
+                                    </span>
+                                        <span class="pull-right">
+				<a href="{{ path('memberVoyages' , {'id' : traveller.id}) }}" data-toggle="tooltip"
+                   data-placement="right" title="Voyages"><i
+                            class="glyphicon glyphicon-plane"></i> {{ traveller.voyages|length }}</a>
+				</span>
+                                        <span class="pull-right">
+				<a href="{{ path('memberFollowers' , {'id' : traveller.id}) }}" data-toggle="tooltip"
+                   data-placement="right" title="Followers"><i
+                            class="glyphicon glyphicon-heart"></i> {{ traveller.follower|length }}</a>
+				</span>
+                                    </div>
+                                </aside>
+                            </div>
+                        {% endfor %}
+                    </section>
+                </div>
+
+                <div class="col-sm-4">
+                    <section class="see-trip see-trip-header top-buffer">
+
+                        <div class="widget-sidebar">
+                            <h2 class="title-widget-sidebar">// RECENT STEPS PUBLISHED</h2>
+                            <div class="content-widget-sidebar">
+                                <ul>
+                                    {% for step in recentSteps %}
+                                        <li class="recent-post">
+                                            {% if step.medias|length > 0 %}
+                                                <div class="post-img">
+                                                    <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                         class="img-responsive">
+                                                </div>
+                                            {% else %}
+                                                <div class="post-img">
+                                                    <img src="{{ asset('img/undefined.jpg') }}"
+                                                         class="img-responsive">
+                                                </div>
+                                            {% endif %}
+                                            <a href="#">
+                                                <h5>
+                                                    {% if step.descriptionetape|length > 60 %}
+                                                        {{ step.descriptionetape[:50] }}&hellip;
+                                                    {% else %}
+                                                        {{ step.descriptionetape }}
+                                                    {% endif %}
+                                                </h5>
+                                            </a>
+                                            <p>
+                                                <small>
+                                                    <i class="glyphicon glyphicon-calendar"></i> {{ step.createDate|date("d/m/Y") }}
+                                                </small>
+                                            </p>
+                                        </li>
+                                        <hr>
+                                    {% endfor %}
+
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            {% else %}
+                <section class="see-trip see-trip-header top-buffer">
+                    <div class="col-sm-12">
+                        <img src="{{ asset('img/unhappy-marker.png') }}"
+                             class="img-responsive img-center img"
+                             width="150" alt="no trips"/>
+                        {% if app.user.followed|length != 0 %}
+                            <h4 class="text-center"><b>Aucun des travellers followed n'a publié de voyages.</b></h4>
+                            <p class="text-center">
+                                <small>Les voyages publiés apparaitront ici.</small>
+                            </p>
+                        {% else %}
+                            <h4 class="text-center"><b>Vous n'avez aucun traveller followed.</b></h4>
+                            <p class="text-center">
+                                <small>Une fois que vous vous abonnerez à des membres de travellink , Les
+                                    voyages publiés par ces personnes apparaitront ici.
+                                </small>
+                            </p>
+                        {% endif %}
+                    </div>
+                </section>
+            {% endif %}
+            </section>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+

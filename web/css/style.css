@@ -193,7 +193,7 @@ p.name-user>a:hover{
 }
 /* ./HOMEPAGE AUTOCOMPLETE BOX */
 .header-content-wrap{
-    padding-top:270px;
+    padding-top:250px;
     padding-bottom: 370px;
     background: rgba(0, 0, 0, 0.5);
 }
@@ -223,7 +223,10 @@ p.name-user>a:hover{
     color: #ffffff;
 }
 
-
+.last-users .users{
+    padding-top: 40px;
+    padding-bottom: 50px;
+}
 .header-homepage{
     text-align: center;
     padding-bottom: 90px;
@@ -273,8 +276,8 @@ p.name-user>a:hover{
     padding-bottom: 50px;
 }
 .last-users{
-    padding-top: 100px;
-    padding-bottom: 150px;
+    padding-top: 120px;
+    padding-bottom: 170px;
     background-color:white;
 }
 
@@ -1246,7 +1249,24 @@ header h1 {
 .info_content{
     max-height:250px;
 }
+/* FORM REVIEW */
 
+.centered-form{
+    margin-top: 60px;
+}
+
+.centered-form .panel{
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+.review h1{
+    font-size:35px;
+    font-weight: 700;
+    padding-bottom: 40px;
+}
+#review_review{
+    min-height: 250px;
+}
 
 
 

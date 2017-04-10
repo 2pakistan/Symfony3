@@ -22,6 +22,15 @@ class UtilisateursRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    //Function qui retourne les 3 derniers avis publiés
+    public function findLastReviews(){
+        $qb = $this->createQueryBuilder('u')
+            ->select('u')
+            ->orderBy('u.reviewedAt','DESC')
+            ->setMaxResults(3);
+
+        return $qb->getQuery()->getResult();
+    }
 
     public function findTravellersByVoyage($voyage)
     {

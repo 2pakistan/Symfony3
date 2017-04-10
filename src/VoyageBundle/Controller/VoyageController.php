@@ -178,17 +178,6 @@ class VoyageController extends Controller
     }
 
     /**
-     * @Route("/test", name="test")
-     */
-    public function testAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-
-        return $this->render('VoyageBundle:Default/membre/layout:vueTest.html.twig', array());
-    }
-
-    /**
      * @Route("/deleteTrip", name="deleteTrip" , options={"expose"=true})
      */
     public function deleteTripAction(Request $request)

@@ -5,7 +5,7 @@ namespace VoyageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Destination
+ * Cities
  *
  * @ORM\Table(name="cities")
  * @ORM\Entity (repositoryClass="VoyageBundle\Repository\CitiesRepository")

@@ -189,9 +189,12 @@ class MembreController extends Controller
      */
     public function tripListAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
         $user = $this->getUser();
+        if ($user === null) {
+            return $this->redirectToRoute('homePage');
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $usersFollowed = $user->getFollowed();
         $tripsFollowed = array();
         foreach ($usersFollowed as $followed) {
@@ -203,10 +206,6 @@ class MembreController extends Controller
 
         $recentSteps = $em->getRepository('VoyageBundle:Etapes')
             ->getRecentByTrips($tripsFollowed);
-
-        if ($user === null) {
-            return $this->redirectToRoute('homePage');
-        }
 
         return $this->render('VoyageBundle:Default:membre/layout/tripList.html.twig',
             array(

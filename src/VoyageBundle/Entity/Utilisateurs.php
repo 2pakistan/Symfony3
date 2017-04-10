@@ -140,6 +140,14 @@ class Utilisateurs extends BaseUser
     private $review;
 
     /**
+     * @ORM\Column(type="datetime",nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $reviewedAt;
+
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", inversedBy="follower", cascade={"persist"})
@@ -586,7 +594,25 @@ class Utilisateurs extends BaseUser
     public function setReview($review)
     {
         $this->review = $review;
+        $this->reviewedAt = new \DateTimeImmutable();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getReviewedAt()
+    {
+        return $this->reviewedAt;
+    }
+
+    /**
+     * @param mixed $reviewedAt
+     */
+    public function setReviewedAt($reviewedAt)
+    {
+        $this->reviewedAt = $reviewedAt;
+    }
+
 
 
     /**

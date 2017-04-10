@@ -57,7 +57,7 @@
                         <h2>Les derniers inscrits </h2>
                         <h4>Les derniers voyageurs ayant rejoint la communauté Travellink </h4>
                     </div>
-                    <div class="panel-body">
+                    <div class="col-xs-12 users">
                         {% for membre in membres %}
                             <div class="col-sm-4">
                                 <div class="col-sm-4">
@@ -142,14 +142,14 @@
                     <div class="carousel slide" data-ride="carousel" id="quote-carousel">
                         <!-- Bottom Carousel Indicators -->
                         <ol class="carousel-indicators">
-                            {% for membre in membres %}
+                            {% for membre in membreReviews %}
                                 <li data-target="#quote-carousel" {{ loop.index ==  1 ? 'class="active"' }} data-slide-to="{{ loop.index }}"></li>
                             {% endfor %}
                         </ol>
 
                         <!-- Carousel Slides / Quotes -->
                         <div class="carousel-inner">
-                            {% for membre in membres %}
+                            {% for membre in membreReviews %}
                                 <!-- Quote 1 -->
 
                                 <div class="item {{ loop.index ==  1 ? 'active'  }}">

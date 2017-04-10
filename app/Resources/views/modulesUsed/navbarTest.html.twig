@@ -28,6 +28,10 @@
                     <a href="{{ path('memberHp', { 'id': app.user.id } ) }} ">
                         <span class="glyphicon glyphicon-globe"></span>&nbsp;Ma page</a>
                     </li>
+                    <li {{ route ==  'userReview' ? 'class="active"' }}>
+                    <a href="{{ path('userReview') }}">
+                        <span class="glyphicon glyphicon-comment"></span>&nbsp;Laisser un avis</a>
+                    </li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -105,6 +105,13 @@ class Utilisateurs extends BaseUser
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAtProfile;
+
 
     /**
      *
@@ -190,6 +197,20 @@ class Utilisateurs extends BaseUser
      */
     private $countriesVisited;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Voyages", inversedBy="followers",  cascade={"persist"})
+     * @ORM\JoinTable(name="suivre_voyage",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
+     *   }
+     * )
+     */
+    private $tripsFollowed;
+
     public function __construct()
     {
         parent::__construct();
@@ -201,6 +222,7 @@ class Utilisateurs extends BaseUser
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->countriesVisited = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tripsFollowed = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -329,11 +351,12 @@ class Utilisateurs extends BaseUser
         if ($image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAtProfile = new \DateTimeImmutable();
         }
 
         return $this;
     }
+
 
     /**
      * @return File|null
@@ -556,8 +579,6 @@ class Utilisateurs extends BaseUser
     public function addCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
     {
         $this->countriesVisited[] = $countryVisited;
-
-        return $this;
     }
 
     /**
@@ -578,6 +599,38 @@ class Utilisateurs extends BaseUser
     public function getCountriesVisited()
     {
         return $this->countriesVisited;
+    }
+
+    /**
+     * Add tripFollowed
+     *
+     * @param \VoyageBundle\Entity\Voyages $trip
+     *
+     * @return Countries
+     */
+    public function addTripFollowed(\VoyageBundle\Entity\Voyages $trip)
+    {
+        $this->tripsFollowed[] = $trip;
+    }
+
+    /**
+     * Remove tripFollowed
+     *
+     * @param \VoyageBundle\Entity\Voyages $trip
+     */
+    public function removeTripFollowed(\VoyageBundle\Entity\Voyages $trip)
+    {
+        $this->tripsFollowed->removeElement($trip);
+    }
+
+    /**
+     * Get tripsFollowed
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTripsFollowed()
+    {
+        return $this->tripsFollowed;
     }
 
     /**
@@ -611,6 +664,22 @@ class Utilisateurs extends BaseUser
     public function setReviewedAt($reviewedAt)
     {
         $this->reviewedAt = $reviewedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAtProfile()
+    {
+        return $this->updatedAtProfile;
     }
 
 

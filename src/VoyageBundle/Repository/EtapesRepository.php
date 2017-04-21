@@ -9,6 +9,9 @@
 namespace VoyageBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use VoyageBundle\Entity\Countries;
+use VoyageBundle\Entity\Utilisateurs;
+use VoyageBundle\Entity\Voyages;
 
 class EtapesRepository extends EntityRepository
 {
@@ -22,13 +25,15 @@ class EtapesRepository extends EntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    function getNbStepsByCountry($country){
+    function getNbStepsByCountry(Countries $country, Voyages $trip){
         $qb = $this->createQueryBuilder('e')
             ->select('count(e)')
-            ->join('e.country' ,'c')
-            ->where('c.id =  e.country')
-            ->andWhere('e.country = :country')
-            ->setParameter('country', $country);
+            ->innerJoin('e.country' ,'c')
+            ->innerJoin('e.trip' ,'t')
+            ->where('c = :country')
+            ->andWhere('t = :trip')
+            ->setParameter('country', $country)
+            ->setParameter('trip', $trip);
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -46,13 +51,14 @@ class EtapesRepository extends EntityRepository
     function getStepsByPlaceString($string){
         $qb = $this->createQueryBuilder('e')
             ->select('e')
-            ->join('e.country' ,'co')
-            ->join('e.cities' ,'ci')
-            ->join('e.state' ,'s')
+            ->leftJoin('e.country' ,'co')
+            ->leftJoin('e.cities' ,'ci')
+            ->leftJoin('e.state' ,'s')
             ->where('co.name LIKE :string')
             ->orWhere('ci.name LIKE :string')
             ->orWhere('s.name LIKE :string')
             ->setParameter('string', '%'.$string.'%');
+
         return $qb->getQuery()->getResult();
     }
 
@@ -83,5 +89,19 @@ class EtapesRepository extends EntityRepository
             ->setParameter('string', '%'.$string.'%');
         return $qb->getQuery()->getResult();
     }
+
+    function getNbStepsUnseenSince($date, Utilisateurs $user){
+        $trips = $user->getVoyages();
+        $qb = $this->createQueryBuilder('e')
+            ->select('count(e)')
+            ->join('e.trip' ,'t')
+            ->where('e.createDate >= :date')
+            ->andWhere('e.trip IN (:trips)')
+            ->setParameter('trips', $trips)
+            ->setParameter('date', $date);
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 }

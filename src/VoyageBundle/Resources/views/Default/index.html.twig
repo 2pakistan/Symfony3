@@ -61,10 +61,8 @@
                         {% for membre in membres %}
                             <div class="col-sm-4">
                                 <div class="col-sm-4">
-                                    <div class="img-container">
-                                        <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }} "
-                                             alt="profile picture" class="img img-responsive img-thumbnail"/>
-                                    </div>
+                                    <img src="{{ vich_uploader_asset(membre, 'imagefile')  }}"
+                                         alt="profile picture" class="img img-thumbnail"/>
                                 </div>
                                 <div class="col-sm-8 user-details">
                                     <p class="name-user">
@@ -115,8 +113,8 @@
                                         </a>
                                     </span>
                                     <span class="pull-right">
-				<a href="#" data-toggle="tooltip" data-placement="right" title="Loved"><i
-                            class="glyphicon glyphicon-heart"></i> 20</a>
+				<a href="{{ path('memberFollowers' , {'id' : traveller.id }) }}" data-toggle="tooltip" data-placement="right" title="Followers"><i
+                            class="glyphicon glyphicon-heart"></i> {{ traveller.follower|length }}</a>
 				</span>
                                 </div>
                             </aside>
@@ -143,7 +141,8 @@
                         <!-- Bottom Carousel Indicators -->
                         <ol class="carousel-indicators">
                             {% for membre in membreReviews %}
-                                <li data-target="#quote-carousel" {{ loop.index ==  1 ? 'class="active"' }} data-slide-to="{{ loop.index }}"></li>
+                                <li data-target="#quote-carousel" {{ loop.index ==  1 ? 'class="active"' }}
+                                    data-slide-to="{{ loop.index }}"></li>
                             {% endfor %}
                         </ol>
 
@@ -152,12 +151,12 @@
                             {% for membre in membreReviews %}
                                 <!-- Quote 1 -->
 
-                                <div class="item {{ loop.index ==  1 ? 'active'  }}">
+                                <div class="item {{ loop.index ==  1 ? 'active' }}">
                                     <blockquote>
                                         <div class="row">
                                             <div class="col-sm-3 text-center">
-                                                <img class="img-circle" src="{{ vich_uploader_asset(membre, 'imagefile') }}"
-                                                     style="width: 100px;height:100px;">
+                                                <img class="img-circle"
+                                                     src="{{ vich_uploader_asset(membre, 'imagefile') }}">
                                             </div>
                                             <div class="col-sm-9">
                                                 <p>{{ membre.review }}</p>

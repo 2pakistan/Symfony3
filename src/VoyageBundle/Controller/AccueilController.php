@@ -28,7 +28,7 @@ class AccueilController extends Controller
         $voyageRepo = $em->getRepository('VoyageBundle:Voyages');
         $voyages = $voyageRepo->findLastTrips();
 
-        $membreReviews =  $em->getRepository('VoyageBundle:Utilisateurs')
+        $membreReviews = $em->getRepository('VoyageBundle:Utilisateurs')
             ->findLastReviews();
 
         $form = $this->createFormBuilder()
@@ -42,11 +42,30 @@ class AccueilController extends Controller
             ))
             ->getForm();
 
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $lastLogin = $this->getUser()->getLastLogin();
+            $nbStepsUnseen = $this->getStepsPublishedSince($lastLogin,$this->getUser());
+        }else{
+            $nbStepsUnseen = null;
+        }
+
         return $this->render('VoyageBundle:Default:index.html.twig', array('form' => $form->createView(),
             'membres' => $membres,
             'voyages' => $voyages,
-            'membreReviews' => $membreReviews
-            ));
+            'membreReviews' => $membreReviews,
+            'stepsUnseen' => $nbStepsUnseen
+        ));
+    }
+
+    protected function getStepsPublishedSince($datetime,$user)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $nbSteps = $em->getRepository('VoyageBundle:Etapes')
+            ->getNbStepsUnseenSince($datetime,$user);
+
+        return $nbSteps;
+
     }
 
     /**
@@ -93,7 +112,7 @@ if(!empty($stepsInStates)){
                 ->getCitiesByString($string);
             $states = $em->getRepository('VoyageBundle:States')
                 ->getStatesByString($string);
-            $places =array();
+            $places = array();
             if (!empty($countries)) {
                 foreach ($countries as $country => $vals) {
                     $places[]['name'] = $countries[$country]->getName();
@@ -120,7 +139,7 @@ if(!empty($stepsInStates)){
             $placeName = $request->request->get('form')['nomDestination'];
             $steps = $em->getRepository('VoyageBundle:Etapes')
                 ->getStepsByPlaceString($placeName);
-            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig', array('steps' => $steps , 'placename' => $placeName));
+            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig', array('steps' => $steps, 'placename' => $placeName));
         }
     }
 

@@ -85,6 +85,9 @@ fos_user:
         confirmation:
             enabled: true
             template:   FOSUserBundle:Registration:email.txt.twig
+    profile:
+        form:
+            type: VoyageBundle\Form\ProfileType
     service:
         mailer: fos_user.mailer.twig_swift
 
@@ -99,8 +102,9 @@ vich_uploader:
     db_driver: orm
 
     mappings:
+
             user_image:
-                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/profilePicture
+                uri_prefix:         /users/profilePicture
                 upload_destination: '%kernel.root_dir%/../web/img/users/profilePicture'
                 namer:              vich_uploader.namer_uniqid
 
@@ -109,8 +113,7 @@ vich_uploader:
                 delete_on_remove:   true
 
             user_cover:
-                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/coverPicture
-                upload_destination: '%kernel.root_dir%/../web/img/users/coverPicture'
+                uri_prefix:         /users/coverPicture
                 namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
@@ -118,7 +121,7 @@ vich_uploader:
                 delete_on_remove:   true
 
             trip_image:
-                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/voyages
+                uri_prefix:         /users/voyages
                 upload_destination: '%kernel.root_dir%/../web/img/users/voyages'
                 namer:              vich_uploader.namer_uniqid
 
@@ -127,10 +130,25 @@ vich_uploader:
                 delete_on_remove:   true
 
             step_image:
-                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/etapes
+                uri_prefix:        /users/etapes
                 upload_destination: '%kernel.root_dir%/../web/img/users/etapes'
                 namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false
                 delete_on_update:   true
                 delete_on_remove:   true
+
+liip_imagine :
+
+    resolvers :
+        default :
+            web_path :
+                web_root: "%kernel.root_dir%/../web"
+                cache_prefix: "media/cache"
+    filter_sets :
+        cache : ~
+        profile_thumb:
+            quality : 75
+            filters :
+                thumbnail  : { size : [120, 120], mode : outbound }
+gregwar_image: ~

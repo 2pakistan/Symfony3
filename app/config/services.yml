@@ -8,6 +8,16 @@ services:
         class: VoyageBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
-
+    app.form.profile:
+        class: VoyageBundle\Form\ProfileType
+        tags:
+            - { name: form.type, alias: app_user_profile }
     app.js_vars:
         class: stdClass
+
+    app_bundle.listener.uploaded_file_listener:
+        class: VoyageBundle\EventListener\UploadedFileListener
+        calls:
+            - [ setImgService, ["@image.handling"] ]
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload, method: onPostUpload }

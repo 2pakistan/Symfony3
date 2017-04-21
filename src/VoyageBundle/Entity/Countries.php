@@ -60,7 +60,7 @@ class Countries
      * States constructor.
      * @param \Doctrine\Common\Collections\Collection $states
      */
-    public function __construct(\Doctrine\Common\Collections\Collection $states)
+    public function __construct()
     {
         $this->states = new \Doctrine\Common\Collections\ArrayCollection();
         $this->visitors = new \Doctrine\Common\Collections\ArrayCollection();

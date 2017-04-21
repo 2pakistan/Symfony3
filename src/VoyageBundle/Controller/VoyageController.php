@@ -53,18 +53,59 @@ class VoyageController extends Controller
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
 
-        if ($idVoyage === null) {
+        if (null === $idVoyage || false === $trip instanceof Voyages) {
             return $this->redirectToRoute('homePage');//TODO-404
-        } else {
-            $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
-                ->findTravellersByVoyage($idVoyage);
-            $steps = $em->getRepository('VoyageBundle:Etapes')
-                ->findBy(array('trip' => $idVoyage));
         }
+        $traveller = $trip->getVoyageur()[0];
+
+        $steps = $em->getRepository('VoyageBundle:Etapes')
+            ->findBy(array('trip' => $idVoyage));
+
+        // MAPS
+        $em = $this->getDoctrine()->getManager();
+        $this->get('app.js_vars')->userId = $traveller->getId();
+
+        //Renders an array of countries visited with number of steps in each countries
+        $dataCountries = array(['countries', 'nombre d\'etapes']);
+        $countries = $traveller->getCountriesVisited();
+        foreach ($countries as $country) {
+            $countSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->getNbStepsByCountry($country, $trip);
+            if ($countSteps > 0) {
+                $dataCountries[] = array($country->getName(), intval($countSteps[0]));
+            }
+        }
+
+        $this->get('app.js_vars')->dataCountries = $dataCountries;
+
+        //map with all steps markers
+        $stepMarkers = array();
+        $stepData = array();
+        $stepMedias = array();
+
+        $tripSteps = $em->getRepository('VoyageBundle:Etapes')
+            ->findBy(array('trip' => $trip));
+
+        foreach ($tripSteps as $step) {
+            $paths = $em->getRepository('VoyageBundle:Medias')
+                ->findByStep($step);
+            $stepMedias[] = $paths;
+            $stepData[] = array($step->getDescriptionEtape());
+            if ($step->getCountry() instanceof Countries) {
+                $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
+            } else {
+                $stepMarkers[] = array('Pays non précisé par l\'utilisateur', $step->getLatitude(), $step->getLongitude());
+            }
+        }
+
+        $this->get('app.js_vars')->stepMarkers = $stepMarkers;
+        $this->get('app.js_vars')->stepData = $stepData;
+        $this->get('app.js_vars')->stepMedias = $stepMedias;
+
 
         return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig', array(
             'trip' => $trip,
-            'travellers' => $travellers,
+            'traveller' => $traveller,
             'steps' => $steps));
     }
 
@@ -164,7 +205,7 @@ class VoyageController extends Controller
                 if (!in_array($country, $countriesVisited)) {
                     $user->addCountryVisited($country);
                 }
-            }else{
+            } else {
                 $step->setCountry(null);
                 $step->setCities(null);
                 $step->setState(null);
@@ -172,7 +213,7 @@ class VoyageController extends Controller
 
             $em->persist($step);
             $em->flush();
-            return $this->redirectToRoute('voyagePage' , array('idVoyage' => $idVoyage));
+            return $this->redirectToRoute('voyagePage', array('idVoyage' => $idVoyage));
         }
         return $this->render('VoyageBundle:Default/membre/layout:createStep.html.twig', array('form' => $form->createView()));
     }
@@ -196,9 +237,12 @@ class VoyageController extends Controller
                 ->findBy(array('trip' => $trip));
             $nbSteps = count($tripSteps);
             if (!empty($tripSteps)) {
+
                 foreach ($tripSteps as $step) {
                     $country = $step->getCountry();
                     $nbCountries += 1;
+                    //TODO :CONTROL IF THE DELETED STEP IS THE ONLY ONE IN THIS COUNTRY FOR THIS USER
+                    //TODO : IF SO REMOVE THIS COUNTRY FROM USER VISITED COUNTRIES
                     $user->removeCountryVisited($country);
                     $em->remove($step);
                 }

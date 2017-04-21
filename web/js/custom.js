@@ -8,7 +8,6 @@ $(document).ready(function() {
         format: 'yyyy-mm-dd',
         language: "fr",
         todayHighlight: true,
-        startDate: 'today',
         autoclose:true,
         sideBySide: true,
         orientation: "bottom auto",
@@ -80,9 +79,6 @@ $(document).ready(function() {
             reader.readAsDataURL(file);
         });
     });
-
-    //hide delete checkboxes
-
 
 });
 

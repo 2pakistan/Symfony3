@@ -87,6 +87,12 @@ class Voyages
     private $voyageur;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", mappedBy="tripsFollowed",  cascade={"persist"})
+     */
+    private $followers;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -94,6 +100,7 @@ class Voyages
         $this->updatedAt = new \DateTime;
         $this->photovoyage = 'default_trip_cover.jpg';
         $this->voyageur = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->followers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -271,5 +278,39 @@ class Voyages
     public function getVoyageur()
     {
         return $this->voyageur;
+    }
+
+    /**
+     * Add follower
+     *
+     * @param \VoyageBundle\Entity\Utilisateurs $follower
+     *
+     * @return Voyages
+     */
+    public function addFollower(\VoyageBundle\Entity\Utilisateurs $follower)
+    {
+        $this->followers[] = $follower;
+
+        return $this;
+    }
+
+    /**
+     * Remove follower
+     *
+     * @param \VoyageBundle\Entity\Utilisateurs $follower
+     */
+    public function removeFollower(\VoyageBundle\Entity\Utilisateurs $follower)
+    {
+        $this->followers->removeElement($follower);
+    }
+
+    /**
+     * Get followers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFollowers()
+    {
+        return $this->followers;
     }
 }

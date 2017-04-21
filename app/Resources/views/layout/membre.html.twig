@@ -57,10 +57,7 @@
                                 href="{{ path('memberHp' , { 'id': membre.id } ) }}"><span
                                     class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span></a>
                     </li>
-                    <li {{ route ==  'memberMap' ? 'class="active"' }}><a
-                                href="{{ path('memberMap', { 'id': membre.id } ) }}"><span class="profilNavTitle">PAYS VISITÉS</span><span
-                                    class="profilNavNumbers text-center">{{ membre.countriesvisited|length }}</span></a>
-                    </li>
+
                     <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
                                 href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
                                     class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>

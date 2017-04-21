@@ -809,7 +809,6 @@ li.active>a:before
     color:#F39C12;
 }
 aside .img-center{
-    max-height: 175px;
     min-height: 175px;
 }
 aside{
@@ -1048,17 +1047,19 @@ button.accordion.active:after {
 
 /* End carousel */
 
-.item blockquote {
+ blockquote {
     border-left: none;
     margin: 0;
 }
 
-.item blockquote{
+blockquote{
     margin: 1.5em 10px;
     padding: 0.5em 10px;
     quotes: "\201C""\201D""\2018""\2019";
 }
-.item blockquote p:before {
+blockquote p:before,
+blockquote h2:before
+{
     color: #ccc;
     content: open-quote;
     font-size: 4em;
@@ -1255,6 +1256,54 @@ header h1 {
 #regions_div > Object {
     width : 100%;
 }
+
+/*  STEP RIBBON */
+.step-block{
+    position: relative;
+    text-align: center;
+    background-color: lightgrey;
+    margin-top:25px;
+    margin-bottom:25px;
+    padding-top:55px !important;
+    padding-bottom:25px !important;
+}
+
+.close-ribbon{
+    position: absolute;
+    top: 0;
+    right: 1em;
+    z-index: 1;
+    color: #eee;
+    font-size: 1.2em;
+    line-height: 0.2em;
+    -webkit-transition: line-height 0.5s;
+    transition: line-height 0.5s;
+}
+.close-ribbon:after {
+    content: "";
+    position: absolute;
+    height: 1.2em;
+    border: 1.5em solid #00aced;
+    z-index: -1;
+    top: -1em;
+    border-top-width: 2.1em;
+    border-bottom-color: transparent;
+    right: 0;
+    -webkit-transition: height 0.5s;
+    transition: height 0.5s;
+}
+.close-ribbon:before {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-color: transparent transparent #0084b4 transparent;
+    top: -1em;
+    right: 2.92em;
+    border-width: 0 0 1em 0.7em;
+    z-index: -1;
+}
+
+/* / STEP RIBBON */
 
 
 

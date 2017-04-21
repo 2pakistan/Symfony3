@@ -114,6 +114,7 @@ vich_uploader:
 
             user_cover:
                 uri_prefix:         /users/coverPicture
+                upload_destination: '%kernel.root_dir%/../web/img/users/coverPicture'
                 namer:              vich_uploader.namer_uniqid
 
                 inject_on_load:     false

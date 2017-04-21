@@ -146,6 +146,15 @@ class Voyages
         return $this->imagefile;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+
 
     /**
      * @return string

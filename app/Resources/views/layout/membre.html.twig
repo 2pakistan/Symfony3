@@ -21,6 +21,7 @@
 {% set nbFollowed  =  membre.followed|length %}
 {% set nbFollowers  =  membre.follower|length %}
 
+
 <div>
     <img src="{{ vich_uploader_asset(membre, 'imagefilecover' ) }}" class="img-responsive" id="coverPicMembre"
          alt="{{ membre.photocouverture }}"/>
@@ -36,15 +37,15 @@
                 <p class="identifiantMembre">@{{ membre.username }}</p>
                 <p id="descriptionMembre">{{ membre.descriptionprofil }}</p>
                 <br/>
-                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span> Inscrit
-                    le {{ membre.createdAt|date("d/m/Y") }}
+                <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span>Registered on
+                    {{ membre.createdAt|date("d/m/Y") }}
                 </p>
                 <!--<p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>-->
                 <!-- TODO -->
             </div>
             <div class="contactBtnWrapper col-md-8 col-xs-12">
                 <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip"
-                        data-placement="top left" title="Envoyer un message privé à ce voyageur"><span
+                        data-placement="top left" title="Send a private message to {{ membre.prenom }}"><span
                             class="glyphicon glyphicon-comment"></span></button>
             </div>
         </div>
@@ -59,7 +60,7 @@
                     </li>
 
                     <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
-                                href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">VOYAGES</span><span
+                                href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">TRIPS</span><span
                                     class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
                     <li {{ route ==  'memberFollowed' ? 'class="active"' }}><a
                                 href="{{ path('memberFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
@@ -83,7 +84,7 @@
                 <div class="col-sm-1 top-buffer">
                     <div class="toggle-button toggle-button--aava">
                         <input id="toggleButton" type="checkbox">
-                        <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
+                        <label for="toggleButton" data-on-text="Followed" data-off-text="Follow"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
                 </div>
@@ -91,7 +92,7 @@
                 <div class="col-sm-1 top-buffer">
                     <div class="toggle-button toggle-button--aava">
                         <input id="toggleButton" type="checkbox" checked="checked">
-                        <label for="toggleButton" data-on-text="Abonné" data-off-text="S'abonner"></label>
+                        <label for="toggleButton" data-on-text="Followed" data-off-text="Follow"></label>
                         <div class="toggle-button__icon"></div>
                     </div>
                 </div>

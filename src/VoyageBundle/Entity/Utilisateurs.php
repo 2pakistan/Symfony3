@@ -31,12 +31,12 @@ class Utilisateurs extends BaseUser
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=50, nullable=true)
-     * @Assert\NotBlank(message="Veuillez entrer votre nom", groups={"Registration", "Profile"})
+     * @Assert\NotBlank(message="Enter a name", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="Le nom est trop court.",
-     *     maxMessage="Le nom est trop long.",
+     *     minMessage="Name is too short (2 chars needed)",
+     *     maxMessage="Name is too long (50 chars max)",
      *     groups={"Registration", "Profile"}
      * )
      */
@@ -46,12 +46,12 @@ class Utilisateurs extends BaseUser
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=50, nullable=true)
-     * @Assert\NotBlank(message="Veuillez entrer votre prénom", groups={"Registration", "Profile"})
+     * @Assert\NotBlank(message="Enter a first name", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="Le prenom est trop court.",
-     *     maxMessage="Le prenom est trop long.",
+     *     minMessage="First name is too short (2 chars needed)",
+     *     maxMessage="First nameis too long (50 chars max)",
      *     groups={"Registration", "Profile"}
      * )
      */
@@ -63,13 +63,6 @@ class Utilisateurs extends BaseUser
      * @ORM\Column(name="nationalite", type="string", length=50, nullable=true)
      */
     private $nationalite;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="telephone", type="string", length=25, nullable=true )
-     */
-    private $telephone;
 
 
     /**
@@ -218,6 +211,7 @@ class Utilisateurs extends BaseUser
         $this->photocouverture = "vermont.jpg";
         $this->createdAt = new \DateTime;
         $this->updatedAt = new \DateTime;
+        $this->updatedAtProfile = new \DateTime;
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
@@ -297,29 +291,6 @@ class Utilisateurs extends BaseUser
         return $this->nationalite;
     }
 
-    /**
-     * Set telephone
-     *
-     * @param string $telephone
-     *
-     * @return Utilisateurs
-     */
-    public function setTelephone($telephone)
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    /**
-     * Get telephone
-     *
-     * @return string
-     */
-    public function getTelephone()
-    {
-        return $this->telephone;
-    }
 
     /**
      * @return \DateTime

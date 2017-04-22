@@ -23,6 +23,10 @@ class VoyageController extends Controller
      */
     public function creerVoyageAction(Request $request)
     {
+        if( null ===  $this->getUser() ){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
         $trip = new Voyages();
         $form = $this->createForm(CreateTripType::class, $trip);
         $form->handleRequest($request);
@@ -49,20 +53,25 @@ class VoyageController extends Controller
     public function consultVoyageAction($idVoyage)
     {
         $em = $this->getDoctrine()->getManager();
-
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
 
         if (null === $idVoyage || false === $trip instanceof Voyages) {
             return $this->redirectToRoute('homePage');//TODO-404
         }
+
+        //get the traveller of this trip
         $traveller = $trip->getVoyageur()[0];
+
+        //Increments number of views of this trip
+            $trip->setViews($trip->getViews()+1);
+            $em->persist($trip);
+            $em->flush();
 
         $steps = $em->getRepository('VoyageBundle:Etapes')
             ->findBy(array('trip' => $idVoyage));
 
         // MAPS
-        $em = $this->getDoctrine()->getManager();
         $this->get('app.js_vars')->userId = $traveller->getId();
 
         //Renders an array of countries visited with number of steps in each countries
@@ -115,13 +124,15 @@ class VoyageController extends Controller
     public function createStepAction($idVoyage, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $trip = $em->getRepository('VoyageBundle:Voyages')
+            ->find($idVoyage);
+        //if the requested trip doesnt exist or the user that tries to create a step is not the trip owner
+        if(  null === $trip || ($trip->getVoyageur()[0]->getId() !== $this->getUser()->getId()) ){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
         $step = new Etapes();
         $form = $this->createForm(CreateStepType::class, $step);
         $form->handleRequest($request);
-
-        $trip = $em->getRepository('VoyageBundle:Voyages')
-            ->find($idVoyage);
 
         $step->setTrip($trip);
 

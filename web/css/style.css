@@ -1047,8 +1047,9 @@ button.accordion.active:after {
 
 /* End carousel */
 
- blockquote {
-    border-left: none;
+ .user-reviews blockquote ,
+ .trip-desc blockquote {
+    border-left: none !important;
     margin: 0;
 }
 
@@ -1104,9 +1105,14 @@ blockquote h2:before
 
     }
 }
+#quote-carousel img{
+    max-height: 125px;
+}
 /* /CAROUSEL REVIEW USER HP */
 
-
+.member-trips  a{
+    text-decoration: none !important;
+}
 /* /Consult voyage post*/
 .trip-post {
     margin-top: 0;
@@ -1182,7 +1188,7 @@ header h1 {
     text-decoration:none;
 }
 .blog-info {
-    text-align: center;
+    padding-left: 25px;
 }
 
 .content-body {

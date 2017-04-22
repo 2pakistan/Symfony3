@@ -30,13 +30,17 @@
                                         </a>
                                     </span>
                                         <span class="pull-right">
+				<a data-toggle="tooltip" data-placement="right" title="Number of views for this trip"><i
+                            class="glyphicon glyphicon-eye-open"></i> {{ trip.views }}</a>
+				</span>
+                                        <span class="pull-right">
 				<a href="{{ path('memberVoyages' , {'id' : traveller.id}) }}" data-toggle="tooltip"
-                   data-placement="right" title="Voyages"><i
+                   data-placement="right" title="Member number of trips"><i
                             class="glyphicon glyphicon-plane"></i> {{ traveller.voyages|length }}</a>
 				</span>
                                         <span class="pull-right">
 				<a href="{{ path('memberFollowers' , {'id' : traveller.id}) }}" data-toggle="tooltip"
-                   data-placement="right" title="Followers"><i
+                   data-placement="right" title="Number of followers"><i
                             class="glyphicon glyphicon-heart"></i> {{ traveller.follower|length }}</a>
 				</span>
                                     </div>

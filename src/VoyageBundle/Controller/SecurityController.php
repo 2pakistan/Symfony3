@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use FOS\UserBundle\Controller\SecurityController as BaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 class SecurityController extends BaseController
@@ -21,6 +24,10 @@ class SecurityController extends BaseController
     {
         /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
         $session = $request->getSession();
+
+        if( null !== $this->getUser()){
+            return $this->redirectToRoute('homepage');
+        }
 
         $authErrorKey = Security::AUTHENTICATION_ERROR;
         $lastUsernameKey = Security::LAST_USERNAME;
@@ -68,6 +75,8 @@ class SecurityController extends BaseController
     protected function renderLogin(array $data)
     {
         $route = $data['current_route'];
+
+
         if($route === 'fos_user_security_login'){
             $template = '@FOSUser/Security/login.html.twig';
         }else{
@@ -76,4 +85,60 @@ class SecurityController extends BaseController
         return $this->render($template, $data);
     }
 
+    /**
+     * @Route("/checkUsername", name="checkUsername" , options={"expose"=true})
+     */
+    public function checkUsernameAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($request->isXmlHttpRequest()) {
+            $username = $request->request->get('username');
+            $user = $em->getRepository('VoyageBundle:Utilisateurs')
+                ->findOneBy(array('username' => $username));
+
+            if(null === $user){
+                $available = true;
+            }else{
+                $available = false;
+            }
+            $response = new JsonResponse();
+            return $response->setData(array('available' => $available));
+
+        } else {
+            // TODO : REDIRECT
+            $rep = false;
+            return $rep;
+        }
+
+    }
+
+
+    /**
+     * @Route("/checkMail", name="checkMail" , options={"expose"=true})
+     */
+    public function checkMail(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($request->isXmlHttpRequest()) {
+            $email = $request->request->get('email');
+            $user = $em->getRepository('VoyageBundle:Utilisateurs')
+                ->findOneBy(array('email' => $email));
+
+            if(null === $user){
+                $available = true;
+            }else{
+                $available = false;
+            }
+            $response = new JsonResponse();
+            return $response->setData(array('available' => $available));
+
+        } else {
+            // TODO : REDIRECT
+            $rep = false;
+            return $rep;
+        }
+
+    }
 }

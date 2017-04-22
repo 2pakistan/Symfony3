@@ -1,7 +1,7 @@
 {% extends ":layout:layout.html.twig" %}
 
-{% set publishDateInterval = date("now"|date("m/d/Y")).diff(trip.updatedAt)  %}
-{% set publishedDaysAgo =  publishDateInterval.d  %}
+{% set publishDateInterval = date("now"|date("m/d/Y")).diff(trip.updatedAt) %}
+{% set publishedDaysAgo =  publishDateInterval.d %}
 {% block body %}
 
     <div class="container">
@@ -30,16 +30,20 @@
                                 </div>
                                 <div class="row blog-info">
                                     <div class="col-xs-6">
-                                        <span class="lead text-muted"><i class="glyphicon glyphicon-calendar"></i> Published {{ publishedDaysAgo }} {{ publishedDaysAgo == 1 ? 'day' : 'days'}} ago</span>
+                                        <p>
+                                            <span class="lead text-muted"><i class="glyphicon glyphicon-calendar"></i> Published {{ publishedDaysAgo > 1 ?  publishedDaysAgo ~ ' days ago' : 'Today' }}
+                                                </span>
+                                        </p>
+                                        <p>
+                                            <span class="lead text-muted"><i class="glyphicon glyphicon-eye-open"></i> Viewed {{ trip.views }} {{ trip.views == 1 ? 'time' : 'times' }}</span>
+                                        </p>
                                     </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-3 col-xs-offset-2">
                                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and trip in app.user.voyages %}
-                                            <button class="btn btn-custom">
+                                            <button class="btn btn-custom btn-block">
                                                 <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}"
                                                    class="text-white"><span
-                                                            class="glyphicon glyphicon-edit"></span>&nbsp;Ajouter
-                                                    une
-                                                    étape</a>
+                                                            class="glyphicon glyphicon-edit"></span>&nbsp;Add a post</a>
                                             </button>
                                         {% endif %}
                                     </div>
@@ -104,23 +108,24 @@
                         </div>
                     </div>
 
-
-                    <section class="user-map-countries">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h3>Carte des pays visités</h3>
-                                <div id="regions_div"></div>
+                    {% if steps|length > 0 %}
+                        <section class="user-map-countries">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Countries visited in this trip</h3>
+                                    <div id="regions_div"></div>
+                                </div>
                             </div>
-                        </div>
 
-                    </section>
+                        </section>
 
-                    <section class="user-map-markers">
-                        <h3>Ou est allé {{ traveller.username }} ?</h3>
-                        <div id="map_wrapper">
-                            <div id="map_canvas" class="mapping"></div>
-                        </div>
-                    </section>
+                        <section class="user-map-markers">
+                            <h3>Where did {{ traveller.username }} go during this trip ?</h3>
+                            <div id="map_wrapper">
+                                <div id="map_canvas" class="mapping"></div>
+                            </div>
+                        </section>
+                    {% endif %}
 
                 </section>
             </section>

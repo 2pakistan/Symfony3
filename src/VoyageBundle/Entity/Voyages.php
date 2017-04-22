@@ -93,10 +93,17 @@ class Voyages
     private $followers;
 
     /**
+     * @var integer
+     * @ORM\Column(name="nbViews", type="integer", nullable=false)
+     */
+    private $views;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->views = 0;
         $this->updatedAt = new \DateTime;
         $this->photovoyage = 'default_trip_cover.jpg';
         $this->voyageur = new \Doctrine\Common\Collections\ArrayCollection();
@@ -322,4 +329,21 @@ class Voyages
     {
         return $this->followers;
     }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+    }
+
 }

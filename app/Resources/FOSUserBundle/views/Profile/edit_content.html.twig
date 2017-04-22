@@ -40,9 +40,14 @@
                             {{ form_widget(form.current_password, {'attr' : {'class' : 'form-control' }}) }}
                         </div>
                     </div>
+                    <div class="col-sm-12 alert alert-danger {{ form_errors(form.current_password) is not empty ? '' : 'hide' }}">
+                        {{ form_errors(form.current_password) }}
+                    </div>
+
                     <div class="col-sm-12">
                         <input type="submit" class="btn btn-custom btn-lg btn-block" value="{{ 'profile.edit.submit'|trans }}"/>
                     </div>
+
                     {{ form_end(form) }}
                 </div>
             </div>

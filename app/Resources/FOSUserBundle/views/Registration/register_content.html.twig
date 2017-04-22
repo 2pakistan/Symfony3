@@ -90,6 +90,9 @@
             <div class="col-sm-7">
                 {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
             </div>
+            <div id="fos_user_registration_form_plainPassword_first_error" class="alert alert-danger hidden col-sm-3 ">
+                <p>The password must have 3 letters</p>
+            </div>
             {% if form.plainPassword.first.vars.errors|length > 0 %}
                 <div class="alert alert-danger col-sm-3">
                     {{ form_errors(form.plainPassword.first) }}
@@ -102,6 +105,9 @@
             {{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'control-label col-sm-2'}}) }}
             <div class="col-sm-7">
                 {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div id="fos_user_registration_form_plainPassword_second_error" class="alert alert-danger hidden col-sm-3 ">
+                <p>Passwords doesn't match !</p>
             </div>
             {% if form.plainPassword.second.vars.errors|length > 0 %}
                 <div class="alert alert-danger col-sm-3">

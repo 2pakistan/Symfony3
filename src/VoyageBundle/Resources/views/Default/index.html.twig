@@ -52,31 +52,50 @@
         <div class="container-fluid">
             <!-- row last users registered -->
             <div class="row">
-                <div class="container">
-                    <div class="header-homepage">
-                        <h2>Last registered </h2>
-                        <h4>Last travellers that joined Travellink's community </h4>
-                    </div>
                     <div class="col-xs-12 users">
-                        {% for membre in membres %}
-                            <div class="col-sm-4">
-                                <div class="col-sm-4">
-                                    <img src="{{ vich_uploader_asset(membre, 'imagefile')  }}"
-                                         alt="profile picture" class="img img-thumbnail"/>
+                        <!-- The Team -->
+                        <div class="home-doctors clearfix">
+                            <div class="container">
+                                <div class="header-homepage">
+                                    <h2>Last registered </h2>
+                                    <h4>Last travellers that joined Travellink's community </h4>
                                 </div>
-                                <div class="col-sm-8 user-details">
-                                    <p class="name-user">
-                                        <a href="{{ path('memberHp' , { 'id': membre.id } ) }} ">{{ membre.prenom }} {{ membre.nom }} </a>
-                                    </p>
-                                    <p class="info-user"> {{ membre.voyages|length }} voyages</p>
-                                    <p class="info-user"> {{ membre.follower|length }} followers</p>
-                                    <p class="info-user"> {{ membre.followed|length }} voyageurs followed</p>
-                                    </p>
+
+                                <div class="row">
+                                    {% for membre in membres %}
+                                        <div class="col-sm-3 text-center doc-item">
+                                            <div class="common-doctor animated fadeInUp clearfix ae-animation-fadeInUp">
+
+                                                <ul class="list-inline social-lists animate">
+                                                    <li><a href="{{ path('memberVoyages' , {'id' : membre.id }) }}"><i class="fa fa-plane"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                                                </ul>
+
+                                                <figure>
+                                                    <img src="{{ vich_uploader_asset(membre, 'imagefile') }}"
+                                                         class="doc-img animate img img-responsive img-center img-rounded" />
+                                                </figure>
+
+                                                <div class="text-content">
+                                                    <h5><a href="{{ path('memberHp' , {'id' : membre.id}) }}}">
+                                                            {{ membre.prenom }} {{ membre.nom }}
+                                                        </a>
+                                                    </h5>
+                                                    <!-- <div class="for-border"></div> -->
+                                                    <h5>
+                                                        <small>Dentist Title</small>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="visible-sm clearfix margin-gap"></div>
+                                    {% endfor %}
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
+                        <!-- //The Team -->
                     </div>
-                </div>
+
             </div>
             <!-- ./Panel last users registered -->
         </div>
@@ -113,7 +132,8 @@
                                         </a>
                                     </span>
                                     <span class="pull-right">
-				<a href="{{ path('memberFollowers' , {'id' : traveller.id }) }}" data-toggle="tooltip" data-placement="right" title="Followers"><i
+				<a href="{{ path('memberFollowers' , {'id' : traveller.id }) }}" data-toggle="tooltip"
+                   data-placement="right" title="Followers"><i
                             class="glyphicon glyphicon-heart"></i> {{ traveller.follower|length }}</a>
 				</span>
                                     <span class="pull-right">
@@ -121,7 +141,8 @@
                             class="glyphicon glyphicon-eye-open"></i> {{ voyage.views }}</a>
 				</span>
                                     <span class="pull-right">
-				<a href="{{ path('memberVoyages' , {'id' : traveller.id }) }}" data-toggle="tooltip" data-placement="right" title="Number of trips done"><i
+				<a href="{{ path('memberVoyages' , {'id' : traveller.id }) }}" data-toggle="tooltip"
+                   data-placement="right" title="Number of trips done"><i
                             class="glyphicon glyphicon-plane"></i> {{ traveller.voyages|length }}</a>
 				</span>
                                 </div>

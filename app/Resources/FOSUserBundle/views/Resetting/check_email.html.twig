@@ -3,7 +3,19 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-<p>
-{{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-</p>
+    <section class="reset-password">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 alert alert-info">
+                <div class="col-sm-2">
+                    <span class="glyphicon glyphicon-info-sign" style="font-size: 5em"></span>
+                </div>
+                <div class="col-sm-9 col-sm-offset-1">
+                    <p>
+                        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

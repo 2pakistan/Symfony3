@@ -1,4 +1,39 @@
+//Auto positioning step
+function preventAnchorScroll() {
+    var scrollToTop = function () {
+        $(window).scrollTop(0);
+    };
+    if (window.location.hash) {
+        // handler is executed at most once
+        $(window).one('scroll', scrollToTop);
+    }
+
+    // make sure to release scroll 1 second after document readiness
+    // to avoid negative UX
+    $(document).ready(function () {
+        setTimeout(
+            function () {
+                $(window).off('scroll', scrollToTop);
+            },
+            4000
+        );
+    });
+}
+preventAnchorScroll();
+
+var anchor = window.location.hash;
+$(function () {
+    if (anchor) {
+        // smooth scroll to the anchor id
+        $('html, body').animate({
+            scrollTop: $(anchor).offset().top - 75
+        }, 2000);
+    }
+});
+
+//maps
 jQuery(function () {
+
     // Asynchronously Load the map API
     var script = document.createElement('script');
     script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyA8MUOfjQsy5bd9U4L8vYqpGkNjM9qOfYw&?sensor=false&callback=initialize";

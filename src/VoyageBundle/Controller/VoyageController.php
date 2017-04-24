@@ -32,6 +32,7 @@ class VoyageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             //On recupere les donnees du form
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $user->addVoyages($trip);
@@ -41,7 +42,7 @@ class VoyageController extends Controller
             $em->flush();
 
             $this->addFlash('valid_voyage', 'Votre voyage a bien été enregistré !');
-            return $this->redirect($this->generateUrl('memberVoyages', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('memberHp', array('id' => $user->getId())));
         }
 
         return $this->render('VoyageBundle:Default/membre/layout:creerVoyage.html.twig', array('form' => $form->createView()));
@@ -139,6 +140,7 @@ class VoyageController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $medias = $step->getMedias();
+
             foreach ($medias as $media) {
                 $media->setIdetape($step);
                 $media->setIdvoyage($trip);

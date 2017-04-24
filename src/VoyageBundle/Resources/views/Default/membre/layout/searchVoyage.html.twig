@@ -1,17 +1,92 @@
 {% extends ":layout:layout.html.twig" %}
 
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/rotateCard.css') }}">
+{% endblock %}
 {% block body %}
 
     <div class="container">
         <section class="see-trip-header header-homepage">
-            <h1 class="text-center"> Voyages : {{ placename }} </h1>
+            <h1 class="text-center">Trip steps in {{ placename }} </h1>
         </section>
         <section class="see-trip">
             {% if steps|length > 0 %}
                 <div>
-                    {{ dump(steps) }}
-                    <img src="" class="img-responsive img-center"/>
+                    {% for step in steps %}
+                        {% set voyage = step.trip %}
+                        {% set traveller = voyage.voyageur[0] %}
+                        {% set desc = step.descriptionetape %}
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card-container">
+                                <div class="card">
+                                    <div class="front">
+                                        <div class="cover">
+                                            {% if step.medias is not empty %}
+                                                <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                     class=" img-responsive">
+                                            {% else %}
+                                                <img src="{{ asset('img/undefined.jpg') }}"
+                                                     class="img-center img-responsive">
+                                            {% endif %}
+                                        </div>
+                                        <div class="user">
+                                            <img class="img-circle"
+                                                 src="{{ vich_uploader_asset(traveller, 'imagefile')  }}"/>
+                                        </div>
+                                        <div class="content">
+                                            <div class="main">
+                                                <h3 class="name">{{ traveller.prenom }} {{ traveller.nom }}</h3>
+                                                <p class="text-center">
+                                                    " {{ desc|length > 60 ? desc[:60] ~ ' ...' :  desc }}"
+                                                </p>
+                                            </div>
+                                            <div class="stats-container">
+                                                <div class="stats">
+                                                    <h4>{{ traveller.follower|length }}</h4>
+                                                    <p>
+                                                        Followers
+                                                    </p>
+                                                </div>
+                                                <div class="stats">
+                                                    <h4>{{ traveller.followed|length }}</h4>
+                                                    <p>
+                                                        Following
+                                                    </p>
+                                                </div>
+                                                <div class="stats">
+                                                    <h4>{{ step.trip.views }}</h4>
+                                                    <p>
+                                                        Trip views
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div> <!-- end front panel -->
+                                    <div class="back">
+                                        <div class="header">
+                                            <h5 class="motto">{{ step.trip.descriptionvoyage }}</h5>
+                                        </div>
+                                        <div class="content">
+                                            <div class="main">
+                                                <h4 class="text-center">
+                                                    <a href="{{ path('voyagePage' , {'idVoyage' : voyage.idvoyage }) }}#step-{{ step.idetape }}">
+                                                        {{ desc|length > 40 ? desc[:40] ~ ' ...' :  desc }}
+                                                    </a>
+                                                </h4>
+                                                <p class="text-center"></p>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div> <!-- end back panel -->
+                                </div> <!-- end card -->
+                            </div> <!-- end card-container -->
+                        </div> <!-- end col sm 3 -->
+
+                    {% endfor %}
                 </div>
             {% else %}
                 <div class="col-sm-12">
@@ -31,4 +106,6 @@
 
 
 {% endblock %}
-
+{% block javascripts %}
+    <script src="{{ asset('js/rotateCard.js') }}"></script>
+{% endblock %}

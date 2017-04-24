@@ -107,7 +107,7 @@
                 {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
             </div>
             <div id="fos_user_registration_form_plainPassword_second_error" class="alert alert-danger hidden col-sm-3 ">
-                <p>Passwords doesn't match !</p>
+                <p>Passwords don't match !</p>
             </div>
             {% if form.plainPassword.second.vars.errors|length > 0 %}
                 <div class="alert alert-danger col-sm-3">
@@ -130,31 +130,63 @@
         </div>
 
         <!-- input upload profile picture -->
-        <div class="row registerFormRow form-group">
-            {{ form_label(form.imagefile, null, {'label_attr': {'class': 'control-label col-sm-2'},'label': 'Profile picture'}) }}
+        <div class="form-group registerFormRow row">
+            {{ form(form.imagefile.delete, {'attr':{'class':'hide'}}) }}
+
+            {{ form_label(form.imagefile.file, 'Profile picture' , {'label_attr': {'class':
+                'control-label col-sm-2'}}) }}
+
             <div class="col-sm-7">
-                {{ form_widget(form.imagefile, {'attr': {'class': ''}}) }}
-            </div>
-            {% if form.imagefile.vars.errors|length > 0 %}
-                <div class="alert alert-danger col-sm-3">
-                    {{ form_errors(form.imagefile) }}
+                <div class="input-group image-preview" id="profile-preview">
+                            <span class="input-group-btn">
+                            <!-- image-preview-input -->
+                            <div class="btn btn-default image-preview-input" id="profile-preview-input">
+                                <span class="glyphicon glyphicon-folder-open"></span>
+                                <span class="image-preview-input-title" id="profile-preview-input-title" >Browse</span>
+                                {{ form_widget(form.imagefile.file, {'attr':{'class':'form-control'}}) }}
+                                <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                <!-- rename it -->
+                            </div>
+                                <button type="button" class="btn btn-default image-preview-clear" style="display:none;" id="profile-preview-clear">
+                                    <span class="glyphicon glyphicon-remove"></span> Remove
+                                </button>
+                            </span>
+                    <input type="text" class="form-control image-preview-filename" id="profile-preview-filename" disabled="disabled">
                 </div>
-            {% endif %}
+            </div>
         </div>
+
+
 
 
         <!-- input upload cover picture -->
-        <div class="row registerFormRow form-group">
-            {{ form_label(form.imagefilecover, null, {'label_attr': {'class': 'control-label col-sm-2'},'label': 'Cover picture'}) }}
+        <div class="form-group registerFormRow row">
+            {{ form(form.imagefilecover.delete, {'attr':{'class':'hide'}}) }}
+
+            {{ form_label(form.imagefilecover.file, 'Cover picture' , {'label_attr': {'class':
+                'control-label col-sm-2'}}) }}
+
             <div class="col-sm-7">
-                {{ form_widget(form.imagefilecover, {'attr': {'class': ''}}) }}
-            </div>
-            {% if form.imagefilecover.vars.errors|length > 0 %}
-                <div class="alert alert-danger col-sm-3">
-                    {{ form_errors(form.imagefilecover) }}
+                <div class="input-group image-preview" id="cover-preview">
+                            <span class="input-group-btn">
+                            <!-- image-preview-input -->
+                            <div class="btn btn-default image-preview-input" id="cover-preview-input">
+                                <span class="glyphicon glyphicon-folder-open"></span>
+                                <span class="image-preview-input-title" id="cover-preview-input-title" >Browse</span>
+                                {{ form_widget(form.imagefilecover.file, {'attr':{'class':'form-control'}}) }}
+                                <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                <!-- rename it -->
+                            </div>
+                                <button type="button" class="btn btn-default image-preview-clear" style="display:none;" id="cover-preview-clear">
+                                    <span class="glyphicon glyphicon-remove"></span> Remove
+                                </button>
+                            </span>
+                    <input type="text" class="form-control image-preview-filename" id="cover-preview-filename" disabled="disabled">
                 </div>
-            {% endif %}
+            </div>
         </div>
+
+
 
 
 
@@ -176,6 +208,3 @@
     </div>
 </div>
 
-{% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/registerValidation.js') }}" async defer></script>
-{% endblock %}

@@ -23,12 +23,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.imagefilecover,'Photo de couverture', {'label_attr' : {'class' : 'control-label col-sm-3' }}) }}
-                        <div class="col-sm-9">
-                            {{ form_widget(form.imagefilecover) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
                         {{ form_label(form.email,null, {'label_attr' : {'class' : 'control-label col-sm-3' }}) }}
                         <div class="col-sm-9">
                             {{ form_widget(form.email, {'attr' : {'class' : 'form-control' }}) }}
@@ -47,8 +41,6 @@
                     <div class="col-sm-12">
                         <input type="submit" class="btn btn-custom btn-lg btn-block" value="{{ 'profile.edit.submit'|trans }}"/>
                     </div>
-
-                    {{ form_end(form) }}
                 </div>
             </div>
         </section>

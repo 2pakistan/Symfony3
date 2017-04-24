@@ -520,7 +520,51 @@ li.active>a:before
 
 #coverPicMembre{
     width:100%;
-    max-height: 550px;
+    max-height: 60vh;
+}
+
+.member-cover:hover{
+    transition: 0.2s all;
+}
+
+.overlay-member-cover{
+    color:white;
+    margin-top: -25vh;
+}
+.overlay-member-cover p {
+    font-size: 42px;
+    font-weight: 600;
+    padding-left: 2em;
+    padding-bottom: 0 !important;
+}
+
+#wrapper-btn-cover{
+    line-height: 4em;
+}
+
+#btn-cover-img{
+    font-size: 55px;
+}
+
+#btn-valid-cover{
+
+}
+.overlay-member-cover input{
+    position:relative;
+    opacity:0;
+    width:55px;
+    height:35px;
+    top:-4.5vh;
+}
+.overlay-member-cover input:hover{
+    cursor:pointer !important;
+}
+
+.overlay-member-cover .col-xs-1:hover{
+    cursor:pointer;
+}
+.overlay-member-cover p{
+    margin: 0 !important;
 }
 
 #blocPresentationMembre{
@@ -600,21 +644,9 @@ li.active>a:before
 }
 
 
-.img-container-lg {
-    max-height: 150px;
-    overflow:hidden;
+.trip-wrapper{
+    padding-top: 25px;
 }
-.img-container-lg img{
-
-    /*
-    min-width: 100px;
-    height:auto;
-    */
-    width: 100%;
-    min-height: 150px;
-    object-fit: cover;
-}
-
 
 .invisible div{
     display:none !important;
@@ -623,8 +655,6 @@ li.active>a:before
 .top-buffer {
     margin-top:20px;
 }
-
-
 
 /* CUSTOM UPLOAD FILE */
 .image-preview-input {
@@ -812,6 +842,7 @@ li.active>a:before
 }
 aside .img-center{
     min-height: 175px;
+    max-height: 200px;
 }
 aside{
     padding-top: 40px;
@@ -827,6 +858,9 @@ aside .content-footer>img {
     border-radius: 100%;
     margin-right: 10px;
     border: 2px solid #fff;
+}
+aside .img-step{
+    width:100%;
 }
 
 .user-ditels {

@@ -8,3 +8,8 @@
 {% include "@FOSUser/Registration/register_content.html.twig" %}
 {% endblock fos_user_content %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/registerValidation.js') }}" async defer></script>
+    <script type="text/javascript" src="{{ asset('js/filePreview.js') }}" async defer></script>
+{% endblock %}

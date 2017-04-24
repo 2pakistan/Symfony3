@@ -152,8 +152,10 @@ jQuery(document).ready(function () {
         }
     });
 
+    console.log('totototo');
     //MANAGE FORM SUBMIT - ERRORS
     $('.fos_user_registration_register').on('submit' , function(e){
+
         var isFormValid = true ;
         console.log('submitted ! ');
         console.log(errors);

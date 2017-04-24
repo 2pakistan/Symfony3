@@ -62,7 +62,7 @@
                                 </div>
                                 {% if steps|length > 0 %}
                                     {% for step in steps %}
-                                        <div class="col-sm-12 step-block">
+                                        <div class="col-sm-12 step-block" id="step-{{ step.idetape }}">
                                             <p class="close-ribbon">Step {{ loop.index }}</p>
                                             <blockquote>
                                                 {{ step.descriptionetape }}
@@ -144,6 +144,7 @@
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript" src="{{ asset('js/mapMarkers.js') }}"></script>
         <script type="text/javascript">
+
             google.charts.load('current', {'packages': ['geomap']});
             google.charts.setOnLoadCallback(drawMap);
 

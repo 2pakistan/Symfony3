@@ -21,10 +21,32 @@
 {% set nbFollowed  =  membre.followed|length %}
 {% set nbFollowers  =  membre.follower|length %}
 
-
-<div>
-    <img src="{{ vich_uploader_asset(membre, 'imagefilecover' ) }}" class="img-responsive" id="coverPicMembre"
+<div class="{{ is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id == membre.id ? 'member-cover' : '' }}">
+    <img src="{{ vich_uploader_asset(membre, 'imagefilecover' ) }}"
+         class="img-responsive"
+         id="coverPicMembre"
          alt="{{ membre.photocouverture }}"/>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and app.user.id == membre.id %}
+        <div class="col-sm-12">
+            <div class="overlay-member-cover">
+                {{ form_start(form , {'attr' : {'id' : 'form_cover_picutre'}}) }}
+                <div class="col-xs-1 col-xs-offset-6 ">
+                    <span class="input-group-btn">
+                             <span class="text-center glyphicon glyphicon-camera" id="btn-cover-img">
+                                 </span>
+                             {{ form_widget(form.imagefilecover.file) }}
+                        </span>
+                </div>
+                <div class="col-xs-2 col-xs-offset-1" id="wrapper-btn-cover hide">
+                    <button type="submit" class="btn btn-custom btn-lg btn-block " id="btn-valid-cover">Save change</button>
+                </div>
+                {{ form_end(form) }}
+                <div class="col-sm-12">
+                    <p class="text-center">Change your cover picture</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 <div class="container">
@@ -40,35 +62,36 @@
                 <p id="dateRegisterMembre"><span class="glyphicon glyphicon-calendar"></span>Registered on
                     {{ membre.createdAt|date("d/m/Y") }}
                 </p>
-                <!--<p id="birthDateMembre"><span class="glyphicon glyphicon-time"></span> Né le 06 juin 1986</p>-->
-                <!-- TODO -->
-            </div>
-            <div class="contactBtnWrapper col-md-8 col-xs-12">
-                <button class="btn btn-lg btn-success btn-block contactMemberBtn text-center " data-toggle="tooltip"
-                        data-placement="top left" title="Send a private message to {{ membre.prenom }}"><span
-                            class="glyphicon glyphicon-comment"></span></button>
+
             </div>
         </div>
 
         <div class="col-sm-8 col-xs-12 text-xs-center">
             <!-- Seconde nav -->
             <div class="navbar navbar-default navbar-static-top" role="navigation">
-                <ul class="nav navbar-nav">
-                    <li {{ route ==  'memberHp' ? 'class="active"' }}><a
-                                href="{{ path('memberHp' , { 'id': membre.id } ) }}"><span
-                                    class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span></a>
+                <ul class="nav navbar-nav tabs">
+                    <li><a href="#homepage">
+                            <span class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span>
+                        </a>
                     </li>
 
-                    <li {{ route ==  'memberVoyages' ? 'class="active"' }}><a
-                                href="{{ path('memberVoyages', { 'id': membre.id } ) }}"><span class="profilNavTitle">TRIPS</span><span
-                                    class="profilNavNumbers text-center">{{ nbTrips }}</span></a></li>
-                    <li {{ route ==  'memberFollowed' ? 'class="active"' }}><a
-                                href="{{ path('memberFollowed', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWED</span><span
-                                    class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span></a>
+                    <li>
+                        <a href="#trips">
+                            <span class="profilNavTitle">TRIPS</span>
+                            <span class="profilNavNumbers text-center">{{ nbTrips }}</span>
+                        </a>
                     </li>
-                    <li {{ route ==  'memberFollowers' ? 'class="active"' }}><a
-                                href="{{ path('memberFollowers', { 'id': membre.id } ) }}"><span class="profilNavTitle">FOLLOWERS</span><span
-                                    class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span></a>
+                    <li>
+                        <a href="#followed">
+                            <span class="profilNavTitle">FOLLOWED</span>
+                            <span class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#followers">
+                            <span class="profilNavTitle">FOLLOWERS</span>
+                            <span class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -113,6 +136,7 @@
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ asset('js/fos_js_routes_dev.js') }}"></script>
 <script src="{{ asset('js/ajaxFollow.js') }}"></script>
+<script src="{{ asset('js/membre.js') }}"></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

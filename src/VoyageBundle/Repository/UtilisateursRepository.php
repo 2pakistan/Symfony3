@@ -18,7 +18,7 @@ class UtilisateursRepository extends EntityRepository
         $qb = $this->createQueryBuilder('u')
                         ->select('u')
                         ->orderBy('u.createdAt','DESC')
-                        ->setMaxResults(3);
+                        ->setMaxResults(4);
 
         return $qb->getQuery()->getResult();
     }

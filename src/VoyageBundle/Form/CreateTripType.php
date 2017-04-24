@@ -17,17 +17,17 @@ class CreateTripType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titrevoyage',TextType::class, array('attr' => array('placeholder' => 'Titre du voyage',
+            ->add('titrevoyage',TextType::class, array('attr' => array('placeholder' => 'Trip title',
                                                                  'class'       => 'title-new-trip form-control')))
             ->add('datedebutvoyage',DateType::class,array(
                 'widget' => 'single_text',
                 // do not render as type="date", to avoid HTML5 date pickers
                 'html5' => false,
                 // add a class that can be selected in JavaScript
-                'attr' => ['placeholder' => 'Date de début','class' => 'js-datepicker form-control'],
+                'attr' => ['placeholder' => 'Start date','class' => 'js-datepicker form-control'],
                 'label'=>' '
             ))
-            ->add('descriptionvoyage',TextareaType::class, array('label'=>'Description du voyage',
+            ->add('descriptionvoyage',TextareaType::class, array('label'=>'Trip description',
                                                                 'label_attr' => array('class' => 'control-label col-sm-2')))
             ->add('imagefile',VichImageType::class, array(
                 'label'=>' ',

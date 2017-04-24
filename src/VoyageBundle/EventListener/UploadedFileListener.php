@@ -21,39 +21,30 @@ class UploadedFileListener
     {
         $entity = $event->getObject();
         if ($entity instanceof Utilisateurs) {
-            //dateInterval between update cover pic and profile pic
-            $timeBetweenUpdate = date_diff($entity->getUpdatedAt(), $entity->getUpdatedAtProfile());
 
-            //if this interval is under a min, we know that user updated both picture and cover pic
-            if ($timeBetweenUpdate->i < 1) {
-                $profilePic = $entity->getImagefile();
-                $coverPic = $entity->getImagefilecover();
-                $pathProfilePic = $profilePic->getRealPath();
-                $pathCoverPic = $coverPic->getRealPath();
-                $this->imgService->open($pathProfilePic)
+            $fileToModify = null ;
+            //get dates of update of profile pic and cover pic
+            $dateUpdateProfile = $entity->getUpdatedAtProfile();
+            $dateUpdateCover = $entity->getUpdatedAt();
+
+            //compare what is the last updated element between the two
+            if($dateUpdateProfile < $dateUpdateCover){
+                $fileToModify = 'cover';
+                $file = $entity->getImagefilecover();
+            }else{
+                $fileToModify = 'profile';
+                $file = $entity->getImagefile();
+            }
+            $path = $file->getRealPath();
+
+            if($fileToModify === 'profile'){
+                $this->imgService->open($path)
                     ->zoomCrop(200, 200)
-                    ->save($pathProfilePic);
-                $this->imgService->open($pathCoverPic)
+                    ->save($path);
+            }else{
+                $this->imgService->open($path)
                     ->zoomCrop(1700, 800, '#ffffff', 'center', 'center')
-                    ->save($pathCoverPic);
-            } else {
-                //we get the last updated element between profile pic or cover pic
-                if ($entity->getUpdatedAt() > $entity->getUpdatedAtProfile()) {
-                    $uploadedFile = $entity->getImagefilecover();
-                    $filePath = $uploadedFile->getRealPath();
-
-                    $this->imgService->open($filePath)
-                        ->zoomCrop(1700, 800, '#ffffff', 'center', 'center')
-                        ->save($filePath);
-
-                } else {
-                    $uploadedFile = $entity->getImagefile();
-                    $filePath = $uploadedFile->getRealPath();
-
-                    $this->imgService->open($filePath)
-                        ->zoomCrop(200, 200, '#ffffff', 'center', 'center')
-                        ->save($filePath);
-                }
+                    ->save($path);
             }
 
         } elseif ($entity instanceof Voyages) {

@@ -20,7 +20,7 @@ class ReviewType extends AbstractType
                 'required' => true,
                 'attr' => array(
                     'class' => 'form-control',
-                    'placeholder' => 'Partagez nous vos impressions ...',
+                    'placeholder' => 'Share your feelings about Travellink ...',
                 ),
             ));
 

@@ -20,6 +20,7 @@
                 <div class="col-sm-12">
                     {{ form_label(form.medias) }}
                     <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+                        {{ form_widget(form.medias) }}
                     </ul>
                 </div>
             </div>

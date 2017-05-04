@@ -7,6 +7,8 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/easy-autocomplete.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/easy-autocomplete.themes.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/rotateCard.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}"/>
 {% endblock %}
 
 {% block body %}
@@ -52,50 +54,90 @@
         <div class="container-fluid">
             <!-- row last users registered -->
             <div class="row">
-                    <div class="col-xs-12 users">
-                        <!-- The Team -->
-                        <div class="home-doctors clearfix">
-                            <div class="container">
-                                <div class="header-homepage">
-                                    <h2>Last registered </h2>
-                                    <h4>Last travellers that joined Travellink's community </h4>
-                                </div>
+                <div class="col-xs-12 users">
 
-                                <div class="row">
-                                    {% for membre in membres %}
-                                        <div class="col-sm-3 text-center doc-item">
-                                            <div class="common-doctor animated fadeInUp clearfix ae-animation-fadeInUp">
-
-                                                <ul class="list-inline social-lists animate">
-                                                    <li><a href="{{ path('memberHp' , {'id' : membre.id }) }}#trips"><i class="fa fa-plane"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                                                </ul>
-
-                                                <figure>
-                                                    <img src="{{ vich_uploader_asset(membre, 'imagefile') }}"
-                                                         class="doc-img animate img img-responsive img-center img-rounded" />
-                                                </figure>
-
-                                                <div class="text-content">
-                                                    <h5><a href="{{ path('memberHp' , {'id' : membre.id } ) }}">
-                                                            {{ membre.prenom }} {{ membre.nom }}
-                                                        </a>
-                                                    </h5>
-                                                    <!-- <div class="for-border"></div> -->
-                                                    <h5>
-                                                        <small>{{ membre.voyages|length }} {{ membre.voyages|length > 1 ? 'trips' : 'trip' }}</small>
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="visible-sm clearfix margin-gap"></div>
-                                    {% endfor %}
-                                </div>
-                            </div>
+                    <div class="container">
+                        <div class="header-homepage">
+                            <h2>Last registered </h2>
+                            <h4>Last travellers that joined Travellink's community </h4>
                         </div>
-                        <!-- //The Team -->
-                    </div>
 
+                        <div class="row">
+                            {% for membre in membres %}
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card-container">
+                                        <div class="card">
+                                            <div class="front">
+                                                <div class="cover">
+                                                    <img src="{{ vich_uploader_asset(membre, 'imagefilecover') }}"
+                                                         class=" img-responsive">
+                                                </div>
+                                                <div class="user">
+                                                    <img class="img-circle"
+                                                         src="{{ vich_uploader_asset(membre, 'imagefile') }}"/>
+                                                </div>
+                                                <div class="content">
+                                                    <div class="main">
+                                                        <h3 class="name">{{ membre.prenom }} {{ membre.nom }}</h3>
+                                                        <p class="profession">{{ membre.nationalite }}</p>                                                        <p class="text-center">
+                                                            "<em>{{ membre.descriptionprofil }}</em>"
+                                                        </p>
+                                                    </div>
+
+
+                                                </div>
+                                            </div> <!-- end front panel -->
+                                            <div class="back">
+                                                <div class="header">
+                                                    <h5 class="motto">{{ membre.descriptionprofil }}</h5>
+                                                </div>
+                                                <div class="content">
+                                                    <div class="main">
+                                                        <h3 class="text-center">
+                                                            {{ membre.nbCountries }}
+                                                        </h3>
+                                                        <h4 class="text-center">
+                                                            {{ membre.nbCountries > 1 ? 'countries' : 'country' }} visited
+                                                        </h4>
+
+                                                        <div class="stats-container">
+                                                            <div class="stats">
+                                                                <h4>{{ membre.follower|length }}</h4>
+                                                                <p>
+                                                                    <a href="{{ path('memberHp' , {'id' : membre.id}) }}#followers">
+                                                                        {{ membre.follower|length > 1 ? 'Followers' : 'Follower' }}
+                                                                    </a>
+                                                                </p>
+                                                            </div>
+                                                            <div class="stats">
+                                                                <h4>{{ membre.followed|length }}</h4>
+                                                                <p>
+                                                                    <a href="{{ path('memberHp' , {'id' : membre.id}) }}#followed">
+                                                                        Following
+                                                                    </a>
+                                                                </p>
+                                                            </div>
+                                                            <div class="stats">
+                                                                <h4>{{ membre.voyages|length }}</h4>
+                                                                <p>
+                                                                    <a href="{{ path('memberHp' , {'id' : membre.id}) }}#trips">
+                                                                        {{ membre.voyages|length > 1 ? 'Trips' : 'Trip' }}
+                                                                    </a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end back panel -->
+                                        </div> <!-- end card -->
+                                    </div> <!-- end card-container -->
+                                </div> <!-- end col sm 3 -->
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- ./Panel last users registered -->
         </div>
@@ -179,7 +221,6 @@
                         <div class="carousel-inner">
                             {% for membre in membreReviews %}
                                 <!-- Quote 1 -->
-
                                 <div class="item {{ loop.index ==  1 ? 'active' }}">
                                     <blockquote>
                                         <div class="row">
@@ -187,8 +228,9 @@
                                                 <img class="img-circle"
                                                      src="{{ vich_uploader_asset(membre, 'imagefile') }}">
                                             </div>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-6 col-sm-offset-2">
                                                 <p>{{ membre.review }}</p>
+                                                {{ membre.rating|rating(5, "fa-2x") }}
                                             </div>
                                         </div>
                                     </blockquote>
@@ -210,10 +252,15 @@
     <!-- END section users review -->
 {% endblock %}
 
+
 {% block javascripts %}
+
     <script src="{{ asset('js/ajaxSearchPlaces.js') }}"></script>
     <script src="{{ asset('js/reviewCarousel.js') }}"></script>
     <script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
+    <script src="{{ asset('js/rotateCard.js') }}"></script>
+    <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
+
 {% endblock %}
 
 

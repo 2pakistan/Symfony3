@@ -3,6 +3,8 @@
 namespace VoyageBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use VoyageBundle\Entity\Utilisateurs;
+
 
 class CountriesRepository extends EntityRepository
 {
@@ -18,5 +20,6 @@ class CountriesRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
 
 }

@@ -9,24 +9,28 @@
 namespace VoyageBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use VoyageBundle\Entity\Utilisateurs;
 
 class UtilisateursRepository extends EntityRepository
 {
 
     //Function qui retourne les 3 derniers utilisateurs inscrits.
-    public function findLastRegistered(){
+    public function findLastRegistered()
+    {
         $qb = $this->createQueryBuilder('u')
-                        ->select('u')
-                        ->orderBy('u.createdAt','DESC')
-                        ->setMaxResults(4);
+            ->select('u')
+            ->orderBy('u.createdAt', 'DESC')
+            ->setMaxResults(4);
 
         return $qb->getQuery()->getResult();
     }
+
     //Function qui retourne les 3 derniers avis publiés
-    public function findLastReviews(){
+    public function findLastReviews()
+    {
         $qb = $this->createQueryBuilder('u')
             ->select('u')
-            ->orderBy('u.reviewedAt','DESC')
+            ->orderBy('u.reviewedAt', 'DESC')
             ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
@@ -40,7 +44,7 @@ class UtilisateursRepository extends EntityRepository
             ->addSelect('v');
 
         $query = $query->add('where', $query->expr()->in('v', ':v'))
-            ->setParameter('v',$voyage )
+            ->setParameter('v', $voyage)
             ->getQuery()
             ->getResult();
 

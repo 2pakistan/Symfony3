@@ -17,7 +17,6 @@ services:
 
     app_bundle.listener.uploaded_file_listener:
         class: VoyageBundle\EventListener\UploadedFileListener
-        calls:
-            - [ setImgService, ["@image.handling"] ]
+        arguments: ["@image.handling"]
         tags:
             - { name: kernel.event_listener, event: vich_uploader.post_upload, method: onPostUpload }

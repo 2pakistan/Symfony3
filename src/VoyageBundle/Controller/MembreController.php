@@ -43,10 +43,14 @@ class MembreController extends Controller
             return $this->redirectToRoute('memberHp' ,array('id' => $membre->getId()));
         }
 
+        $nbCountriesVisited = $em->getRepository('VoyageBundle:Etapes')
+            ->countCountriesVisitedByUser($membre);
+
         $this->get('app.js_vars')->userId = $id;
 
         return $this->render('VoyageBundle:Default:membre/layout/membre.html.twig', array(
             'membre' => $membre ,
+            'nbCountriesVisited' => $nbCountriesVisited ,
             'form' => $form->createView(),
             ));
     }

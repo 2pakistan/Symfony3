@@ -77,7 +77,9 @@ class VoyageController extends Controller
 
         //Renders an array of countries visited with number of steps in each countries
         $dataCountries = array(['countries', 'nombre d\'etapes']);
-        $countries = $traveller->getCountriesVisited();
+        $countries = $em->getRepository('VoyageBundle:Etapes')
+            ->getCountriesVisitedByUser($traveller);
+
         foreach ($countries as $country) {
             $countSteps = $em->getRepository('VoyageBundle:Etapes')
                 ->getNbStepsByCountry($country, $trip);

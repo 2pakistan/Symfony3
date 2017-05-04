@@ -131,10 +131,9 @@
 
         <!-- input upload profile picture -->
         <div class="form-group registerFormRow row">
-            {{ form(form.imagefile.delete, {'attr':{'class':'hide'}}) }}
+            {{ form_widget(form.imagefile.delete, {'attr':{'class':'hide'}}) }}
 
-            {{ form_label(form.imagefile.file, 'Profile picture' , {'label_attr': {'class':
-                'control-label col-sm-2'}}) }}
+            {{ form_label(form.imagefile.file, 'Profile picture' , {'label_attr': {'class':'control-label col-sm-2'}}) }}
 
             <div class="col-sm-7">
                 <div class="input-group image-preview" id="profile-preview">
@@ -156,12 +155,9 @@
             </div>
         </div>
 
-
-
-
         <!-- input upload cover picture -->
         <div class="form-group registerFormRow row">
-            {{ form(form.imagefilecover.delete, {'attr':{'class':'hide'}}) }}
+            {{ form_widget(form.imagefilecover.delete, {'attr':{'class':'hide'}}) }}
 
             {{ form_label(form.imagefilecover.file, 'Cover picture' , {'label_attr': {'class':
                 'control-label col-sm-2'}}) }}
@@ -186,10 +182,6 @@
             </div>
         </div>
 
-
-
-
-
         <!-- Button submit Create account -->
         <div class="row registerFormRow form-group">
             <div class="col-sm-9">
@@ -204,6 +196,7 @@
                 {{ form_errors(form._token) }}
             </div>
         {% endif %}
+
         {{ form_end(form) }}
     </div>
 </div>

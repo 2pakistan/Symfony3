@@ -70,27 +70,29 @@
             <!-- Seconde nav -->
             <div class="navbar navbar-default navbar-static-top" role="navigation">
                 <ul class="nav navbar-nav tabs">
-                    <li><a href="#homepage">
-                            <span class="profilNavTitle">POSTS</span><span class="profilNavNumbers">1453</span>
+                    <li>
+                        <a href="#homepage">
+                            <span class="profilNavTitle ">POSTS</span>
+                            <span class="profilNavNumbers count-number">1453</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="#trips">
                             <span class="profilNavTitle">TRIPS</span>
-                            <span class="profilNavNumbers text-center">{{ nbTrips }}</span>
+                            <span class="profilNavNumbers text-center count-number">{{ nbTrips }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#followed">
                             <span class="profilNavTitle">FOLLOWED</span>
-                            <span class="profilNavNumbers text-center" id="nbFollowed">{{ nbFollowed }}</span>
+                            <span class="profilNavNumbers text-center count-number" id="nbFollowed">{{ nbFollowed }}</span>
                         </a>
                     </li>
                     <li>
                         <a href="#followers">
                             <span class="profilNavTitle">FOLLOWERS</span>
-                            <span class="profilNavNumbers text-center" id="nbFolllowers">{{ nbFollowers }}</span>
+                            <span class="profilNavNumbers text-center count-number" id="nbFolllowers">{{ nbFollowers }}</span>
                         </a>
                     </li>
                 </ul>
@@ -137,6 +139,17 @@
 <script src="{{ asset('js/fos_js_routes_dev.js') }}"></script>
 <script src="{{ asset('js/ajaxFollow.js') }}"></script>
 <script src="{{ asset('js/membre.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
+<script type="text/javascript" async defer>
+    $(function() {
+        $('.count-number').counterUp({
+            delay: 10,
+            time: 2000
+        });
+    });
+</script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

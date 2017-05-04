@@ -44,9 +44,16 @@ class AccueilController extends Controller
 
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $lastLogin = $this->getUser()->getLastLogin();
-            $nbStepsUnseen = $this->getStepsPublishedSince($lastLogin,$this->getUser());
+            $nbStepsUnseen = $this->getStepsPublishedSince($lastLogin,$this->getUser()->getVoyages()->toArray());
+
         }else{
             $nbStepsUnseen = null;
+        }
+
+        foreach ($membres as $membre){
+            $nb = $em->getRepository('VoyageBundle:Etapes')
+                ->countCountriesVisitedByUser($membre);
+            $membre->setNbCountries($nb);
         }
 
         return $this->render('VoyageBundle:Default:index.html.twig', array('form' => $form->createView(),
@@ -149,15 +156,20 @@ if(!empty($stepsInStates)){
      */
     public function reviewAction(Request $request)
     {
+        if ($this->getUser() === null){
+            return $this->redirectToRoute('fos_user_security_login');
+        }
         $form = $this->createForm(ReviewType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $review = $form->getData()['review'];
+            $rating = $form->getData()['rating'];
 
             $user = $this->getUser();
             $user->setReview($review);
+            $user->setRating($rating);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

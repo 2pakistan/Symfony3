@@ -24,8 +24,8 @@ class RegistrationType extends AbstractType
                     'label'=>'Personal description',
                     'required' => false
                 ))
-                ->add('imagefile',VichImageType::class, array('label'=>' ','required' => false ))
-                ->add('imagefilecover',VichImageType::class, array('label'=>' ','required' => false ));
+                ->add('imagefile',VichImageType::class, array('label'=>' ','required' => true ))
+                ->add('imagefilecover',VichImageType::class, array('label'=>' ','required' => true ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

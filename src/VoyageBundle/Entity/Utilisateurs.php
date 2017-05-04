@@ -140,6 +140,13 @@ class Utilisateurs extends BaseUser
     private $review;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="rating", type="integer", length=1, nullable=true )
+     */
+    private $rating;
+
+    /**
      * @ORM\Column(type="datetime",nullable=true)
      *
      * @var \DateTime
@@ -184,25 +191,7 @@ class Utilisateurs extends BaseUser
      */
     private $voyages;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Countries", inversedBy="visitors",  cascade={"persist"})
-     */
-    private $countriesVisited;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Voyages", inversedBy="followers",  cascade={"persist"})
-     * @ORM\JoinTable(name="suivre_voyage",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idVoyage", referencedColumnName="idVoyage")
-     *   }
-     * )
-     */
-    private $tripsFollowed;
+    private $nbCountries;
 
     public function __construct()
     {
@@ -215,8 +204,6 @@ class Utilisateurs extends BaseUser
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->countriesVisited = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tripsFollowed = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -540,69 +527,6 @@ class Utilisateurs extends BaseUser
         return $this->voyages;
     }
 
-    /**
-     * Add countryVisited
-     *
-     * @param \VoyageBundle\Entity\Countries $countryVisited
-     *
-     * @return Countries
-     */
-    public function addCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
-    {
-        $this->countriesVisited[] = $countryVisited;
-    }
-
-    /**
-     * Remove countryVisited
-     *
-     * @param \VoyageBundle\Entity\Countries $countryVisited
-     */
-    public function removeCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
-    {
-        $this->countriesVisited->removeElement($countryVisited);
-    }
-
-    /**
-     * Get countriesVisited
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCountriesVisited()
-    {
-        return $this->countriesVisited;
-    }
-
-    /**
-     * Add tripFollowed
-     *
-     * @param \VoyageBundle\Entity\Voyages $trip
-     *
-     * @return Countries
-     */
-    public function addTripFollowed(\VoyageBundle\Entity\Voyages $trip)
-    {
-        $this->tripsFollowed[] = $trip;
-    }
-
-    /**
-     * Remove tripFollowed
-     *
-     * @param \VoyageBundle\Entity\Voyages $trip
-     */
-    public function removeTripFollowed(\VoyageBundle\Entity\Voyages $trip)
-    {
-        $this->tripsFollowed->removeElement($trip);
-    }
-
-    /**
-     * Get tripsFollowed
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTripsFollowed()
-    {
-        return $this->tripsFollowed;
-    }
 
     /**
      * @return string
@@ -653,6 +577,37 @@ class Utilisateurs extends BaseUser
         return $this->updatedAtProfile;
     }
 
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbCountries()
+    {
+        return $this->nbCountries;
+    }
+
+    /**
+     * @param mixed $nbCountries
+     */
+    public function setNbCountries($nbCountries)
+    {
+        $this->nbCountries = $nbCountries;
+    }
 
 
     /**

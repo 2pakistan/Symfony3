@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use VoyageBundle\Form\ReviewType;
 
 class AccueilController extends Controller
 {
@@ -26,12 +27,12 @@ class AccueilController extends Controller
         $voyageRepo = $em->getRepository('VoyageBundle:Voyages');
         $voyages = $voyageRepo->findLastTrips();
 
-        foreach ($voyages as $voyage){
-            $travellers = $membreRepo->findTravellersByVoyage($voyage);
-            foreach ($travellers as $traveller){
-                $voyage->addVoyageur($traveller);
-            }
+        foreach($membres as $membre){
+            $nbCountries = $em->getRepository('VoyageBundle:Etapes')
+                ->countCountriesVisitedByUser($membre);
+            $membre->setNbCountries($nbCountries);
         }
+
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('searchPlace'))
             ->setMethod('post')
@@ -100,6 +101,37 @@ class AccueilController extends Controller
             return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array('place' => $placeName ,
                 'voyages' => $voyages));
         }
+    }
+
+    /**
+     * @Route("/review", name="userReview")
+     */
+    public function userReview(Request $request){
+
+        $form = $this->createForm(ReviewType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $review = $form->getData()['review'];
+            $rating = $form->getData()['rating'];
+
+            //On recupere les donnees du form
+            $user = $this->getUser();
+            $user->setReview($review);
+            $user->setRating($rating);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('VoyageBundle:Default/membre/layout:userReview.html.twig' ,array(
+            'form' => $form->createView(),
+        ));
+
     }
 
 }

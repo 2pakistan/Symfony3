@@ -158,7 +158,7 @@ class Utilisateurs extends BaseUser
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", inversedBy="follower", cascade={"persist"})
-     * @ORM\JoinTable(name="etreami",
+             * @ORM\JoinTable(name="etreami",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id", referencedColumnName="id")
      *   },

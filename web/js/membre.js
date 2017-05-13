@@ -20,7 +20,7 @@ $(document).ready(function () {
             // Set preview image into the popover data-content
             reader.onload = function (e) {
                 $('#coverPicMembre').attr('src', e.target.result);
-            }
+            };
             reader.readAsDataURL(file);
 
         });

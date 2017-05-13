@@ -9,8 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use VoyageBundle\Entity\Countries;
-use VoyageBundle\Form\ReviewType;
 
 class AccueilController extends Controller
 {
@@ -24,160 +22,84 @@ class AccueilController extends Controller
         // On recupere les 3 derniers inscrits
         $membreRepo = $em->getRepository('VoyageBundle:Utilisateurs');
         $membres = $membreRepo->findLastRegistered();
-
+        $membreReviews = $membreRepo->findLastReviews();
         $voyageRepo = $em->getRepository('VoyageBundle:Voyages');
         $voyages = $voyageRepo->findLastTrips();
 
-        $membreReviews = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->findLastReviews();
-
+        foreach ($voyages as $voyage){
+            $travellers = $membreRepo->findTravellersByVoyage($voyage);
+            foreach ($travellers as $traveller){
+                $voyage->addVoyageur($traveller);
+            }
+        }
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('searchPlace'))
             ->setMethod('post')
-            ->add('nomDestination', TextType::class, array('label' => '',
-                'required' => false,
-                'attr' => array('class' => 'form-control',
-                    'id' => 'form-search',
-                    'placeholder' => 'Search for countries, states or cities')
+            ->add('nomDestination',TextType::class, array('label'=>'',
+                                                          'required' => false ,
+                                                          'attr' => array( 'class' => 'form-control',
+                                                                         'id' => 'form-search',
+                                                                         'placeholder' => 'Search for countries, cities or a people')
             ))
             ->getForm();
 
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $lastLogin = $this->getUser()->getLastLogin();
-            $nbStepsUnseen = $this->getStepsPublishedSince($lastLogin,$this->getUser()->getVoyages()->toArray());
-
-        }else{
-            $nbStepsUnseen = null;
-        }
-
-        foreach ($membres as $membre){
-            $nb = $em->getRepository('VoyageBundle:Etapes')
-                ->countCountriesVisitedByUser($membre);
-            $membre->setNbCountries($nb);
-        }
-
-        return $this->render('VoyageBundle:Default:index.html.twig', array('form' => $form->createView(),
-            'membres' => $membres,
-            'voyages' => $voyages,
-            'membreReviews' => $membreReviews,
-            'stepsUnseen' => $nbStepsUnseen
-        ));
-    }
-
-    protected function getStepsPublishedSince($datetime,$user)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $nbSteps = $em->getRepository('VoyageBundle:Etapes')
-            ->getNbStepsUnseenSince($datetime,$user);
-
-        return $nbSteps;
-
+        return $this->render('VoyageBundle:Default:index.html.twig' ,array('form' => $form->createView(),
+                                                                           'membres' => $membres,
+                                                                           'membreReviews' => $membreReviews,
+                                                                           'voyages'=> $voyages));
     }
 
     /**
      * @Route("/search", options={"expose"=true}, name="searchPlace")
      * @Method("POST")
      */
-    public function searchDestinationAction(Request $request)
-    {
+    public function searchDestinationAction(Request $request){
         $em = $this->getDoctrine()->getManager();
 
-        if ($request->isXmlHttpRequest()) {
-
+        if($request->isXmlHttpRequest()) { // pour vérifier la présence d'une requete Ajax
             $string = $request->request->get('string');
-            /*
 
-$stepsInCountries =  $em->getRepository('VoyageBundle:Etapes')
-    ->getStepsByCountryString($string);
-$stepsInCities =  $em->getRepository('VoyageBundle:Etapes')
-    ->getStepsByCityString($string);
-$stepsInStates =  $em->getRepository('VoyageBundle:Etapes')
-    ->getStepsByStateString($string);
-
-$placesNames = array();
-if(!empty($stepsInCountries)){
-    foreach ($stepsInCountries as $step){
-        $placesNames[] = $step->getCountry()->getName();
-    }
-}
-if(!empty($stepsInCities)){
-    foreach ($stepsInCountries as $step){
-        $placesNames[] = $step->getCities()->getName();
-    }
-}
-if(!empty($stepsInStates)){
-    foreach ($stepsInCountries as $step){
-        $placesNames[] = $step->getState()->getName();
-    }
-}
-
-*/
-            $countries = $em->getRepository('VoyageBundle:Countries')
+            $countries = $em->getRepository('VoyageBundle:Destination')
                 ->getCountriesByString($string);
-            $cities = $em->getRepository('VoyageBundle:Cities')
-                ->getCitiesByString($string);
-            $states = $em->getRepository('VoyageBundle:States')
-                ->getStatesByString($string);
-            $places = array();
+            $places = $em->getRepository('VoyageBundle:Destination')
+                ->getPlacesByString($string);
+
             if (!empty($countries)) {
-                foreach ($countries as $country => $vals) {
-                    $places[]['name'] = $countries[$country]->getName();
-                    $places[$country]['type'] = 'country';
+                $countriesFound = array();
+                foreach ($countries as $country) {
+                    $countriesFound[] = $country->getPays();
                 }
+            } else {
+                $countriesFound = null;
+            }
+            if (!empty($places)) {
+                $placesFound = array();
+                foreach ($places as $place) {
+                    $placesFound[] = $place->getNomDestination();
+                }
+            } else {
+                $placesFound = null;
             }
 
-            if (!empty($cities)) {
-                foreach ($cities as $city => $vals) {
-                    $places[]['name'] = $cities[$city]->getName();
-                    $places[$city]['type'] = 'city';
-                }
-            }
-
-            if (!empty($states)) {
-                foreach ($states as $state => $vals) {
-                    $places[]['name'] = $states[$state]->getName();
-                    $places[$state]['type'] = 'state';
-                }
-            }
             $response = new JsonResponse();
-            return $response->setData($places);
-        } else {
+            return $response->setData(array('countries' => $countriesFound ,
+                                            'places' => $placesFound));
+        }else{
             $placeName = $request->request->get('form')['nomDestination'];
-            $steps = $em->getRepository('VoyageBundle:Etapes')
-                ->getStepsByPlaceString($placeName);
-            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig', array('steps' => $steps, 'placename' => $placeName));
+            if($placeName !== ''){
+                $destination = $em->getRepository('VoyageBundle:Destination')
+                    ->findOneBy(array('nomdestination' => $placeName));
+                if($destination == null){
+                    $destination = $em->getRepository('VoyageBundle:Destination')
+                        ->findOneBy(array('pays' => $placeName));
+                }
+                $idPlace = $destination->getIddestination();
+                $voyages = $em->getRepository('VoyageBundle:Etapes')
+                    ->findBy(array('iddestination' => $idPlace));
+            }
+            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array('place' => $placeName ,
+                'voyages' => $voyages));
         }
     }
 
-    /**
-     *
-     * @Route("/review", name="userReview")
-     */
-    public function reviewAction(Request $request)
-    {
-        if ($this->getUser() === null){
-            return $this->redirectToRoute('fos_user_security_login');
-        }
-        $form = $this->createForm(ReviewType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $review = $form->getData()['review'];
-            $rating = $form->getData()['rating'];
-
-            $user = $this->getUser();
-            $user->setReview($review);
-            $user->setRating($rating);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            return $this->redirectToRoute('homepage');
-        }
-
-        return $this->render('VoyageBundle:Default/membre/layout:userReview.html.twig', array('form' => $form->createView()));
-    }
 }

@@ -27,6 +27,7 @@ jQuery(document).ready(function() {
         }
 
     };
+        console.log(inputSearch.easyAutocomplete(options));
         inputSearch.easyAutocomplete(options);
 
 

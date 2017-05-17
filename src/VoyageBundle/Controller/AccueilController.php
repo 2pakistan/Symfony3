@@ -60,15 +60,17 @@ class AccueilController extends Controller
         if($request->isXmlHttpRequest()) { // pour vérifier la présence d'une requete Ajax
             $string = $request->request->get('string');
 
-            $countries = $em->getRepository('VoyageBundle:Destination')
+            $countries = $em->getRepository('VoyageBundle:Countries')
                 ->getCountriesByString($string);
-            $places = $em->getRepository('VoyageBundle:Destination')
-                ->getPlacesByString($string);
+            $states = $em->getRepository('VoyageBundle:States')
+                ->getStatesByString($string);
+            $places = $em->getRepository('VoyageBundle:Cities')
+                ->getCitiesByString($string);
 
             if (!empty($countries)) {
                 $countriesFound = array();
                 foreach ($countries as $country) {
-                    $countriesFound[] = $country->getPays();
+                    $countriesFound[] = $country->getName();
                 }
             } else {
                 $countriesFound = null;
@@ -76,15 +78,25 @@ class AccueilController extends Controller
             if (!empty($places)) {
                 $placesFound = array();
                 foreach ($places as $place) {
-                    $placesFound[] = $place->getNomDestination();
+                    $placesFound[] = $place->getName();
                 }
             } else {
                 $placesFound = null;
             }
 
+            if (!empty($states)) {
+                $statesFound = array();
+                foreach ($states as $state) {
+                    $statesFound[] = $state->getName();
+                }
+            } else {
+                $statesFound = null;
+            }
+
             $response = new JsonResponse();
             return $response->setData(array('countries' => $countriesFound ,
-                                            'places' => $placesFound));
+                                            'places' => $placesFound ,
+                                            'states' => $statesFound));
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
             if($placeName !== ''){

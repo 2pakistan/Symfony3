@@ -40,10 +40,7 @@
                     <!-- </form>-->
                     {{ form_end(form) }}
                     <!-- List group -->
-                    <ul id="autolist" class="list-group">
-                        <div id="autocompleteTest">
-                        </div>
-                    </ul>
+                    <div id="match"></div>
                 </div>
 
             </div>
@@ -254,12 +251,10 @@
 
 
 {% block javascripts %}
-    <script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
-    <script src="{{ asset('js/ajaxSearchPlaces.js') }}"></script>
+    <script src="{{ asset('js/autocompletePlaces.js') }}"></script>
     <script src="{{ asset('js/reviewCarousel.js') }}"></script>
     <script src="{{ asset('js/rotateCard.js') }}"></script>
     <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
-
 {% endblock %}
 
 

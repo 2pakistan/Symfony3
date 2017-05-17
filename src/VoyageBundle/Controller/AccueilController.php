@@ -40,7 +40,7 @@ class AccueilController extends Controller
                                                           'required' => false ,
                                                           'attr' => array( 'class' => 'form-control',
                                                                          'id' => 'form-search',
-                                                                         'placeholder' => 'Search for countries, cities or a people')
+                                                                         'placeholder' => 'Search for country or a city')
             ))
             ->getForm();
 
@@ -62,56 +62,52 @@ class AccueilController extends Controller
 
             $countries = $em->getRepository('VoyageBundle:Countries')
                 ->getCountriesByString($string);
-            $states = $em->getRepository('VoyageBundle:States')
-                ->getStatesByString($string);
+
             $places = $em->getRepository('VoyageBundle:Cities')
                 ->getCitiesByString($string);
 
+            $results = [] ;
             if (!empty($countries)) {
-                $countriesFound = array();
                 foreach ($countries as $country) {
-                    $countriesFound[] = $country->getName();
+                    $results[] = $country->getName();
                 }
-            } else {
-                $countriesFound = null;
             }
+
             if (!empty($places)) {
-                $placesFound = array();
                 foreach ($places as $place) {
-                    $placesFound[] = $place->getName();
+                    $results[] = $place->getName();
                 }
-            } else {
-                $placesFound = null;
             }
 
-            if (!empty($states)) {
-                $statesFound = array();
-                foreach ($states as $state) {
-                    $statesFound[] = $state->getName();
-                }
-            } else {
-                $statesFound = null;
+            $placesList = '<ul id="matchList" class="list-group">';
+            foreach ($results as $result) {
+                $matchStringBold = preg_replace('/(' . $string . ')/i', '<strong>$1</strong>', $result); // Replace text field input by bold one
+                $placesList .= '<li class="list-group-item" id="' . $result . '">' . $matchStringBold . '</li>'; // Create the matching list - we put maching name in the ID too
             }
+            $placesList .= '</ul>';
+            return new JsonResponse(array('placesList' => $placesList));
 
-            $response = new JsonResponse();
-            return $response->setData(array('countries' => $countriesFound ,
-                                            'places' => $placesFound ,
-                                            'states' => $statesFound));
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
             if($placeName !== ''){
-                $destination = $em->getRepository('VoyageBundle:Destination')
-                    ->findOneBy(array('nomdestination' => $placeName));
-                if($destination == null){
-                    $destination = $em->getRepository('VoyageBundle:Destination')
-                        ->findOneBy(array('pays' => $placeName));
+                $country = $em->getRepository('VoyageBundle:Countries')
+                    ->findBy(array('name' => $placeName));
+                if($country === null){
+                    $city = $em->getRepository('VoyageBundle:Cities')
+                        ->findBy(array('name' => $placeName));
+                    $steps = $em->getRepository('VoyageBundle:Etapes')
+                        ->findBy(array('city' => $city));
+                }else{
+                    $steps = $em->getRepository('VoyageBundle:Etapes')
+                        ->findBy(array('country' => $country));
                 }
-                $idPlace = $destination->getIddestination();
-                $voyages = $em->getRepository('VoyageBundle:Etapes')
-                    ->findBy(array('iddestination' => $idPlace));
+            }else{
+                $steps = $em->getRepository('VoyageBundle:Etapes')
+                    ->findAll();
             }
-            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array('place' => $placeName ,
-                'voyages' => $voyages));
+            return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array(
+                'placename' => $placeName ,
+                'steps' => $steps));
         }
     }
 
@@ -125,10 +121,10 @@ class AccueilController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //On recupere les donnees du form
             $review = $form->getData()['review'];
             $rating = $form->getData()['rating'];
 
-            //On recupere les donnees du form
             $user = $this->getUser();
             $user->setReview($review);
             $user->setRating($rating);

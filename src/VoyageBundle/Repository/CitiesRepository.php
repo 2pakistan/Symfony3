@@ -15,7 +15,7 @@ class CitiesRepository extends EntityRepository
             ->distinct('c.name')
             ->where('c.name LIKE :string')
             ->setParameter('string', '%'.$string.'%')
-            ->setMaxResults(5);
+            ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }

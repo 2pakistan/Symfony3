@@ -213,13 +213,6 @@ class VoyageController extends Controller
             if ($country instanceof Countries) {
                 $step->setCountry($country);
 
-                $user = $this->getUser();
-                $countriesVisited = $user->getCountriesVisited()->toArray();
-
-                //if the user have never been in this country yet
-                if (!in_array($country, $countriesVisited)) {
-                    $user->addCountryVisited($country);
-                }
             } else {
                 $step->setCountry(null);
                 $step->setCities(null);
@@ -242,7 +235,6 @@ class VoyageController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $user = $this->getUser();
-            $nbCountries = 0;
             $idTrip = $request->request->get('trip');
 
             $trip = $em->getRepository('VoyageBundle:Voyages')
@@ -252,13 +244,7 @@ class VoyageController extends Controller
                 ->findBy(array('trip' => $trip));
             $nbSteps = count($tripSteps);
             if (!empty($tripSteps)) {
-
                 foreach ($tripSteps as $step) {
-                    $country = $step->getCountry();
-                    $nbCountries += 1;
-                    //TODO :CONTROL IF THE DELETED STEP IS THE ONLY ONE IN THIS COUNTRY FOR THIS USER
-                    //TODO : IF SO REMOVE THIS COUNTRY FROM USER VISITED COUNTRIES
-                    $user->removeCountryVisited($country);
                     $em->remove($step);
                 }
             }
@@ -269,7 +255,7 @@ class VoyageController extends Controller
             $em->flush();
 
             $response = new JsonResponse();
-            return $response->setData(array('success' => true, 'nbCountries' => $nbCountries, 'nbSteps' => $nbSteps));
+            return $response->setData(array('success' => true, 'nbSteps' => $nbSteps));
 
         } else {
             // TODO : REDIRECT

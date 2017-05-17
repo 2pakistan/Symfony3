@@ -22,13 +22,8 @@
                                 <div class="card">
                                     <div class="front">
                                         <div class="cover">
-                                            {% if step.medias is not empty %}
-                                                <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                <img src="{{ vich_uploader_asset(traveller, 'imagefilecover') }}"
                                                      class=" img-responsive">
-                                            {% else %}
-                                                <img src="{{ asset('img/undefined.jpg') }}"
-                                                     class="img-center img-responsive">
-                                            {% endif %}
                                         </div>
                                         <div class="user">
                                             <img class="img-circle"
@@ -38,9 +33,10 @@
                                             <div class="main">
                                                 <h3 class="name">{{ traveller.prenom }} {{ traveller.nom }}</h3>
                                                 <p class="text-center">
-                                                    " {{ desc|length > 60 ? desc[:60] ~ ' ...' :  desc }}"
+                                                    " {{ traveller.descriptionprofil }}"
                                                 </p>
                                             </div>
+
                                             <div class="stats-container">
                                                 <div class="stats">
                                                     <h4>{{ traveller.follower|length }}</h4>
@@ -70,6 +66,13 @@
                                         </div>
                                         <div class="content">
                                             <div class="main">
+                                                {% if step.medias is not empty %}
+                                                    <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                         class=" img-responsive">
+                                                {% else %}
+                                                    <img src="{{ asset('img/undefined.png') }}"
+                                                         class="img-center img-responsive">
+                                                {% endif %}
                                                 <h4 class="text-center">
                                                     <a href="{{ path('voyagePage' , {'idVoyage' : voyage.idvoyage }) }}#step-{{ step.idetape }}">
                                                         {{ desc|length > 40 ? desc[:40] ~ ' ...' :  desc }}

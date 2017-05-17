@@ -13,7 +13,7 @@ class StatesRepository extends EntityRepository
             ->distinct('s.name')
             ->where('s.name LIKE :string')
             ->setParameter('string', '%'.$string.'%')
-            ->setMaxResults(5);
+            ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }

@@ -40,6 +40,13 @@ class Cities
     private $state;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Rencontres", mappedBy="lieu", cascade={"persist"})
+     */
+    private $rencontres;
+
+
+    /**
      * @return int
      */
     public function getId()

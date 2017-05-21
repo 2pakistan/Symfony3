@@ -129,14 +129,6 @@
                                 </div>
                             </div>
                         </section>
-                        <section class="user-map-countries">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <h3>Countries visited in this trip</h3>
-                                    <div id="regions_div"></div>
-                                </div>
-                            </div>
-                        </section>
                     {% endif %}
                 </section>
             </section>
@@ -149,31 +141,8 @@
 {% endblock %}
 
 {% block javascripts %}
-
     {% if steps|length > 0 %}
-
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript" src="{{ asset('js/mapMarkers.js') }}"></script>
-        <script type="text/javascript">
-
-            google.charts.load('current', {'packages': ['geomap']});
-            google.charts.setOnLoadCallback(drawMap);
-
-            var JsVars = jQuery('#js-vars').data('vars');
-            var usrDataCountries = JsVars.dataCountries;
-
-            function drawMap() {
-                var data = google.visualization.arrayToDataTable(usrDataCountries);
-                var options = {};
-                options['dataMode'] = 'regions';
-                options['height'] = '550px';
-
-                var container = document.getElementById('regions_div');
-                var geomap = new google.visualization.GeoMap(container);
-                geomap.draw(data, options);
-            }
-        </script>
     {% endif %}
-
 {% endblock %}
 

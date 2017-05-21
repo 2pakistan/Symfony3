@@ -191,6 +191,12 @@ class Utilisateurs extends BaseUser
      */
     private $voyages;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Inscription", mappedBy="rencontre", cascade={"persist"})
+     */
+    private $inscription;
+
     private $nbCountries;
 
     public function __construct()
@@ -204,6 +210,8 @@ class Utilisateurs extends BaseUser
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscription = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     /**
@@ -607,6 +615,39 @@ class Utilisateurs extends BaseUser
     public function setNbCountries($nbCountries)
     {
         $this->nbCountries = $nbCountries;
+    }
+
+    /**
+     * Add inscription
+     *
+     * @param \VoyageBundle\Entity\Inscription $inscription
+     *
+     * @return Utilisateurs
+     */
+    public function addInscription(\VoyageBundle\Entity\Inscription $inscription)
+    {
+        $this->inscription[] = $inscription;
+        return $this;
+    }
+
+    /**
+     * Remove inscription
+     *
+     * @param \VoyageBundle\Entity\Inscription $inscription
+     */
+    public function removeInscription(\VoyageBundle\Entity\Inscription $inscription)
+    {
+        $this->inscription->removeElement($inscription);
+    }
+
+    /**
+     * Get inscriptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInscription()
+    {
+        return $this->inscription;
     }
 
 

@@ -3,77 +3,6 @@
 
 {% block body %}
 
-    <div id="homepage" class="tab-content">
-        <!-- post sans photos -->
-        <div class="memberPostStep row">
-            <div class="col-lg-2 col-md-2 col-xs-3">
-                <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}"
-                     class="img-responsive img-rounded marginPictureMember" alt="userpic"/>
-            </div>
-
-            <div class="col-lg-10 col-md-10 col-xs-9">
-                <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
-                <p class="identifiantMembre inline no-margin"> . 19 déc.</p>
-                <p class="stepLocation identifiantMembre"><span class="glyphicon glyphicon-globe"> USA</span></p>
-                <p> RENTRE A LA MAISON Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid
-                    delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam!
-                    Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
-            </div>
-        </div>
-
-        <!-- post multi photos -->
-        <div class="memberPostStep row">
-
-            <div class="col-lg-2 col-md-2 col-xs-3">
-                <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}"
-                     class="img-responsive img-rounded marginPictureMember" alt="userpic"/>
-            </div>
-
-            <div class="col-lg-10 col-md-10 col-xs-9">
-                <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
-                <p class="identifiantMembre inline no-margin"> . 16 déc.</p>
-                <p class="stepLocation identifiantMembre "><span class="glyphicon glyphicon-globe"> Brasil</span></p>
-                <p>POST MULTI-PHOTOS // Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid
-                    delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam!
-                    Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
-
-                <div class="blocImgPost">
-                    <div class="col-lg-8 col-md-8 col-xs-8">
-                        <img src="{{ asset('img/nature.jpg') }}" class="img-responsive" alt="userpic"/>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-xs-4">
-                        <img class="img-responsive marginPictureMember" src="{{ asset('img/nature2.jpg') }}"
-                             alt="userpic"/>
-                        <img class="img-responsive marginPictureMember" src="{{ asset('img/nature3.jpg') }}"
-                             alt="userpic"/>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- post une photo -->
-        <div class="memberPostStep row">
-            <div class="col-lg-2 col-md-2 col-xs-3">
-                <img src="{{ asset('img/users/profilePicture/' ~ membre.photoprofil ~ '') }}"
-                     class="img-responsive img-rounded marginPictureMember" alt="userpic"/>
-            </div>
-
-            <div class="col-lg-10 col-md-10 col-xs-9">
-                <p class="pseudoMembre inline no-margin">{{ membre.prenom }} {{ membre.nom }}</p>
-                <p class="identifiantMembre inline no-margin"> . 16 déc.</p>
-                <p class="stepLocation identifiantMembre "><span class="glyphicon glyphicon-globe"> Brasil</span></p>
-                <p>POST UNE PHOTO // Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid
-                    delectus dignissimos enim esse facilis, incidunt itaque placeat! Aliquid, beatae, laboriosam!
-                    Corporis eveniet exercitationem fugiat fugit iusto odit quas sequi.</p>
-
-
-                <div class="blocImgPost">
-                    <img src="{{ asset('img/nature.jpg') }}" class="img-responsive  img-rounded" alt="userpic"/>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="trips" class="tab-content">
         <div class="row member-trips">
@@ -151,11 +80,11 @@
             {% else %}
                 {% if app.user.id is defined and membre.id == app.user.id %}
                     <div class="col-xs-12">
-                        <p>You haven't created any trip yet ! </p>
+                        <p class="alert alert-info">You haven't created any trip yet ! </p>
                     </div>
                 {% else %}
                     <div class="col-xs-12">
-                        <p>This traveller hasn't published any trips yet !</p>
+                        <p class="alert alert-info">This traveller hasn't published any trips yet !</p>
                     </div>
                 {% endif %}
 
@@ -165,72 +94,131 @@
 
     <div id="followed" class="tab-content">
         <div class="col-md-12">
-            <table class="table table-hover table-striped">
-                <tbody>
-                {% for user in membre.followed %}
-                    <tr class="followed-card" id="followed_{{ user.id }}">
-                        <td>
-                            <span class="glyphicon glyphicon-eye"></span>
-                        </td>
-                        <td>
-                            <img src="{{ vich_uploader_asset(user, 'imagefile' ) }}"
-                                 class="img-circle"
-                                 width="60">
-                        </td>
-                        <td>
-                            <h4>
-                                <a href="{{ path('memberHp' , { 'id' : user.id} ) }}">
-                                    <b>{{ user.prenom }} {{ user.nom }}</b>
-                                </a>
-                            </h4>
-                            <p>@{{ user.username }}</p>
-                        </td>
-                        {% if app.user.id is defined and membre.id == app.user.id %}
+            {% if membre.followed is not empty %}
+                <table class="table table-hover table-striped">
+                    <tbody>
+                    {% for user in membre.followed %}
+                        <tr class="followed-card" id="followed_{{ user.id }}">
                             <td>
-                                <button class="btn btn-custom unfollowBtn" type="button">
-                                    <span class="glyphicon glyphicon-remove"></span>&nbsp;Unfollow
-                                </button>
+                                <span class="glyphicon glyphicon-eye"></span>
                             </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                            <td>
+                                <img src="{{ vich_uploader_asset(user, 'imagefile' ) }}"
+                                     class="img-circle"
+                                     width="60">
+                            </td>
+                            <td>
+                                <h4>
+                                    <a href="{{ path('memberHp' , { 'id' : user.id} ) }}#trips">
+                                        <b>{{ user.prenom }} {{ user.nom }}</b>
+                                    </a>
+                                </h4>
+                                <p>@{{ user.username }}</p>
+                            </td>
+                            {% if app.user.id is defined and membre.id == app.user.id %}
+                                <td>
+                                    <button class="btn btn-custom unfollowBtn" type="button">
+                                        <span class="glyphicon glyphicon-remove"></span>&nbsp;Unfollow
+                                    </button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="alert alert-info">
+                    {{ app.user.id is defined and app.user.id == membre.id ? 'You do not follow anybody actually' : 'This member has not followed anyone yet !' }}
+                </p>
+            {% endif %}
         </div>
     </div>
 
     <div id="followers" class="tab-content">
         <div class="col-md-12 user-followers">
-            <table class="table table-hover table-striped">
-                <tbody>
-                {% for user in membre.follower %}
-                    <tr class="follower-card" id="member_follower_{{ user.id }}">
-                        <td>
-                            <span class="glyphicon glyphicon-eye"></span>
-                        </td>
-                        <td>
-                            <img src="{{ vich_uploader_asset(user, 'imagefile' ) }}"
-                                 class="img-circle"
-                                 width="60">
-                        </td>
-                        <td>
-                            <h4>
-                                <a href="{{ path('memberHp' , { 'id' : user.id} ) }}">
-                                    <b>{{ user.prenom }} {{ user.nom }}</b>
-                                </a>
-                            </h4>
-                            <p>@{{ user.username }}</p>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {% if membre.follower is not empty %}
+                <table class="table table-hover table-striped">
+                    <tbody>
+                    {% for user in membre.follower %}
+                        <tr class="follower-card" id="member_follower_{{ user.id }}">
+                            <td>
+                                <span class="glyphicon glyphicon-eye"></span>
+                            </td>
+                            <td>
+                                <img src="{{ vich_uploader_asset(user, 'imagefile' ) }}"
+                                     class="img-circle"
+                                     width="60">
+                            </td>
+                            <td>
+                                <h4>
+                                    <a href="{{ path('memberHp' , { 'id' : user.id} ) }}#trips">
+                                        <b>{{ user.prenom }} {{ user.nom }}</b>
+                                    </a>
+                                </h4>
+                                <p>@{{ user.username }}</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="alert alert-info">
+                    {{ app.user.id is defined and app.user.id == membre.id ? 'You have no followers' : 'This member has no followers !' }}
+                </p>
+            {% endif %}
         </div>
+    </div>
+
+    <div id="worldmap" class="tab-content">
+        <div class="row">
+            <section class="user-map-countries">
+                <div class="col-xs-12">
+                    {% if nbCountriesVisited > 0 %}
+                        <h3>Countries visited</h3>
+                        <div id="regions_div"></div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <p>
+                                {{ app.user.id is defined and app.user.id == membre.id ? 'You have not visited any countries yet !' : 'This member has no visited countries yet !' }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="js-vars"
+         data-vars="{{ js_vars|json_encode|e('html_attr') }}">
     </div>
 
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/ajaxUnfollow.js') }}"></script>
     <script src="{{ asset('js/ajaxDeleteTrip.js') }}"></script>
+    {% if membre.voyages|length > 0 %}
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+
+            google.charts.load('current', {'packages': ['geomap']});
+            google.charts.setOnLoadCallback(drawMap);
+
+            var JsVars = jQuery('#js-vars').data('vars');
+            var usrDataCountries = JsVars.dataCountries;
+            console.log(usrDataCountries);
+            function drawMap() {
+                var data = google.visualization.arrayToDataTable(usrDataCountries);
+                var options = {};
+                options['dataMode'] = 'regions';
+                options['height'] = '550px';
+
+                var container = document.getElementById('regions_div');
+                var geomap = new google.visualization.GeoMap(container);
+                geomap.draw(data, options);
+            }
+        </script>
+    {% endif %}
 {% endblock %}

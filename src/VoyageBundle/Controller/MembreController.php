@@ -17,7 +17,7 @@ class MembreController extends Controller
     /**
      * @Route("/membre/{id}", name="memberHp", options={"expose"=true},  requirements={"id": "\d+"})
      */
-    public function indexAction($id , Request $request)
+    public function indexAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $membre = $em->getRepository('VoyageBundle:Utilisateurs')
@@ -40,7 +40,7 @@ class MembreController extends Controller
             $membre->setImagefilecover($coverPic);
             $em->persist($membre);
             $em->flush();
-            return $this->redirectToRoute('memberHp' ,array('id' => $membre->getId()));
+            return $this->redirectToRoute('memberHp', array('id' => $membre->getId()));
         }
 
         $nbCountriesVisited = $em->getRepository('VoyageBundle:Etapes')
@@ -48,11 +48,25 @@ class MembreController extends Controller
 
         $this->get('app.js_vars')->userId = $id;
 
+        //Renders an array of countries visited with number of steps in each countries
+        $dataCountries = array(['countries', 'nombre d\'etapes']);
+        $countries = $em->getRepository('VoyageBundle:Etapes')
+            ->getCountriesVisitedByUser($membre);
+
+        foreach ($countries as $country) {
+            $countSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->getAllNbStepsByCountry($membre,$country);
+                if ($countSteps > 0) {
+                    $dataCountries[] = array($country->getName(), intval($countSteps));
+                }
+        }
+
+        $this->get('app.js_vars')->dataCountries = $dataCountries;
         return $this->render('VoyageBundle:Default:membre/layout/membre.html.twig', array(
-            'membre' => $membre ,
-            'nbCountriesVisited' => $nbCountriesVisited ,
+            'membre' => $membre,
+            'nbCountriesVisited' => $nbCountriesVisited,
             'form' => $form->createView(),
-            ));
+        ));
     }
 
 

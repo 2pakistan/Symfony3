@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
     $('.overlay-member-cover').hide();
     $('#btn-valid-cover').hide();
 
@@ -36,13 +37,23 @@ $(document).ready(function () {
     $tabContent.first().show();
 
     $tabs.click(function () {
+
         var $this = $(this);
         $tabs.removeClass("active");
         $this.addClass("active");
         $tabContent.hide();
         var activeTab = $this.find("a").attr("href");
         $(activeTab).fadeIn();
-        //return false;
+
+        //force the page to scroll to top and show menu
+        var scrollToTop = function () {
+            $(window).scrollTop(0);
+        };
+        if (window.location.hash) {
+            // handler is executed at most once
+            $(window).one('scroll', scrollToTop);
+        }
+
     });
 
     // Grab the ID of the .tab-content that the hash is referring to

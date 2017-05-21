@@ -7,7 +7,9 @@
 
     <div class="container">
         <section class="see-trip-header header-homepage">
-            <h1 class="text-center">Trip steps in {{ placename }} </h1>
+
+            <h1 class="text-center">Trip
+                steps {{ placename is not empty ? 'in ' ~ placename : 'around the world' }}</h1>
         </section>
         <section class="see-trip">
             {% if steps|length > 0 %}
@@ -22,12 +24,12 @@
                                 <div class="card">
                                     <div class="front">
                                         <div class="cover">
-                                                <img src="{{ vich_uploader_asset(traveller, 'imagefilecover') }}"
-                                                     class=" img-responsive">
+                                            <img src="{{ vich_uploader_asset(traveller, 'imagefilecover') }}"
+                                                 class=" img-responsive">
                                         </div>
                                         <div class="user">
                                             <img class="img-circle"
-                                                 src="{{ vich_uploader_asset(traveller, 'imagefile')  }}"/>
+                                                 src="{{ vich_uploader_asset(traveller, 'imagefile') }}"/>
                                         </div>
                                         <div class="content">
                                             <div class="main">
@@ -57,31 +59,41 @@
                                                     </p>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div> <!-- end front panel -->
                                     <div class="back">
+                                        <div class="cover">
+                                            {% if step.medias is not empty %}
+
+                                                <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                     class=" img-responsive">
+                                            {% else %}
+                                                <img src="{{ asset('img/undefined.png') }}"
+                                                     class="img-center img-responsive">
+                                            {% endif %}
+                                        </div>
                                         <div class="header">
-                                            <h5 class="motto">{{ step.trip.descriptionvoyage }}</h5>
+                                            <h5 class="motto">
+                                                {{ desc|length > 40 ? desc[:40] ~ ' ...' :  desc }}
+                                            </h5>
                                         </div>
                                         <div class="content">
+                                            <div class="step-location">
+                                                <p class="text-center" style="font-size:26px;margin-bottom:30px">
+                                                    <span class="glyphicon glyphicon-map-marker red-icon"></span>
+                                                    {{ step.cities is not null ? step.cities.name : step.country.name }}
+                                                </p>
+                                            </div>
                                             <div class="main">
-                                                {% if step.medias is not empty %}
-                                                    <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
-                                                         class=" img-responsive">
-                                                {% else %}
-                                                    <img src="{{ asset('img/undefined.png') }}"
-                                                         class="img-center img-responsive">
-                                                {% endif %}
                                                 <h4 class="text-center">
-                                                    <a href="{{ path('voyagePage' , {'idVoyage' : voyage.idvoyage }) }}#step-{{ step.idetape }}">
-                                                        {{ desc|length > 40 ? desc[:40] ~ ' ...' :  desc }}
-                                                    </a>
+                                                    <div class="btn btn-lg btn-custom col-sm-6 col-sm-offset-3">
+                                                        <a href="{{ path('voyagePage' , {'idVoyage' : voyage.idvoyage }) }}#step-{{ step.idetape }}"
+                                                           class="text-white">
+                                                            See this step
+                                                        </a>
+                                                    </div>
                                                 </h4>
                                                 <p class="text-center"></p>
-
-
-
                                             </div>
                                         </div>
                                     </div> <!-- end back panel -->

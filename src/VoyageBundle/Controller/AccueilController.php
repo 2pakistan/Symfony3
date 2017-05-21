@@ -44,10 +44,30 @@ class AccueilController extends Controller
             ))
             ->getForm();
 
+        $nbTripsTotal =  $em->getRepository('VoyageBundle:Voyages')
+            ->countTrips();
+
+        $nbStepsTotal =  $em->getRepository('VoyageBundle:Etapes')
+            ->countSteps();
+
+        $trips =  $em->getRepository('VoyageBundle:Voyages')
+            ->findAll();
+
+
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT COUNT(*) AS nbMembres FROM utilisateurs WHERE utilisateurs.id IN (select DISTINCT(id) from participer) ");
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $nbActiveMembers = $results[0]['nbMembres'];
+
         return $this->render('VoyageBundle:Default:index.html.twig' ,array('form' => $form->createView(),
                                                                            'membres' => $membres,
                                                                            'membreReviews' => $membreReviews,
-                                                                           'voyages'=> $voyages));
+                                                                           'voyages'=> $voyages,
+                                                                           'nbTripsTotal'=> $nbTripsTotal,
+                                                                           'nbStepsTotal'=> $nbStepsTotal,
+                                                                           'nbActiveMembers'=> $nbActiveMembers
+        ));
     }
 
     /**
@@ -90,20 +110,21 @@ class AccueilController extends Controller
         }else{
             $placeName = $request->request->get('form')['nomDestination'];
             if($placeName !== ''){
-                $country = $em->getRepository('VoyageBundle:Countries')
+                $city = $em->getRepository('VoyageBundle:Cities')
                     ->findBy(array('name' => $placeName));
-                if($country === null){
-                    $city = $em->getRepository('VoyageBundle:Cities')
+
+                if(empty($city)){
+                    $country = $em->getRepository('VoyageBundle:Countries')
                         ->findBy(array('name' => $placeName));
                     $steps = $em->getRepository('VoyageBundle:Etapes')
-                        ->findBy(array('city' => $city));
+                        ->findBy(array('country' => $country) , array('createDate' => 'DESC'));
                 }else{
                     $steps = $em->getRepository('VoyageBundle:Etapes')
-                        ->findBy(array('country' => $country));
+                        ->findBy(array('cities' => $city) , array('createDate' => 'DESC'));
                 }
             }else{
                 $steps = $em->getRepository('VoyageBundle:Etapes')
-                    ->findAll();
+                    ->findAllByDate();
             }
             return $this->render('VoyageBundle:Default/membre/layout:searchVoyage.html.twig' ,array(
                 'placename' => $placeName ,

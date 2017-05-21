@@ -17,6 +17,15 @@ use VoyageBundle\Entity\Voyages;
 class EtapesRepository extends EntityRepository
 {
 
+    function findAllByDate(){
+
+        $qb = $this->createQueryBuilder('e')
+            ->select('e')
+            ->orderBy('e.createDate', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     function getNbStepsTrip($trip)
     {
         $qb = $this->createQueryBuilder('e')
@@ -37,6 +46,20 @@ class EtapesRepository extends EntityRepository
             ->andWhere('t = :trip')
             ->setParameter('country', $country)
             ->setParameter('trip', $trip);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+    function getAllNbStepsByCountry(Utilisateurs $user, Countries $country)
+    {
+        $v = $user->getVoyages();
+        $qb = $this->createQueryBuilder('e')
+            ->select('count(e)')
+            ->innerJoin('e.country', 'c')
+            ->innerJoin('e.trip', 't')
+            ->where('c.id = :country')
+            ->andWhere('t.idvoyage IN( :trips )')
+            ->setParameter('country', $country->getId())
+            ->setParameter('trips', $v);
+
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -152,6 +175,16 @@ class EtapesRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function countSteps(){
+        $qb = $this->createQueryBuilder('e')
+            ->select('count( e)');
+
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+
 
 
 }

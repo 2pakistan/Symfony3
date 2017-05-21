@@ -22,7 +22,12 @@ class VoyagesRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function countTrips(){
+        $qb = $this->createQueryBuilder('v')
+            ->select('count(v)');
 
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 
 
 

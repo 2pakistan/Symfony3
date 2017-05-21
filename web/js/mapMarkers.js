@@ -43,7 +43,6 @@ jQuery(function () {
 function initialize() {
 
     var JsVars = jQuery('#js-vars').data('vars');
-    console.log(JsVars);
     var markers = JsVars.stepMarkers;
     var stepData = JsVars.stepData;
     var stepMedias = JsVars.stepMedias;

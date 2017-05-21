@@ -25,6 +25,7 @@ class UtilisateursRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
     //Function qui retourne les 3 derniers avis publiés
     public function findLastReviews()
     {
@@ -50,6 +51,7 @@ class UtilisateursRepository extends EntityRepository
 
         return $query;
     }
+
 
 
 }

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     $("#form_nomDestination").on('keyup', function () { // everytime keyup event
         var input = $(this).val(); // We take the input value
         if (input.length >= 2) { // Minimum characters = 2 (you can change)
@@ -20,7 +22,7 @@ $(document).ready(function () {
                     $('#matchList li').on('click', function () { // When click on an element in the list
                         $('#form_nomDestination').val($(this).text()); // Update the field with the new element
                         $('#match').text(''); // Clear the <div id="match"></div>
-                        $('#form-search').submit(); // Post the autocompletion ajax form
+                        $('#form-search').unbind('submit').submit();// Post the autocompletion ajax form
                     });
                 },
                 error: function () { // if error

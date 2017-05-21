@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use VoyageBundle\Entity\Utilisateurs;
 use VoyageBundle\Entity\Countries;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,125 +15,60 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class MembreController extends Controller
 {
     /**
-     * @Route("/membre/{id}", name="memberHp", requirements={"id": "\d+"})
+     * @Route("/membre/{id}", name="memberHp", options={"expose"=true},  requirements={"id": "\d+"})
      */
-    public function indexAction($id)
+    public function indexAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $this->get('app.js_vars')->userId = $id;
-
-        //on recupere les données du membre dont l'id est $id
         $membre = $em->getRepository('VoyageBundle:Utilisateurs')
             ->find($id);
+
         if ($membre === null) {
             return $this->redirectToRoute('homePage');//TODO-404
         }
 
-        return $this->render('VoyageBundle:Default:membre/layout/membre.html.twig', array('membre' => $membre));
-    }
+        $form = $this->createFormBuilder()
+            ->setMethod('post')
+            ->add('imagefilecover', VichImageType::class, array(
+                'required' => true,
+            ))
+            ->getForm();
+        $form->handleRequest($request);
 
-    /**
-     * @Route("/membre/{id}/voyages", name="memberVoyages", requirements={"id": "\d+"})
-     */
-    public function listeVoyagesAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $this->get('app.js_vars')->userId = $id;
-
-        //on recupere les données du membre dont l'id est $id
-        $membre = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->find($id);
-        if ($membre === null) {
-            return $this->redirectToRoute('homePage');//TODO-404
+        if ($form->isSubmitted() && $form->isValid()) {
+            $coverPic = $form->getData()['imagefilecover'];
+            $membre->setImagefilecover($coverPic);
+            $em->persist($membre);
+            $em->flush();
+            return $this->redirectToRoute('memberHp', array('id' => $membre->getId()));
         }
 
-        return $this->render('VoyageBundle:Default:membre/layout/membreVoyages.html.twig', array('membre' => $membre));
-    }
+        $nbCountriesVisited = $em->getRepository('VoyageBundle:Etapes')
+            ->countCountriesVisitedByUser($membre);
 
-    /**
-     * @Route("/membre/{id}/visited", name="memberMap", requirements={"id": "\d+"})
-     */
-    public function cartePaysAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $membre = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->find($id);
         $this->get('app.js_vars')->userId = $id;
 
         //Renders an array of countries visited with number of steps in each countries
         $dataCountries = array(['countries', 'nombre d\'etapes']);
-        $countries = $membre->getCountriesVisited();
-        foreach ($countries as $country => $val) {
-            $id = $val->getId();
-            $countSteps = $em->getRepository('VoyageBundle:Etapes')
-                ->getNbStepsByCountry($id);
+        $countries = $em->getRepository('VoyageBundle:Etapes')
+            ->getCountriesVisitedByUser($membre);
 
-            $dataCountries[$country + 1][0] = $val->getName();
-            $dataCountries[$country + 1][1] = intval($countSteps[0]);
+        foreach ($countries as $country) {
+            $countSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->getAllNbStepsByCountry($membre,$country);
+                if ($countSteps > 0) {
+                    $dataCountries[] = array($country->getName(), intval($countSteps));
+                }
         }
 
         $this->get('app.js_vars')->dataCountries = $dataCountries;
-
-        //map with all steps markers
-        $trips = $membre->getVoyages();
-        $stepMarkers = array();
-        $stepData = array();
-        $stepMedias = array();
-
-        foreach ($trips as $trip) {
-            $tripSteps = $em->getRepository('VoyageBundle:Etapes')
-                ->findBy(array('trip' => $trip));
-
-            foreach ($tripSteps as $step) {
-
-                $paths = $em->getRepository('VoyageBundle:Medias')
-                    ->findByStep($step);
-                $stepMedias[] = $paths;
-                $stepData[] = array($step->getDescriptionEtape());
-                if ($step->getCountry() instanceof Countries) {
-                    $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
-                } else {
-                    $stepMarkers[] = array('Pays non précisé par l\'utilisateur', $step->getLatitude(), $step->getLongitude());
-                }
-            }
-        }
-
-        $this->get('app.js_vars')->stepMarkers = $stepMarkers;
-        $this->get('app.js_vars')->stepData = $stepData;
-        $this->get('app.js_vars')->stepMedias = $stepMedias;
-
-        return $this->render('VoyageBundle:Default:membre/layout/membreCartePays.html.twig', array('membre' => $membre));
+        return $this->render('VoyageBundle:Default:membre/layout/membre.html.twig', array(
+            'membre' => $membre,
+            'nbCountriesVisited' => $nbCountriesVisited,
+            'form' => $form->createView(),
+        ));
     }
 
-    /**
-     * @Route("/membre/{id}/followed", name="memberFollowed", requirements={"id": "\d+"})
-     */
-    public function followedAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $this->get('app.js_vars')->userId = $id;
-
-        //on recupere les données du membre dont l'id est $id
-        $membre = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->find($id);
-
-        return $this->render('VoyageBundle:Default:membre/layout/membreFollowed.html.twig', array('membre' => $membre));
-    }
-
-    /**
-     * @Route("/membre/{id}/followers", name="memberFollowers", requirements={"id": "\d+"})
-     */
-    public function followersAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $this->get('app.js_vars')->userId = $id;
-
-        //on recupere les données du membre dont l'id est $id
-        $membre = $em->getRepository('VoyageBundle:Utilisateurs')
-            ->find($id);
-
-        return $this->render('VoyageBundle:Default:membre/layout/membreFollowers.html.twig', array('membre' => $membre));
-    }
 
     /**
      * @Route("/follow", options={"expose"=true}, name="followUser")
@@ -189,9 +125,12 @@ class MembreController extends Controller
      */
     public function tripListAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
         $user = $this->getUser();
+        if ($user === null) {
+            return $this->redirectToRoute('homePage');
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $usersFollowed = $user->getFollowed();
         $tripsFollowed = array();
         foreach ($usersFollowed as $followed) {
@@ -203,10 +142,6 @@ class MembreController extends Controller
 
         $recentSteps = $em->getRepository('VoyageBundle:Etapes')
             ->getRecentByTrips($tripsFollowed);
-
-        if ($user === null) {
-            return $this->redirectToRoute('homePage');
-        }
 
         return $this->render('VoyageBundle:Default:membre/layout/tripList.html.twig',
             array(

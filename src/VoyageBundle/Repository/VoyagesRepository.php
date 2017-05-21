@@ -16,13 +16,18 @@ class VoyagesRepository extends EntityRepository
     public function findLastTrips(){
         $qb = $this->createQueryBuilder('v')
             ->select('v')
-            ->orderBy('v.datedebutvoyage','DESC')
+            ->orderBy('v.updatedAt','DESC')
             ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }
 
+    public function countTrips(){
+        $qb = $this->createQueryBuilder('v')
+            ->select('count(v)');
 
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 
 
 

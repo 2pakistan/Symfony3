@@ -1,8 +1,8 @@
 var $collectionHolder;
 
 // setup an "add a file" link
-var $addFileLink = $("<a href='#' class='btn btn-custom'>Add a file</a>");
-var $newLinkLi = $('<li></li>').append($addFileLink);
+var $addFileLink = $("<a href='#' class='btn-circle btn-custom btn-block btn-lg text-center'><span class='glyphicon glyphicon-camera'></span></a>");
+var $newLinkLi = $('<li class="col-sm-2 media-list"></li>').append($addFileLink);
 
 jQuery(document).ready(function() {
     // Get the ul that holds the collection of medias
@@ -11,10 +11,7 @@ jQuery(document).ready(function() {
     // add the "add a tag" anchor and li to the medias ul
     $collectionHolder.append($newLinkLi);
 
-    // add a delete link to all of the existing tag form li elements
-    $collectionHolder.find('li').each(function() {
-        addFileFormDeleteLink($(this));
-    });
+
 
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
@@ -44,7 +41,7 @@ function addFileForm($collectionHolder, $newLinkLi) {
     $collectionHolder.data('index', index + 1);
 
     // Display the form in the page in an li, before the "Add a tag" link li
-    var $newFormLi = $('<li></li>').append(newForm);
+    var $newFormLi = $('<div class="col-sm-8"><li class="media-list "></li></div>').append(newForm);
     $newLinkLi.before($newFormLi);
 
     // add a delete link to the new form
@@ -52,7 +49,7 @@ function addFileForm($collectionHolder, $newLinkLi) {
 }
 
 function addFileFormDeleteLink($tagFormLi) {
-    var $removeFormA = $('<a href="#">delete this tag</a>');
+    var $removeFormA = $('<a href="#" class="col-sm-2 btn-alert btn-lg text-center"><span class="glyphicon glyphicon-remove"></span></a>');
     $tagFormLi.append($removeFormA);
 
     $removeFormA.on('click', function(e) {

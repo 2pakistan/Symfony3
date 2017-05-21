@@ -14,13 +14,18 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom',TextType::class)
-                ->add('prenom',TextType::class)
-                ->add('nationalite',CountryType::class,array('preferred_choices' => array('FR') ) )
-                ->add('telephone',TextType::class, array('required' => false ))
-                ->add('descriptionprofil',TextareaType::class, array('label'=>'Description personnelle','required' => false ))
-                ->add('imagefile',VichImageType::class, array('label'=>' ','required' => false ))
-                ->add('imagefilecover',VichImageType::class, array('label'=>' ','required' => false ));
+        $builder->add('nom',TextType::class ,array('label' => 'Last name'))
+                ->add('prenom',TextType::class,array('label' => 'Fiest name'))
+                ->add('nationalite',CountryType::class,array(
+                    'preferred_choices' => array('US') ,
+                    'label' => 'Nationality'
+                ))
+                ->add('descriptionprofil',TextareaType::class, array(
+                    'label'=>'Personal description',
+                    'required' => false
+                ))
+                ->add('imagefile',VichImageType::class, array('label'=>' ','required' => true ))
+                ->add('imagefilecover',VichImageType::class, array('label'=>' ','required' => true ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -43,7 +48,7 @@ class RegistrationType extends AbstractType
 
     public function getName()
     {
-        return 'app_bundle_upload_file_user_type';
+        return 'app_user_registration';
     }
 
 }

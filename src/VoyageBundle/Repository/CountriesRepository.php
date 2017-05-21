@@ -3,6 +3,8 @@
 namespace VoyageBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use VoyageBundle\Entity\Utilisateurs;
+
 
 class CountriesRepository extends EntityRepository
 {
@@ -14,9 +16,10 @@ class CountriesRepository extends EntityRepository
             ->distinct('c.name')
             ->where('c.name LIKE :string')
             ->setParameter('string', '%'.$string.'%')
-            ->setMaxResults(5);
+            ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
     }
+
 
 }

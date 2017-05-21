@@ -1,0 +1,7 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+<p>Hello {{ user.username }} !</p>
+<p>You made a request in ordrer to reset your password</p>
+<p>For security matter, you have to confirm this request by clicking on the following link</p>
+<a href="{{ confirmationUrl }}"> Reset my password </a>

@@ -20,6 +20,7 @@ class MediasType extends AbstractType
             ->add('imagefile',VichImageType::class, array(
                 'label'=>' ',
                 'required' => false,
+
             ))
             ->add('idvoyage', HiddenType::class)
             ->add('idetape', HiddenType::class)

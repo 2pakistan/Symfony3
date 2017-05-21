@@ -1,17 +1,24 @@
 {% extends "@FOSUser/layout.html.twig" %}
-
 {% trans_default_domain 'FOSUserBundle' %}
-
-
 
 {% block fos_user_content %}
 
-    <section class="see-trip-header top-buffer">
-        <div class="">
-            <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-            {% if targetUrl %}
-                <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-            {% endif %}
+    <section class="reset-password">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 alert alert-success">
+                <div class="col-sm-2">
+                    <span class="glyphicon glyphicon glyphicon-thumbs-up" style="font-size: 5em"></span>
+                </div>
+                <div class="col-sm-9 col-sm-offset-1">
+                    <p>
+                        <b>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</b>
+                    </p>
+                    <p> You are now logged in ! </p>
+                    {% if targetUrl %}
+                        <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </section>
 

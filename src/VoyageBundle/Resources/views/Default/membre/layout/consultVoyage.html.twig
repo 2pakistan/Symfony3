@@ -1,6 +1,7 @@
 {% extends ":layout:layout.html.twig" %}
 
-
+{% set publishDateInterval = date("now"|date("m/d/Y")).diff(trip.updatedAt) %}
+{% set publishedDaysAgo =  publishDateInterval.d %}
 {% block body %}
 
     <div class="container">
@@ -19,78 +20,97 @@
                         <div class="content-holder">
                             <div class="content-description">
                                 <div class="author-avatar">
-                                    <img src="{{ vich_uploader_asset(trip.voyageur[0], 'imagefile') }}"
+                                    <img src="{{ vich_uploader_asset(traveller, 'imagefile') }}"
                                          class="img-circle"/>
                                 </div>
                                 <div class="author-name">
                                     <h3>
-                                        <a href="{{ path('memberHp' , {'id' : trip.voyageur[0].id}) }}">{{ trip.voyageur[0].prenom }} {{ trip.voyageur[0].nom }}</a>
+                                        <a href="{{ path('memberHp' , {'id' : traveller.id}) }}">{{ traveller.prenom }} {{ traveller.nom }}</a>
                                     </h3>
                                 </div>
                                 <div class="row blog-info">
                                     <div class="col-xs-6">
-                                        <span class="lead text-muted"><i class="glyphicon glyphicon-calendar"></i> Published: 37 days ago</span>
+                                        <p>
+                                            <span class="lead text-muted"><i class="glyphicon glyphicon-calendar"></i> Published {{ publishedDaysAgo > 1 ?  publishedDaysAgo ~ ' days ago' : 'Today' }}
+                                                </span>
+                                        </p>
+                                        <p>
+                                            <span class="lead text-muted"><i class="glyphicon glyphicon-eye-open"></i> Viewed {{ trip.views }} {{ trip.views == 1 ? 'time' : 'times' }}</span>
+                                        </p>
                                     </div>
-
-                                    <div class="col-xs-6">
-                                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                            {% if trip in app.user.voyages %}
-                                                <button class="btn btn-custom">
-                                                    <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}"
-                                                       class="text-white"><span
-                                                                class="glyphicon glyphicon-edit"></span>&nbsp;Ajouter
-                                                        une
-                                                        étape</a>
-                                                </button>
-                                            {% else %}
-                                                <button class="btn btn-custom">
-                                                    <a href="#"
-                                                       class="text-white"><span
-                                                                class="glyphicon glyphicon-heart"></span>&nbsp;Ajouter
-                                                        aux favoris</a>
-                                                </button>
-                                            {% endif %}
+                                    <div class="col-xs-3 col-xs-offset-2">
+                                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and trip in app.user.voyages %}
+                                            <button class="btn btn-custom btn-block">
+                                                <a href="{{ path('createStep' , {'idVoyage' :trip.idvoyage }) }}"
+                                                   class="text-white"><span
+                                                            class="glyphicon glyphicon-edit"></span>&nbsp;Add a post</a>
+                                            </button>
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
+
                             <div class="content-body">
+                                <div class="trip-desc">
+                                    <blockquote>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h2><em>{{ trip.descriptionvoyage }}</em></h2>
+                                            </div>
+                                        </div>
+                                    </blockquote>
+                                </div>
                                 {% if steps|length > 0 %}
                                     {% for step in steps %}
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12 step-block" id="step-{{ step.idetape }}">
+                                            <p class="close-ribbon">Step {{ loop.index }}</p>
                                             <blockquote>
                                                 {{ step.descriptionetape }}
                                             </blockquote>
                                             {% if step.medias is not empty %}
                                                 {% if step.medias|length > 1 %}
-                                                    {% for media in step.medias %}
-                                                        <div class="media medium col-sm-6">
-                                                            <img src="{{ vich_uploader_asset(media, 'imagefile') }}"
-                                                                 alt="{{ media.pathMedia }}" class="img-responsive"/>
-                                                        </div>
-                                                    {% endfor %}
+                                                    {% if step.medias|length is not divisible by(2) %}
+                                                        {% for media in step.medias %}
+                                                            <div class="media medium {{ loop.last ? 'col-sm-12' :'col-sm-6' }}">
+                                                                <img src="{{ vich_uploader_asset(media, 'imagefile') }}"
+                                                                     alt="{{ media.pathMedia }}" class="img-responsive"/>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        {% for media in step.medias %}
+                                                            <div class="media medium col-sm-6">
+                                                                <img src="{{ vich_uploader_asset(media, 'imagefile') }}"
+                                                                     alt="{{ media.pathMedia }}" class="img-responsive"/>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 {% else %}
                                                     <div class="media medium">
                                                         <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
-                                                             alt="{{ step.medias[0].pathMedia }}" class="img-responsive"/>
+                                                             alt="{{ step.medias[0].pathMedia }}"
+                                                             class="img-responsive"/>
                                                     </div>
                                                 {% endif %}
                                             {% endif %}
+
                                         </div>
                                         <hr/>
                                     {% endfor %}
+
                                 {% else %}
                                     <section class="see-trip see-trip-header top-buffer">
                                         <div class="col-sm-12">
                                             <img src="{{ asset('img/unhappy-marker.png') }}"
                                                  class="img-responsive img-center img"
                                                  width="150" alt="no trips"/>
-                                                <h4 class="text-center"><b>Ce voyageur n'a publié aucune étapes sur ce voyage !</b></h4>
-                                                <p class="text-center">
-                                                    <small>
-                                                        Lorsque {{ trip.voyageur[0].prenom }} publiera une étape, elle apparaitra ici ! :)
-                                                    </small>
-                                                </p>
+                                            <h4 class="text-center"><b>Ce voyageur n'a publié aucune étapes sur ce
+                                                    voyage !</b></h4>
+                                            <p class="text-center">
+                                                <small>
+                                                    Lorsque {{ traveller.prenom }} publiera une étape, elle
+                                                    apparaitra ici ! :)
+                                                </small>
+                                            </p>
                                         </div>
                                     </section>
                                 {% endif %}
@@ -98,12 +118,31 @@
                         </div>
                     </div>
 
+                    {% if steps|length > 0 %}
+                        <section class="user-map-markers">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Where did {{ traveller.username }} go during this trip ?</h3>
+                                    <div id="map_wrapper">
+                                        <div id="map_canvas" class="mapping"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    {% endif %}
                 </section>
             </section>
-
         </article>
-
     </div>
 
+    <div id="js-vars"
+         data-vars="{{ js_vars|json_encode|e('html_attr') }}">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if steps|length > 0 %}
+        <script type="text/javascript" src="{{ asset('js/mapMarkers.js') }}"></script>
+    {% endif %}
 {% endblock %}
 

@@ -5,7 +5,7 @@ namespace VoyageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Destination
+ * Countries
  *
  * @ORM\Table(name="countries")
  * @ORM\Entity (repositoryClass="VoyageBundle\Repository\CountriesRepository")
@@ -51,19 +51,11 @@ class Countries
 
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", mappedBy="countriesVisited",  cascade={"persist"})
-     */
-    private $visitors;
-
-    /**
      * States constructor.
-     * @param \Doctrine\Common\Collections\Collection $states
      */
-    public function __construct(\Doctrine\Common\Collections\Collection $states)
+    public function __construct()
     {
         $this->states = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->visitors = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -156,19 +148,6 @@ class Countries
         $this->states->removeElement($state);
     }
 
-    /**
-     * Add visitor
-     *
-     * @param \VoyageBundle\Entity\Utilisateurs $visitor
-     *
-     * @return Countries
-     */
-    public function addVisitor(\VoyageBundle\Entity\Utilisateurs $visitor)
-    {
-        $this->visitors[] = $visitor;
-
-        return $this;
-    }
 
     /**
      * Remove visitor

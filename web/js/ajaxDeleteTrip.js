@@ -7,8 +7,7 @@ jQuery(document).ready(function () {
     // AJAX REQUEST
     $(".delete-trip").click(function () {
         const trip = $(this).parents('.modal').attr('data-key');
-        var tripDomElement = $(this).parents('.col-sm-4');
-        console.log(trip);
+        var tripDomElement = $(this).parents('.trip-post');
 
         //AJAX REQUEST UNFOLLOW
         $.ajax({
@@ -18,8 +17,11 @@ jQuery(document).ready(function () {
             success: function (data) {
                 //close modal
                 $('.modal').hide();
-                tripDomElement.fadeOut(200);
                 $('.modal-backdrop').hide();
+                $('body').removeClass('modal-open');
+
+                tripDomElement.removeClass('trip-post');
+                tripDomElement.fadeOut(200);
             }
         });
     });

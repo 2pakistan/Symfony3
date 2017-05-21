@@ -5,7 +5,7 @@ namespace VoyageBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Destination
+ * Cities
  *
  * @ORM\Table(name="cities")
  * @ORM\Entity (repositoryClass="VoyageBundle\Repository\CitiesRepository")
@@ -38,6 +38,13 @@ class Cities
      * })
      */
     private $state;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Rencontres", mappedBy="lieu", cascade={"persist"})
+     */
+    private $rencontres;
+
 
     /**
      * @return int

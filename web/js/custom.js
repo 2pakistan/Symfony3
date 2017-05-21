@@ -6,9 +6,8 @@ $(document).ready(function() {
 
     $('.js-datepicker').datepicker({
         format: 'yyyy-mm-dd',
-        language: "fr",
+        language: "en",
         todayHighlight: true,
-        startDate: 'today',
         autoclose:true,
         sideBySide: true,
         orientation: "bottom auto",
@@ -58,7 +57,7 @@ $(document).ready(function() {
             $('.image-preview-filename').val("");
             $('.image-preview-clear').hide();
             $('.image-preview-input input:file').val("");
-            $(".image-preview-input-title").text("Parcourir");
+            $(".image-preview-input-title").text("Browse");
         });
         // Create the preview image
         $(".image-preview-input input:file").change(function (){
@@ -71,7 +70,7 @@ $(document).ready(function() {
             var reader = new FileReader();
             // Set preview image into the popover data-content
             reader.onload = function (e) {
-                $(".image-preview-input-title").text("Changer");
+                $(".image-preview-input-title").text("Change");
                 $(".image-preview-clear").show();
                 $(".image-preview-filename").val(file.name);
                 img.attr('src', e.target.result);
@@ -80,9 +79,6 @@ $(document).ready(function() {
             reader.readAsDataURL(file);
         });
     });
-
-    //hide delete checkboxes
-
 
 });
 

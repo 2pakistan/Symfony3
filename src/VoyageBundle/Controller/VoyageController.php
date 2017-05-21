@@ -23,11 +23,16 @@ class VoyageController extends Controller
      */
     public function creerVoyageAction(Request $request)
     {
+        if (null === $this->getUser()) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
         $trip = new Voyages();
         $form = $this->createForm(CreateTripType::class, $trip);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             //On recupere les donnees du form
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $user->addVoyages($trip);
@@ -37,7 +42,7 @@ class VoyageController extends Controller
             $em->flush();
 
             $this->addFlash('valid_voyage', 'Votre voyage a bien été enregistré !');
-            return $this->redirect($this->generateUrl('memberVoyages', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('memberHp', array('id' => $user->getId())));
         }
 
         return $this->render('VoyageBundle:Default/membre/layout:creerVoyage.html.twig', array('form' => $form->createView()));
@@ -49,22 +54,70 @@ class VoyageController extends Controller
     public function consultVoyageAction($idVoyage)
     {
         $em = $this->getDoctrine()->getManager();
-
         $trip = $em->getRepository('VoyageBundle:Voyages')
             ->find($idVoyage);
 
-        if ($idVoyage === null) {
+        if (null === $idVoyage || false === $trip instanceof Voyages) {
             return $this->redirectToRoute('homePage');//TODO-404
-        } else {
-            $travellers = $em->getRepository('VoyageBundle:Utilisateurs')
-                ->findTravellersByVoyage($idVoyage);
-            $steps = $em->getRepository('VoyageBundle:Etapes')
-                ->findBy(array('trip' => $idVoyage));
         }
+
+        //get the traveller of this trip
+        $traveller = $trip->getVoyageur()[0];
+
+        //Increments number of views of this trip
+        $trip->setViews($trip->getViews() + 1);
+        $em->persist($trip);
+        $em->flush();
+
+        $steps = $em->getRepository('VoyageBundle:Etapes')
+            ->findBy(array('trip' => $idVoyage));
+
+        // MAPS
+        $this->get('app.js_vars')->userId = $traveller->getId();
+
+        //Renders an array of countries visited with number of steps in each countries
+        $dataCountries = array(['countries', 'nombre d\'etapes']);
+        $countries = $em->getRepository('VoyageBundle:Etapes')
+            ->getCountriesVisitedByUser($traveller);
+
+        foreach ($countries as $country) {
+            $countSteps = $em->getRepository('VoyageBundle:Etapes')
+                ->getNbStepsByCountry($country, $trip);
+            if ($countSteps > 0) {
+                $dataCountries[] = array($country->getName(), intval($countSteps[0]));
+            }
+        }
+
+        $this->get('app.js_vars')->dataCountries = $dataCountries;
+
+        //map with all steps markers
+        $stepMarkers = array();
+        $stepData = array();
+        $stepMedias = array();
+
+        $tripSteps = $em->getRepository('VoyageBundle:Etapes')
+            ->findBy(array('trip' => $trip));
+
+        foreach ($tripSteps as $step) {
+            $paths = $em->getRepository('VoyageBundle:Medias')
+                ->findByStep($step);
+            $stepMedias[] = $paths;
+            $stepData[] = array($step->getDescriptionEtape());
+            if ($step->getCountry() instanceof Countries) {
+                $stepMarkers[] = array($step->getCountry()->getName(), $step->getLatitude(), $step->getLongitude());
+            } else {
+                $stepMarkers[] = array('Pays non précisé par l\'utilisateur', $step->getLatitude(), $step->getLongitude());
+            }
+        }
+
+        $this->get('app.js_vars')->stepMarkers = $stepMarkers;
+        $this->get('app.js_vars')->stepData = $stepData;
+        $this->get('app.js_vars')->stepMedias = $stepMedias;
+
 
         return $this->render('VoyageBundle:Default/membre/layout:consultVoyage.html.twig', array(
             'trip' => $trip,
-            'travellers' => $travellers,
+            'traveller' => $traveller,
             'steps' => $steps));
     }
 
@@ -74,19 +127,22 @@ class VoyageController extends Controller
     public function createStepAction($idVoyage, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $trip = $em->getRepository('VoyageBundle:Voyages')
+            ->find($idVoyage);
+        //if the requested trip doesnt exist or the user that tries to create a step is not the trip owner
+        if (null === $trip || ($trip->getVoyageur()[0]->getId() !== $this->getUser()->getId())) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
         $step = new Etapes();
         $form = $this->createForm(CreateStepType::class, $step);
         $form->handleRequest($request);
-
-        $trip = $em->getRepository('VoyageBundle:Voyages')
-            ->find($idVoyage);
 
         $step->setTrip($trip);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $medias = $step->getMedias();
+
             foreach ($medias as $media) {
                 $media->setIdetape($step);
                 $media->setIdvoyage($trip);
@@ -157,14 +213,7 @@ class VoyageController extends Controller
             if ($country instanceof Countries) {
                 $step->setCountry($country);
 
-                $user = $this->getUser();
-                $countriesVisited = $user->getCountriesVisited()->toArray();
-
-                //if the user have never been in this country yet
-                if (!in_array($country, $countriesVisited)) {
-                    $user->addCountryVisited($country);
-                }
-            }else{
+            } else {
                 $step->setCountry(null);
                 $step->setCities(null);
                 $step->setState(null);
@@ -172,20 +221,9 @@ class VoyageController extends Controller
 
             $em->persist($step);
             $em->flush();
-            return $this->redirectToRoute('voyagePage' , array('idVoyage' => $idVoyage));
+            return $this->redirectToRoute('voyagePage', array('idVoyage' => $idVoyage));
         }
         return $this->render('VoyageBundle:Default/membre/layout:createStep.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function testAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-
-        return $this->render('VoyageBundle:Default/membre/layout:vueTest.html.twig', array());
     }
 
     /**
@@ -197,7 +235,6 @@ class VoyageController extends Controller
 
         if ($request->isXmlHttpRequest()) {
             $user = $this->getUser();
-            $nbCountries = 0;
             $idTrip = $request->request->get('trip');
 
             $trip = $em->getRepository('VoyageBundle:Voyages')
@@ -208,9 +245,6 @@ class VoyageController extends Controller
             $nbSteps = count($tripSteps);
             if (!empty($tripSteps)) {
                 foreach ($tripSteps as $step) {
-                    $country = $step->getCountry();
-                    $nbCountries += 1;
-                    $user->removeCountryVisited($country);
                     $em->remove($step);
                 }
             }
@@ -221,7 +255,7 @@ class VoyageController extends Controller
             $em->flush();
 
             $response = new JsonResponse();
-            return $response->setData(array('success' => true, 'nbCountries' => $nbCountries, 'nbSteps' => $nbSteps));
+            return $response->setData(array('success' => true, 'nbSteps' => $nbSteps));
 
         } else {
             // TODO : REDIRECT

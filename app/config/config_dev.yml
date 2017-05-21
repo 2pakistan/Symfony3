@@ -35,3 +35,44 @@ monolog:
 
 parameters:
     router.request_context.base_url: "/symfonyroadtrip2/web/app_dev.php"
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+
+            user_image:
+                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/profilePicture
+                upload_destination: '%kernel.root_dir%/../web/img/users/profilePicture'
+                namer:              vich_uploader.namer_uniqid
+
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true
+
+            user_cover:
+                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/coverPicture
+                upload_destination: '%kernel.root_dir%/../web/img/users/coverPicture'
+                namer:              vich_uploader.namer_uniqid
+
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true
+
+            trip_image:
+                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/voyages
+                upload_destination: '%kernel.root_dir%/../web/img/users/voyages'
+                namer:              vich_uploader.namer_uniqid
+
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true
+
+            step_image:
+                uri_prefix:         http://localhost/symfonyroadtrip2/web/img/users/etapes
+                upload_destination: '%kernel.root_dir%/../web/img/users/etapes'
+                namer:              vich_uploader.namer_uniqid
+
+                inject_on_load:     false
+                delete_on_update:   true
+                delete_on_remove:   true

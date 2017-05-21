@@ -1,0 +1,50 @@
+{% extends ":layout:layout.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}"/>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <section class="review">
+            <div class="row centered-form">
+                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                    <h1>Your opinion is important to us<br/>
+                        <small>It's free</small>
+                    </h1>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+                            <div class="row form-group">
+                                {{ form_widget(form.review) }}
+                            </div>
+                            <!-- Star rating -->
+                            <div class="row form-group">
+                                <div class="text-center">
+                                    <div class="col-sm-12">
+                                        <h3>Give us a rate ! </h3>
+                                    </div>
+                                    {{ form_widget(form.rating) }}
+                                </div>
+                            </div>
+
+                            <!-- Button submit leave review -->
+                            <div class="row form-group">
+                                <input class="btn btn-lg btn-custom btn-block" type="submit" value="Leave my review"/>
+                            </div>
+                            {{ form_errors(form) }}
+                            {{ form_end(form) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
+{% endblock %}

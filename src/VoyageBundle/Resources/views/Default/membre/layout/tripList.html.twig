@@ -25,18 +25,22 @@
                                         <img class="user-small-img"
                                              src="{{ vich_uploader_asset(traveller, 'imagefile') }}">
                                         <span class="text-white">
-                                        <a href="{{ path('memberHp' , {'id' : traveller.id}) }}">
+                                        <a href="{{ path('memberHp' , {'id' : traveller.id}) }}#trips">
                                             {{ traveller.prenom }}&nbsp;{{ traveller.nom }}
                                         </a>
                                     </span>
                                         <span class="pull-right">
-				<a href="{{ path('memberVoyages' , {'id' : traveller.id}) }}" data-toggle="tooltip"
-                   data-placement="right" title="Voyages"><i
+				<a data-toggle="tooltip" data-placement="right" title="Number of views for this trip"><i
+                            class="glyphicon glyphicon-eye-open"></i> {{ trip.views }}</a>
+				</span>
+                                        <span class="pull-right">
+				<a href="{{ path('memberHp' , {'id' : traveller.id}) }}#trips" data-toggle="tooltip"
+                   data-placement="right" title="Member number of trips"><i
                             class="glyphicon glyphicon-plane"></i> {{ traveller.voyages|length }}</a>
 				</span>
                                         <span class="pull-right">
-				<a href="{{ path('memberFollowers' , {'id' : traveller.id}) }}" data-toggle="tooltip"
-                   data-placement="right" title="Followers"><i
+				<a href="{{ path('memberHp' , {'id' : traveller.id}) }}#followers" data-toggle="tooltip"
+                   data-placement="right" title="Number of followers"><i
                             class="glyphicon glyphicon-heart"></i> {{ traveller.follower|length }}</a>
 				</span>
                                     </div>
@@ -55,18 +59,18 @@
                                 <ul>
                                     {% for step in recentSteps %}
                                         <li class="recent-post">
-                                            {% if step.medias|length > 0 %}
-                                                <div class="post-img">
-                                                    <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
-                                                         class="img-responsive">
-                                                </div>
-                                            {% else %}
-                                                <div class="post-img">
-                                                    <img src="{{ asset('img/undefined.jpg') }}"
-                                                         class="img-responsive">
-                                                </div>
-                                            {% endif %}
-                                            <a href="#">
+                                            <a href="{{ path('voyagePage' , {'idVoyage' : step.trip.idvoyage } ) }}#step-{{ step.idetape }}">
+                                                {% if step.medias|length > 0 %}
+                                                    <div class="post-img">
+                                                        <img src="{{ vich_uploader_asset(step.medias[0], 'imagefile') }}"
+                                                             class="img-responsive">
+                                                    </div>
+                                                {% else %}
+                                                    <div class="post-img">
+                                                        <img src="{{ asset('img/undefined.png') }}"
+                                                             class="img-responsive">
+                                                    </div>
+                                                {% endif %}
                                                 <h5>
                                                     {% if step.descriptionetape|length > 60 %}
                                                         {{ step.descriptionetape[:50] }}&hellip;
@@ -76,10 +80,10 @@
                                                 </h5>
                                             </a>
                                             <p>
-                                                <small>
-                                                    <i class="glyphicon glyphicon-calendar"></i> {{ step.createDate|date("d/m/Y") }}
-                                                </small>
-                                            </p>
+                                                    <small>
+                                                        <i class="glyphicon glyphicon-calendar"></i> {{ step.createDate|date("d/m/Y") }}
+                                                    </small>
+                                                </p>
                                         </li>
                                         <hr>
                                     {% endfor %}

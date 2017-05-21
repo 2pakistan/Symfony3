@@ -1,4 +1,39 @@
+//Auto positioning step
+function preventAnchorScroll() {
+    var scrollToTop = function () {
+        $(window).scrollTop(0);
+    };
+    if (window.location.hash) {
+        // handler is executed at most once
+        $(window).one('scroll', scrollToTop);
+    }
+
+    // make sure to release scroll 1 second after document readiness
+    // to avoid negative UX
+    $(document).ready(function () {
+        setTimeout(
+            function () {
+                $(window).off('scroll', scrollToTop);
+            },
+            4000
+        );
+    });
+}
+preventAnchorScroll();
+
+var anchor = window.location.hash;
+$(function () {
+    if (anchor) {
+        // smooth scroll to the anchor id
+        $('html, body').animate({
+            scrollTop: $(anchor).offset().top - 75
+        }, 2000);
+    }
+});
+
+//maps
 jQuery(function () {
+
     // Asynchronously Load the map API
     var script = document.createElement('script');
     script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyA8MUOfjQsy5bd9U4L8vYqpGkNjM9qOfYw&?sensor=false&callback=initialize";
@@ -38,18 +73,6 @@ function initialize() {
         infoWindowContent.push(content);
     }
 
-
-    /* Info Window Content
-     var infoWindowContent = [
-     ['<div class="info_content">' +
-     '<h3>London Eye</h3>' +
-     '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' + '</div>'],
-     ['<div class="info_content">' +
-     '<h3>Palace of Westminster</h3>' +
-     '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
-     '</div>']
-     ];
-     */
     // Display multiple markers on a map
     var infoWindow = new google.maps.InfoWindow(), marker, i;
 
@@ -77,7 +100,7 @@ function initialize() {
 
     // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
     var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function (event) {
-        this.setZoom(14);
+        this.setZoom(3);
         google.maps.event.removeListener(boundsListener);
     });
 

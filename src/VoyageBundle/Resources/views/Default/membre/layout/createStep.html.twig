@@ -5,7 +5,7 @@
 
     <div class="container">
         <section class="see-trip-header header-homepage">
-            <h2 class="text-center">Rajouter une étape</h2>
+            <h2 class="text-center">Add a post</h2>
         </section>
         <section class="see-trip">
             {{ form_start(form) }}
@@ -19,7 +19,12 @@
             <div class="form-group">
                 <div class="col-sm-12">
                     {{ form_label(form.medias) }}
+                    <p>
+                        <em>En cliquant sur le bouton camera, un champ fichier apparaitra. Vous pouvez renseigner plusieurs champs fichiers en recliquant sur l'icône.</em>
+                    </p>
+
                     <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}">
+                        {{ form_widget(form.medias) }}
                     </ul>
                 </div>
             </div>

@@ -31,12 +31,12 @@ class Utilisateurs extends BaseUser
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=50, nullable=true)
-     * @Assert\NotBlank(message="Veuillez entrer votre nom", groups={"Registration", "Profile"})
+     * @Assert\NotBlank(message="Enter a name", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="Le nom est trop court.",
-     *     maxMessage="Le nom est trop long.",
+     *     minMessage="Name is too short (2 chars needed)",
+     *     maxMessage="Name is too long (50 chars max)",
      *     groups={"Registration", "Profile"}
      * )
      */
@@ -46,12 +46,12 @@ class Utilisateurs extends BaseUser
      * @var string
      *
      * @ORM\Column(name="prenom", type="string", length=50, nullable=true)
-     * @Assert\NotBlank(message="Veuillez entrer votre prénom", groups={"Registration", "Profile"})
+     * @Assert\NotBlank(message="Enter a first name", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="Le prenom est trop court.",
-     *     maxMessage="Le prenom est trop long.",
+     *     minMessage="First name is too short (2 chars needed)",
+     *     maxMessage="First nameis too long (50 chars max)",
      *     groups={"Registration", "Profile"}
      * )
      */
@@ -63,13 +63,6 @@ class Utilisateurs extends BaseUser
      * @ORM\Column(name="nationalite", type="string", length=50, nullable=true)
      */
     private $nationalite;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="telephone", type="string", length=25, nullable=true )
-     */
-    private $telephone;
 
 
     /**
@@ -104,6 +97,13 @@ class Utilisateurs extends BaseUser
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAtProfile;
 
 
     /**
@@ -140,10 +140,25 @@ class Utilisateurs extends BaseUser
     private $review;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="rating", type="integer", length=1, nullable=true )
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $reviewedAt;
+
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Utilisateurs", inversedBy="follower", cascade={"persist"})
-     * @ORM\JoinTable(name="etreami",
+             * @ORM\JoinTable(name="etreami",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id", referencedColumnName="id")
      *   },
@@ -178,9 +193,11 @@ class Utilisateurs extends BaseUser
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * @ORM\ManyToMany(targetEntity="VoyageBundle\Entity\Countries", inversedBy="visitors",  cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VoyageBundle\Entity\Inscription", mappedBy="rencontre", cascade={"persist"})
      */
-    private $countriesVisited;
+    private $inscription;
+
+    private $nbCountries;
 
     public function __construct()
     {
@@ -189,10 +206,12 @@ class Utilisateurs extends BaseUser
         $this->photocouverture = "vermont.jpg";
         $this->createdAt = new \DateTime;
         $this->updatedAt = new \DateTime;
+        $this->updatedAtProfile = new \DateTime;
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->followed = new \Doctrine\Common\Collections\ArrayCollection();
         $this->voyages = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->countriesVisited = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->inscription = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     /**
@@ -267,29 +286,6 @@ class Utilisateurs extends BaseUser
         return $this->nationalite;
     }
 
-    /**
-     * Set telephone
-     *
-     * @param string $telephone
-     *
-     * @return Utilisateurs
-     */
-    public function setTelephone($telephone)
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    /**
-     * Get telephone
-     *
-     * @return string
-     */
-    public function getTelephone()
-    {
-        return $this->telephone;
-    }
 
     /**
      * @return \DateTime
@@ -321,11 +317,12 @@ class Utilisateurs extends BaseUser
         if ($image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAtProfile = new \DateTimeImmutable();
         }
 
         return $this;
     }
+
 
     /**
      * @return File|null
@@ -538,39 +535,6 @@ class Utilisateurs extends BaseUser
         return $this->voyages;
     }
 
-    /**
-     * Add countryVisited
-     *
-     * @param \VoyageBundle\Entity\Countries $countryVisited
-     *
-     * @return Countries
-     */
-    public function addCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
-    {
-        $this->countriesVisited[] = $countryVisited;
-
-        return $this;
-    }
-
-    /**
-     * Remove countryVisited
-     *
-     * @param \VoyageBundle\Entity\Countries $countryVisited
-     */
-    public function removeCountryVisited(\VoyageBundle\Entity\Countries $countryVisited)
-    {
-        $this->countriesVisited->removeElement($countryVisited);
-    }
-
-    /**
-     * Get countriesVisited
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCountriesVisited()
-    {
-        return $this->countriesVisited;
-    }
 
     /**
      * @return string
@@ -586,6 +550,104 @@ class Utilisateurs extends BaseUser
     public function setReview($review)
     {
         $this->review = $review;
+        $this->reviewedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReviewedAt()
+    {
+        return $this->reviewedAt;
+    }
+
+    /**
+     * @param mixed $reviewedAt
+     */
+    public function setReviewedAt($reviewedAt)
+    {
+        $this->reviewedAt = $reviewedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAtProfile()
+    {
+        return $this->updatedAtProfile;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbCountries()
+    {
+        return $this->nbCountries;
+    }
+
+    /**
+     * @param mixed $nbCountries
+     */
+    public function setNbCountries($nbCountries)
+    {
+        $this->nbCountries = $nbCountries;
+    }
+
+    /**
+     * Add inscription
+     *
+     * @param \VoyageBundle\Entity\Inscription $inscription
+     *
+     * @return Utilisateurs
+     */
+    public function addInscription(\VoyageBundle\Entity\Inscription $inscription)
+    {
+        $this->inscription[] = $inscription;
+        return $this;
+    }
+
+    /**
+     * Remove inscription
+     *
+     * @param \VoyageBundle\Entity\Inscription $inscription
+     */
+    public function removeInscription(\VoyageBundle\Entity\Inscription $inscription)
+    {
+        $this->inscription->removeElement($inscription);
+    }
+
+    /**
+     * Get inscriptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInscription()
+    {
+        return $this->inscription;
     }
 
 

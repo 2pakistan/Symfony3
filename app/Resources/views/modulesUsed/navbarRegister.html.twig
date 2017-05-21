@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="navbarRegisterCollapse">
             <div class="col-sm-offset-6 col-xs-12">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ path('homepage') }}"><span id="glyphicon-home-register" class="glyphicon glyphicon-plane"></span></a></li>
+                    <li><a href="{{ path('homepage') }}"><span id="glyphicon-home-register" class="glyphicon glyphicon-home"></span></a></li>
                 </ul>
             </div>
             <ul class="nav navbar-nav navbar-right">
@@ -24,7 +24,7 @@
                             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a></li>
                 {% else %}
-                    <a href="{{ path('fos_user_security_login') }}">Vous avez déja un compte ? Connexion</a>
+                    <a href="{{ path('fos_user_security_login') }}">Already registered ? Sign in</a>
                 {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->

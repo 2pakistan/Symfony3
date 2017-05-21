@@ -3,15 +3,23 @@
 {% block body %}
 
     {% if app.request.hasPreviousSession %}
-            {% for type, messages in app.session.flashbag.all() %}
-                {% for message in messages %}
-                    <div class="flash-{{ type }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
             {% endfor %}
-        {% endif %}
-    {% block fos_user_content %}
-    {% endblock fos_user_content %}
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="see-trip see-trip-header">
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+    </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}
